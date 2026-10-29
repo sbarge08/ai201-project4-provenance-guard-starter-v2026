@@ -31,6 +31,8 @@ from flask import Flask, jsonify, request
 import audit
 import config
 import detector
+import scoring
+import stylometry
 
 app = Flask(__name__)
 
@@ -166,13 +168,13 @@ def _log_submission_rejection(creator_id: str, content_id: str, reason: str) -> 
 # @limiter.limit(f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day")
 def submit():
     """
-    Validate a submission, calculate the model signal, and record its status.
+    Validate a submission, calculate both signals, combine, and record scores.
 
     Expects JSON:
         {"text": "...", "creator_id": "..."}
 
-    Stylometry and final scoring are not connected yet, so the response does
-    not make an authorship classification.
+    Final label thresholds are not connected yet, so the response does not
+    make an authorship classification.
     """
     payload = request.get_json(silent=True)
     if not isinstance(payload, dict):
@@ -215,7 +217,7 @@ def submit():
         _log_submission_rejection(creator_id, content_id, "detector_unavailable")
         return jsonify({
             "error": "detector_unavailable",
-            "message": "The text could not be scored because the detector is unavailable.",
+            "message": "The text could not be scored because a signal is unavailable.",
             "content_id": content_id,
         }), 503
     except Exception:
@@ -227,18 +229,33 @@ def submit():
             "content_id": content_id,
         }), 503
 
+    try:
+        style_score = stylometry.style_signal(text)
+        combined_score = scoring.combine_signals(model_score, style_score)
+    except Exception:
+        app.logger.exception("Signal processing failed for content_id=%s", content_id)
+        _log_submission_rejection(creator_id, content_id, "signal_error")
+        return jsonify({
+            "error": "signal_error",
+            "message": "The submission could not be scored.",
+            "content_id": content_id,
+        }), 503
+
     guess = "not_scored"
-    label = "NOT FINAL / NOT SCORED - model signal only; this is not an authorship decision."
+    label = (
+        "NOT FINAL / NOT SCORED - signals only; this is not an authorship "
+        "decision or a calibrated probability."
+    )
     try:
         audit.log_decision(
             content_id=content_id,
             creator_id=creator_id,
             guess=guess,
             model_score=model_score,
-            style_score=None,
-            combined_score=None,
+            style_score=style_score,
+            combined_score=combined_score,
             label=label,
-            status="awaiting_stylometry",
+            status="awaiting_final_label",
         )
     except OSError:
         app.logger.exception("Could not write audit entry for content_id=%s", content_id)
@@ -254,8 +271,9 @@ def submit():
         "confidence": None,
         "label": label,
         "model_score": model_score,
-        "style_score": None,
-        "stage": "model_signal_only",
+        "style_score": style_score,
+        "combined_score": combined_score,
+        "stage": "signals_combined_awaiting_label",
     })
 
 
