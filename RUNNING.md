@@ -68,7 +68,7 @@ sent it data, it sent something back.
 `/ping` still answers: if it does, the problem is in your handler; if it
 doesn't, it's the service itself, and that's a help-channel question.
 
-Then try the route you're going to build:
+Then submit a sample:
 
 ```bash
 curl -X POST http://127.0.0.1:5000/submit \
@@ -76,8 +76,16 @@ curl -X POST http://127.0.0.1:5000/submit \
   -d '{"text": "some writing", "creator_id": "me"}'
 ```
 
-It returns a `501` saying it isn't built yet. **That's the correct starting
-position.**
+The successful response contains a `content_id`, a `guess`, a reader-facing
+`label`, `confidence`, `model_score`, `style_score`, and `combined_score`.
+`confidence` is a heuristic margin score, not a calibrated probability. Use
+the returned `content_id` and a reason to submit an appeal:
+
+```powershell
+curl.exe -X POST http://127.0.0.1:5000/appeal -H "Content-Type: application/json" -d '{"content_id":"<content_id from response>","reasoning":"I wrote this text myself and request a review."}'
+```
+
+`GET /log` shows the original decision and appended appeal event.
 
 ---
 
@@ -88,8 +96,8 @@ position.**
 | `POST /ping` | **works** | The example. Don't edit it |
 | `GET /health` | **works** | Is the service up, is the model loaded |
 | `GET /log` | **works** | The audit log, as JSON |
-| `POST /submit` | **you build it** | Milestones 3, 4, 5 |
-| `POST /appeal` | **you build it** | Milestone 5 |
+| `POST /submit` | **implemented** | Validates, scores, labels, and records a submission |
+| `POST /appeal` | **implemented** | Records an appeal as an appended `under_review` event |
 
 ---
 
@@ -134,22 +142,20 @@ position.**
 
 ---
 
-## Building `/submit` in three passes
+## `/submit` implementation
 
-The ordering is deliberate. It's how you tell a broken route from a broken
-signal.
+The route validates a JSON request, applies both signals, combines and labels
+their scores, records the decision, and returns JSON. `POST /appeal` appends an
+appeal event to the audit log; the original decision remains unchanged.
 
-**Milestone 3.** Return a hardcoded response. Confirm `curl` gets it back
-**before** you add any logic. Then pull `text` and `creator_id` out. Then call
-one signal. Then log it.
+The detector runs locally. The first request may take longer while the model
+loads. The combined score is AI-like evidence, not proof of authorship or a
+calibrated probability. See the Signals and Scoring section in `README.md` for
+the current formulas, thresholds, and limitations.
 
-**Milestone 4.** Add the second signal. Combine them. Log both scores.
-
-**Milestone 5.** Turn the score into a label.
-
-> Test each signal from a terminal on its own before wiring it in. If you skip
-> that you'll spend an hour not knowing whether the route or the signal is
-> lying to you.
+> To inspect a signal by itself, run `python detector.py "some text"` or
+> `python stylometry.py "some text"`. The endpoint uses both signals and
+> returns each score separately for comparison.
 
 ---
 
@@ -279,7 +285,7 @@ sentences, a pasted quotation. That is very cheap to do on purpose.
 
 | What you see | What it means |
 |---|---|
-| `501 not_implemented` | Correct at the start — that's the TODO in `app.py` |
+| `501 not_implemented` | The current routes are implemented; check that Flask is running the updated `app.py` |
 | `404` from curl | Is the server running? Is the path exactly what you typed? |
 | `Cannot bind parameter 'Headers'` | You're in PowerShell, where `curl` is a different tool. Use `curl.exe`, on one line |
 | Request body arrives empty | curl needs `-H "Content-Type: application/json"` |
@@ -287,7 +293,7 @@ sentences, a pasted quotation. That is very cheap to do on purpose.
 | The first submission takes 10+ seconds | Signal one is loading the model into memory. Later ones take a second or two |
 | *Every* submission takes 10+ seconds | Something is reloading the model each call. `GET /health` shows `detector_loaded` — if it goes back to `false`, look for a reload in your handler |
 | `DetectorUnavailable` | Run `python detector.py` once to download the model |
-| `/appeal` seems to do nothing | Does the `content_id` you sent actually exist in the log? A typo there fails silently |
+| `/appeal` returns `404` | The supplied `content_id` has no original submission in the audit log |
 | Every request gets through, no `429` ever | The decorator is uncommented but limiting is still off. Set `RATE_LIMITING_ENABLED` in `config.py` |
 | Flask-Limiter warns about storage | Shouldn't happen — `storage_uri` is preconfigured. If you changed it, put it back |
 | All three of your labels never appear | Your ranges have a gap. `scoring.label_ranges()` prints them |

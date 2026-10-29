@@ -18,8 +18,8 @@ doesn't, it's the service itself.
 Routes:
 
     POST /ping        the worked example. Already works. Don't edit it
-    POST /submit      ← YOU BUILD THIS (Milestone 3, 4, 5)
-    POST /appeal      ← YOU BUILD THIS (Milestone 5)
+    POST /submit      validate, score, label, and log a submission
+    POST /appeal      append an appeal event to the audit log
     GET  /log         the audit log. Already works
     GET  /health      is the service up, and is the model loaded
 """
@@ -162,7 +162,7 @@ def _log_submission_rejection(creator_id: str, content_id: str, reason: str) -> 
         app.logger.exception("Could not log rejected content_id=%s", content_id)
 
 
-# ── YOU BUILD THIS ────────────────────────────────────────────────────────────
+# ── Submission route ─────────────────────────────────────────────────────────
 
 @app.post("/submit")
 # @limiter.limit(f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day")
@@ -173,8 +173,7 @@ def submit():
     Expects JSON:
         {"text": "...", "creator_id": "..."}
 
-    Final label thresholds are not connected yet, so the response does not
-    make an authorship classification.
+    Labels describe heuristic AI-like patterns, not proven authorship.
     """
     payload = request.get_json(silent=True)
     if not isinstance(payload, dict):
@@ -241,11 +240,18 @@ def submit():
             "content_id": content_id,
         }), 503
 
-    guess = "not_scored"
-    label = (
-        "NOT FINAL / NOT SCORED - signals only; this is not an authorship "
-        "decision or a calibrated probability."
-    )
+    try:
+        guess, label = scoring.score_to_label(combined_score)
+        confidence = scoring.classification_confidence(combined_score, guess)
+    except ValueError:
+        app.logger.exception("Could not label content_id=%s", content_id)
+        _log_submission_rejection(creator_id, content_id, "labeling_error")
+        return jsonify({
+            "error": "labeling_error",
+            "message": "The submission could not be assigned a label.",
+            "content_id": content_id,
+        }), 503
+
     try:
         audit.log_decision(
             content_id=content_id,
@@ -255,7 +261,7 @@ def submit():
             style_score=style_score,
             combined_score=combined_score,
             label=label,
-            status="awaiting_final_label",
+            status="decided",
         )
     except OSError:
         app.logger.exception("Could not write audit entry for content_id=%s", content_id)
@@ -268,43 +274,83 @@ def submit():
     return jsonify({
         "content_id": content_id,
         "guess": guess,
-        "confidence": None,
+        "confidence": confidence,
         "label": label,
         "model_score": model_score,
         "style_score": style_score,
         "combined_score": combined_score,
-        "stage": "signals_combined_awaiting_label",
+        "stage": "signals_combined_and_labeled",
     })
 
 
 @app.post("/appeal")
 def appeal():
     """
-    A writer says you got it wrong. ← TODO — Milestone 5
+    Record an appeal for an existing submission.
 
     Expects JSON:
         {"content_id": "...", "reasoning": "..."}
 
-    Should:
-      1. Check the content_id actually exists — `audit.entries_for(id)` tells
-         you. A typo here fails silently and looks like a broken endpoint,
-         which is the single most common way this milestone eats an hour.
-      2. Record the appeal with `audit.log_appeal(...)`, which moves the item
-         to `under_review`.
-      3. Confirm to the writer. No automatic re-checking needed.
-
-    This is the smallest endpoint in the project and the one that matters most
-    to the person on the other end. It's the only thing standing between a
-    wrong accusation and nothing at all.
+    The appeal is appended as a new audit event; the original decision remains
+    unchanged. The newest event represents the item's current status.
     """
-    payload = request.get_json(silent=True) or {}
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return jsonify({
+            "error": "invalid_request",
+            "message": "Request body must be a JSON object.",
+        }), 400
 
-    # TODO: delete this and build the route.
+    content_id = payload.get("content_id")
+    reasoning = payload.get("reasoning")
+    if not isinstance(content_id, str) or not content_id.strip():
+        return jsonify({
+            "error": "invalid_request",
+            "message": "'content_id' must be a non-empty string.",
+        }), 400
+    if not isinstance(reasoning, str) or not reasoning.strip():
+        return jsonify({
+            "error": "invalid_request",
+            "message": "'reasoning' must be a non-empty string.",
+        }), 400
+
+    related_entries = audit.entries_for(content_id)
+    original = next(
+        (
+            entry for entry in related_entries
+            if entry.get("status") not in {"rejected", "under_review"}
+            and entry.get("event") != "appeal"
+        ),
+        None,
+    )
+    if original is None:
+        return jsonify({
+            "error": "not_found",
+            "message": "No submission was found for that content_id.",
+        }), 404
+
+    creator_id = original.get("creator_id")
+    if not isinstance(creator_id, str) or not creator_id.strip():
+        app.logger.error("Audit entry missing creator_id for content_id=%s", content_id)
+        return jsonify({
+            "error": "audit_entry_invalid",
+            "message": "The submission record is incomplete; the appeal was not recorded.",
+        }), 503
+
+    try:
+        audit.log_appeal(content_id, creator_id, reasoning.strip())
+    except OSError:
+        app.logger.exception("Could not record appeal for content_id=%s", content_id)
+        return jsonify({
+            "error": "audit_unavailable",
+            "message": "The appeal could not be recorded. Please try again.",
+        }), 503
+
     return jsonify({
-        "error": "not_implemented",
-        "message": "POST /appeal isn't built yet — see the TODO in app.py.",
-        "you_sent": payload,
-    }), 501
+        "content_id": content_id,
+        "status": "under_review",
+        "message": "Your appeal has been recorded for review.",
+    })
 
 
 # ── Already works ─────────────────────────────────────────────────────────────

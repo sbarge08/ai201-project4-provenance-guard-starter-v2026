@@ -39,7 +39,31 @@
 <!-- The path a submission takes, from arriving to the label a reader sees.
      Six or seven steps — this is the trace you wrote in Milestone 1. -->
 
+1. `POST /submit` receives JSON with `text` and `creator_id`.
+2. The route checks both fields are nonempty strings and rejects text longer
+   than 5,000 characters.
+3. It generates a UUID `content_id`.
+4. GPT-2 measures how predictable the text is; stylometry measures sentence
+   length variation, vocabulary diversity, and punctuation density.
+5. `scoring.combine_signals` combines those two 0–1 signals into one bounded
+   AI-likeness evidence score.
+6. `scoring.score_to_label` maps that score to an AI-like, human-like, or
+   unsure label. The score and label are estimates, not proof of authorship.
+7. The route calculates a separate margin-based classification confidence,
+   appends the scores and decision to the audit log, and returns JSON including
+   the content ID and all three scores.
 
+The confidence field is a heuristic measure of distance within the selected
+label's score range. It is not a calibrated probability. A writer can appeal
+by sending the returned `content_id` and nonempty reasoning to `POST /appeal`.
+The original log entry remains unchanged; the appeal is appended as a new
+`under_review` event.
+
+**Privacy limitation:** `GET /log` currently returns the full audit log without
+authentication, and `/appeal` accepts an ID and reasoning without verifying
+the caller's identity. The service defaults to loopback for local class work;
+do not expose it on a network with private submissions or appeals until
+authentication and per-writer authorization protect these routes.
 
 ---
 
@@ -53,35 +77,74 @@
 
 ### Signal one — the model signal
 
-**What it measures:**
+**What it measures:** GPT-2 token perplexity is `exp(mean token loss)`,
+truncated to 400 tokens, then mapped to a 0–1 model signal with
+`1 / (1 + (perplexity / 45) ** 1.6)`. Lower perplexity (greater
+predictability) produces a higher score. It is AI-like evidence, not a
+probability of authorship.
 
-**Why that might differ between human and AI writing:**
+**Why that might differ between human and AI writing:** Generated text may be
+predictable to a language model, but ordinary human writing can be predictable
+too.
 
-**What it can't see:**
+**What it can't see:** Predictability does not establish who wrote the text.
+Plain writing can score as AI-like, and unusual writing can score as more
+human-like.
 
 ### Signal two — the style signal
 
-**What it measures:**
+**What it measures:** Three surface features, combined with equal weight:
 
-**Why that might differ between human and AI writing:**
+- Sentence-length variation is the coefficient of variation:
+  population standard deviation of sentence word counts divided by their mean.
+  Its AI-like feature is `1 / (1 + coefficient_of_variation)`. Fewer than two
+  nonempty sentences provide no measurable variation.
+- Vocabulary diversity is type-token ratio: unique recognized words divided by
+  all recognized words. Its AI-like feature is `1 - type_token_ratio`.
+- Punctuation density is Unicode punctuation characters divided by all text
+  characters. Its AI-like feature is `min(punctuation_density / 0.10, 1)`.
+  This direction and the 10% scale are heuristic choices, not universal facts
+  about writing.
 
-**What it can't see:**
+The style score is the arithmetic mean of those three features, rounded to
+four decimal places. A missing sentence or vocabulary measurement contributes
+0.5 (neutral); whitespace-only text returns 0.5.
+
+**Why that might differ between human and AI writing:** These features are
+simple descriptions of text shape. Low sentence-length variation and a lower
+unique-word ratio are treated here as AI-like evidence, but those patterns are
+not unique to generated text.
+
+**What it can't see:** Stylometry does not understand meaning or authorship.
+Editing sentence breaks, adding typos, or changing punctuation can change the
+measurements without changing who wrote the ideas. Type-token ratio also
+depends on text length. Sentence splitting is approximate, and token counts do
+not account for word roots or context.
 
 ### The combining rule
 
 <!-- Write the rule in words, then give the numbers. What happens when the two
      signals disagree? -->
 
-**The rule:**
+**The rule:** A weighted average, normalized by the sum of the configured
+weights:
+`combined_score = (model_weight * model_score + style_weight * style_score) / (model_weight + style_weight)`.
+When signals disagree, the combined score lies between them.
 
-**The numbers:**
+**The numbers:** `WEIGHT_MODEL_SIGNAL = 0.5` and
+`WEIGHT_STYLE_SIGNAL = 0.5`; therefore the combined score is their arithmetic
+mean. These weights are configurable in `config.py`.
 
 **Where it lives:** `scoring.py::combine_signals`
 
 <!-- ⚠️ The grader checks your code against that line. If your rule lives
      somewhere else, say where. -->
 
-**A case where my two signals split, and what my rule does with it:**
+**A case where my two signals split, and what my rule does with it:** For
+example, if model_score is 0.8 and style_score is 0.2, equal weights produce
+combined_score 0.5. The disagreement pulls the result toward the middle
+instead of letting either signal decide alone. This is a mathematical example,
+not an observed evaluation result.
 
 
 
@@ -96,11 +159,24 @@
 
 | Label | Score range | The exact text a reader sees |
 |---|---|---|
-| high-confidence human |  |  |
-| unsure |  |  |
-| high-confidence AI |  |  |
+| high-confidence human-like | 0.00–0.25, inclusive | High-confidence human-like patterns: this system's signals are strongly associated with human writing. This is not proof of authorship. |
+| unsure | greater than 0.25 and less than 0.75 | The signals are inconclusive. This system cannot determine who wrote the text. |
+| high-confidence AI-like | 0.75–1.00, inclusive | High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship. |
 
-**Why I worded the "unsure" one this way:**
+These are labels based on the configured AI-likeness score cutoffs, not
+calibrated probabilities. `confidence` is a separate, heuristic margin score,
+not a probability:
+
+- Human: `0.5 + 0.5 * (HUMAN_THRESHOLD - score) / HUMAN_THRESHOLD`.
+- AI: `0.5 + 0.5 * (score - AI_THRESHOLD) / (1 - AI_THRESHOLD)`.
+- Unsure: `0.5 + 0.5 * (1 - abs(score - midpoint) / half_band)`.
+
+The confidence rises as a score moves deeper into a decided label's range. In
+the unsure band, it is highest at the midpoint and lowest at either boundary.
+
+**Why I worded the "unsure" one this way:** It communicates that the signals
+cannot settle authorship rather than treating an uncertain score as an
+accusation.
 <!-- It's the hardest of the three. It has to admit uncertainty without
      sounding like an accusation, because the person reading it may well have
      written every word themselves. -->
@@ -124,11 +200,20 @@
 ```bash
 $ curl -X POST http://127.0.0.1:5000/submit \
   -H "Content-Type: application/json" \
-  -d '{"text": "...", "creator_id": "..."}'
+  -d '{"text": "The system works well. It handles most cases correctly and provides good results.", "creator_id": "readme-sample"}'
 ```
 
 ```json
-
+{
+  "combined_score": 0.4506,
+  "confidence": 0.9012,
+  "content_id": "fdb4853a-978c-4b8a-8279-97e58cdca7c8",
+  "guess": "unsure",
+  "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+  "model_score": 0.5781,
+  "stage": "signals_combined_and_labeled",
+  "style_score": 0.323
+}
 ```
 
 **An appeal**
@@ -136,11 +221,15 @@ $ curl -X POST http://127.0.0.1:5000/submit \
 ```bash
 $ curl -X POST http://127.0.0.1:5000/appeal \
   -H "Content-Type: application/json" \
-  -d '{"content_id": "...", "reasoning": "..."}'
+  -d '{"content_id": "fdb4853a-978c-4b8a-8279-97e58cdca7c8", "reasoning": "I wrote this text myself and request a review."}'
 ```
 
 ```json
-
+{
+  "content_id": "fdb4853a-978c-4b8a-8279-97e58cdca7c8",
+  "message": "Your appeal has been recorded for review.",
+  "status": "under_review"
+}
 ```
 
 **What the log shows afterwards**
@@ -150,24 +239,51 @@ $ curl "http://127.0.0.1:5000/log?limit=3"
 ```
 
 ```json
-
+{
+  "count": 2,
+  "entries": [
+    {
+      "combined_score": 0.4506,
+      "content_id": "fdb4853a-978c-4b8a-8279-97e58cdca7c8",
+      "creator_id": "readme-sample",
+      "guess": "unsure",
+      "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+      "model_score": 0.5781,
+      "status": "decided",
+      "style_score": 0.323,
+      "timestamp": "2026-10-29T01:08:15+00:00"
+    },
+    {
+      "content_id": "fdb4853a-978c-4b8a-8279-97e58cdca7c8",
+      "creator_id": "readme-sample",
+      "event": "appeal",
+      "reasoning": "I wrote this text myself and request a review.",
+      "status": "under_review",
+      "timestamp": "2026-10-29T01:08:16+00:00"
+    }
+  ]
+}
 ```
+
+These are real response and audit-log examples from one smoke-test submission
+and appeal, recorded in a temporary test log. They illustrate the API, not
+accuracy or ground-truth performance.
 
 ---
 
 ## How I Used AI
 
-**Moment 1**
+**ChatGPT — planning and criteria discussions**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+I used ChatGPT to discuss the system design and measurable acceptance
+criteria, and to receive implementation guidance. The five acceptance
+criteria and their targets were committed before implementation and remain
+unchanged.
 
-**Moment 2**
+**GitHub Copilot — implementation and testing**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+I used GitHub Copilot for code implementation and testing. I reviewed the
+resulting changes and test outputs while building the service.
 
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 

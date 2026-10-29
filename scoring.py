@@ -1,8 +1,5 @@
 """
-Turning two numbers into one, and one number into something a person can read.
-← YOU BUILD THIS IN MILESTONES 4 AND 5
-
-Two functions live here, and both are stubs.
+Combining the two signals and mapping a score to a reader-facing label.
 
 `combine_signals` is where your false-positive decision from Milestone 1
 actually gets made. Everything above it — the labels, the appeal path — is
@@ -16,81 +13,111 @@ function holding your combining rule. The grader checks your code against what
 you claim, so that line should read `scoring.py::combine_signals`.
 """
 
+import math
+
 import config
 
 
 def combine_signals(model_score: float, style_score: float) -> float:
     """
-    Combine two 0–1 signals into one 0–1 score. ← TODO (Milestone 4)
+    Combine two 0–1 signals using the configurable weighted average.
 
-    Both inputs point the same way: higher means more likely AI. Your output
-    should too.
+    Both inputs point the same way: higher means more AI-like evidence. The
+    result is an AI-likeness score, not a probability of authorship.
 
-    Args:
-        model_score: from `detector.model_signal` — how predictable the text is.
-        style_score: from `stylometry.style_signal` — the shape of the text.
-
-    Returns:
-        A float from 0.0 (confidently human) to 1.0 (confidently AI).
-
-    ⚠️ **Write the rule down before you code it, and put the numbers in your
-    README.** A weighted average is the obvious choice and it is not the only
-    one. Things worth thinking about:
-
-      - **What happens when they disagree?** One signal at 0.9 and the other at
-        0.1 averages to 0.5 — "unsure". Is that what you want? It might be
-        exactly right: two methods disagreeing IS uncertainty. Or you might
-        decide one signal is more trustworthy when they split.
-
-      - **Which way do you want to be wrong?** Weighting toward the signal that
-        reads more human means fewer false accusations and more AI text
-        getting through. There's no weighting that avoids the trade.
-
-      - Milestone 4 asks you to find a case where your two signals split and
-        write it down. That case is what this rule exists to handle.
-
-    The weights in config.py are placeholders. Change them, or ignore them and
-    write a different rule.
+    Weights are normalized by their sum, so configurable positive weights
+    still produce a bounded weighted average. Both scores must be finite values
+    in [0, 1]; weights must be finite, nonnegative, and not both zero.
     """
-    # TODO: replace this
-    return (
-        config.WEIGHT_MODEL_SIGNAL * model_score
-        + config.WEIGHT_STYLE_SIGNAL * style_score
-    )
+    if not math.isfinite(model_score) or not 0.0 <= model_score <= 1.0:
+        raise ValueError("model_score must be a finite number from 0.0 to 1.0")
+    if not math.isfinite(style_score) or not 0.0 <= style_score <= 1.0:
+        raise ValueError("style_score must be a finite number from 0.0 to 1.0")
+
+    model_weight = config.WEIGHT_MODEL_SIGNAL
+    style_weight = config.WEIGHT_STYLE_SIGNAL
+    total_weight = model_weight + style_weight
+    if (
+        not math.isfinite(model_weight)
+        or not math.isfinite(style_weight)
+        or not math.isfinite(total_weight)
+        or model_weight < 0
+        or style_weight < 0
+        or total_weight == 0
+    ):
+        raise ValueError("Signal weights must be finite, nonnegative, and not both zero")
+
+    combined = (
+        model_weight * model_score + style_weight * style_score
+    ) / total_weight
+    return round(min(max(combined, 0.0), 1.0), 4)
 
 
 def score_to_label(score: float) -> tuple[str, str]:
     """
-    Turn a score into a guess and the text a reader actually sees.
-    ← TODO (Milestone 5)
+    Turn an AI-likeness score into a guess and reader-facing explanation.
 
     Returns:
-        (guess, label_text) — where `guess` is a short machine-readable string
-        like "ai" / "human" / "unsure", and `label_text` is the full sentence
-        shown to a person.
+        A pair of machine-readable guess and full label sentence.
 
-    ⚠️ Write the label text for someone who has never heard the word
-    "threshold".
-
-        ✗ "human, 0.81 confidence"
-        ✓ "We think this was probably written by a person."
-
-    All three labels have to be **reachable**. If no score can produce one of
-    them, your ranges have a gap — and Milestone 5 asks you to submit text that
-    produces each one, which is how you'd find out.
-
-    The hardest one to write is "unsure". It has to admit uncertainty without
-    sounding like an accusation, because the person reading it may well have
-    written every word themselves. Your breakout asks your group what they'd
-    think if they got it on their own work. That question is the whole
-    milestone.
+    This is a heuristic label based on AI-like evidence, not proof or a
+    calibrated probability of authorship.
     """
-    # TODO: replace this — thresholds are in config.py
+    if not math.isfinite(score) or not 0.0 <= score <= 1.0:
+        raise ValueError("score must be a finite number from 0.0 to 1.0")
+    if not 0.0 < config.HUMAN_THRESHOLD < config.AI_THRESHOLD < 1.0:
+        raise ValueError("thresholds must satisfy 0 < HUMAN_THRESHOLD < AI_THRESHOLD < 1")
+
     if score >= config.AI_THRESHOLD:
-        return "ai", "PLACEHOLDER — write the high-confidence AI label."
+        return (
+            "ai",
+            "High-confidence AI-like patterns: this system's signals are "
+            "strongly associated with AI-generated writing. This is not proof "
+            "of authorship.",
+        )
     if score <= config.HUMAN_THRESHOLD:
-        return "human", "PLACEHOLDER — write the high-confidence human label."
-    return "unsure", "PLACEHOLDER — write the unsure label."
+        return (
+            "human",
+            "High-confidence human-like patterns: this system's signals are "
+            "strongly associated with human writing. This is not proof of "
+            "authorship.",
+        )
+    return (
+        "unsure",
+        "The signals are inconclusive. This system cannot determine who wrote "
+        "the text.",
+    )
+
+
+def classification_confidence(score: float, guess: str) -> float:
+    """
+    Return a heuristic margin score for the selected label, not a probability.
+
+    Confidence is 0.5 at a label boundary and approaches 1.0 deeper inside
+    that label's score region. For unsure, it is greatest at the band midpoint.
+    """
+    if not math.isfinite(score) or not 0.0 <= score <= 1.0:
+        raise ValueError("score must be a finite number from 0.0 to 1.0")
+
+    human_threshold = config.HUMAN_THRESHOLD
+    ai_threshold = config.AI_THRESHOLD
+    if not 0.0 < human_threshold < ai_threshold < 1.0:
+        raise ValueError("thresholds must satisfy 0 < HUMAN_THRESHOLD < AI_THRESHOLD < 1")
+
+    expected_guess, _ = score_to_label(score)
+    if guess != expected_guess:
+        raise ValueError("guess must match the label for score")
+
+    if guess == "human":
+        margin = (human_threshold - score) / human_threshold
+    elif guess == "ai":
+        margin = (score - ai_threshold) / (1.0 - ai_threshold)
+    else:
+        midpoint = (human_threshold + ai_threshold) / 2.0
+        half_band = (ai_threshold - human_threshold) / 2.0
+        margin = 1.0 - abs(score - midpoint) / half_band
+
+    return round(0.5 + 0.5 * min(max(margin, 0.0), 1.0), 4)
 
 
 def label_ranges() -> list[tuple[str, str]]:
@@ -99,7 +126,7 @@ def label_ranges() -> list[tuple[str, str]]:
     label text — given to you so the numbers can't drift apart from config.py.
     """
     return [
-        ("high-confidence human", f"0.00 – {config.HUMAN_THRESHOLD:.2f}"),
-        ("unsure", f"{config.HUMAN_THRESHOLD:.2f} – {config.AI_THRESHOLD:.2f}"),
-        ("high-confidence AI", f"{config.AI_THRESHOLD:.2f} – 1.00"),
+        ("high-confidence human", f"0.00 – {config.HUMAN_THRESHOLD:.2f} (inclusive)"),
+        ("unsure", f"({config.HUMAN_THRESHOLD:.2f}, {config.AI_THRESHOLD:.2f})"),
+        ("high-confidence AI", f"{config.AI_THRESHOLD:.2f} – 1.00 (inclusive)"),
     ]
