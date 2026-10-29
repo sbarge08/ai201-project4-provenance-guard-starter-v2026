@@ -1,134 +1,89 @@
 # Acceptance criteria — Provenance Guard
 
-Five criteria that say what "working" means for this service, written in unit 7
-**before** you built it.
+These are the targets I will evaluate in Unit 8, not results from testing.
+The evaluation datasets have not yet been collected or verified.
 
-**All five are yours.** None are given.
+The combined score is an AI-likeness evidence score from 0 to 1. A higher
+score means stronger AI-like evidence; it is not a calibrated probability
+that AI authored the text and does not prove authorship.
 
-An acceptance criterion names a number or something plainly observable. *"The
-detector is accurate"* is an opinion — and perfect AI detection isn't possible
-anyway, so it's an opinion about something nobody can deliver. *"Of 10 pieces I
-wrote myself, at most 1 is labelled high-confidence AI"* is a criterion.
+## 1. False-positive rate — At most 1 out of 20 (5%)
 
-Under each, write a sentence or two on **why that target**. *"I allow at most 1
-false positive in 10 because on a writing site a wrong accusation costs more
-than a missed detection"* is a real answer.
+**Target:** Of 20 verified human-written texts, at most one may receive the
+high-confidence AI label in each of three trials.
 
-> Missing your own targets next unit costs you nothing. Setting a target so
-> easy you can't miss it does.
+**How I will test it:** Use the same fixed set of 20 verified human-written
+texts across all three trials. Submit each text, record the returned guess,
+and count high-confidence AI classifications. Each trial must meet the target.
 
----
+**Why I chose this target:** Falsely accusing someone of using AI can be more
+damaging than missing AI-generated writing. The system should be cautious when
+evidence is uncertain. Even 5% is a meaningful risk, so this is a preliminary
+benchmark rather than proof the system is safe.
 
-## Pick numbers you can defend
+## 2. Score separation — At least 0.20
 
-**Cover at least three of these five areas.** They're prompts, not a form.
+**Target:** The average combined AI-likeness score for 20 known AI-generated
+texts must exceed the average for 20 verified human-written texts by at least
+0.20 in each of three trials.
 
-| Area | A question it could answer |
-|---|---|
-| False positives | How often may a human's writing get called AI? |
-| Score spread | How far apart should clearly-AI and clearly-human text score? |
-| Label coverage | Is every one of your three labels actually reachable? |
-| The appeal path | Does an appeal always change status and always get recorded? |
-| Bad input | What happens when `text` is missing, empty, or enormous? |
+**How I will test it:** Use the same fixed, labeled set of 40 texts across all
+three trials. Calculate the mean combined AI-likeness score separately for
+human and AI examples, then subtract the human mean from the AI mean. Use the
+combined score, not classification confidence.
 
-Two things worth knowing before you pick numbers:
+**Why I chose this target:** If both groups receive similar scores, the
+detector is not distinguishing them effectively. A 0.20 gap represents
+noticeable separation, although the score does not prove authorship.
 
-- **The expensive mistake is one-sided.** Missing some AI text costs the site a
-  little. Accusing a real writer costs that person a lot. A criterion that
-  treats both errors as equally bad is describing a system nobody would ship.
-- **Unit 8 tests across three trials, and the target has to hold across all
-  three.** Your first signal runs a model, so identical input can score
-  differently twice. A target of "at most 1 in 10" against trials of 2, 1, 2 is
-  a **miss**.
+## 3. Label coverage — All three labels
 
----
-## 1.
+**Target:** All three labels (`ai`, `human`, `unsure`) must be reachable, and
+every combined score from 0 through 1 must map to exactly one label.
 
-<!-- Your criterion. It must name a number. -->
+**How I will test it:** Directly test `scoring.score_to_label` with
+representative values inside all three ranges, the exact thresholds, values
+immediately below and above each threshold, and the endpoints 0 and 1. Verify
+complete, nonoverlapping score ranges.
 
+**Why I chose this target:** The unsure category is essential when evidence is
+inconclusive. Every score must produce a consistent result instead of forcing
+an unsupported accusation.
 
+## 4. Appeal reliability — 100% of 10 valid appeals
 
-**Why this target:**
+**Target:** All 10 valid appeals in each of three trials must be recorded and
+move their corresponding submission to `under_review`.
 
+**How I will test it:** Create 10 valid submissions, capture their
+`content_id` values, and submit an appeal for each using its real ID and
+nonempty written reasoning. Verify the audit log contains each appeal, its
+reasoning, and the `under_review` status. Repeat with new submissions across
+three trials. The appeal entry must use the submission's `content_id`; the
+original decision remains in the append-only log.
 
+**Why I chose this target:** Writers need a reliable way to challenge
+incorrect decisions. A valid appeal should never disappear or leave the
+submission's status unchanged.
 
----
+## 5. Invalid-input handling — 100% of six cases
 
-## 2.
+**Target:** All six predefined invalid requests must receive an appropriate
+HTTP 4xx response and must not create a valid decision record, in every one of
+three trials.
 
-<!-- Your criterion. -->
+**How I will test it:** Test these six requests: missing `text`, empty `text`,
+whitespace-only `text`, non-string `text`, missing `creator_id`, and `text`
+exceeding 5,000 characters (5,001 or more). Check the HTTP response and audit
+log for each case. A rejection entry may be logged, but no valid decision
+record may be created.
 
+**Why I chose this target:** A public-facing service must reject invalid input
+consistently without crashing or creating unreliable audit decisions.
 
+## Unit 8 evaluation note
 
-**Why this target:**
-
-
-
----
-
-## 3.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-## 4.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-## 5.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-<!-- ─────────────────────────────────────────────────────────────────────────
-     UNIT 8 — read this before you change anything above.
-
-     If a criterion turns out to be BROKEN rather than merely unmet, you can
-     revise it, and that earns credit. But never delete or edit the original
-     line. Add the revision underneath, like this:
-
-         ## 2. Uncertain cases land in the unsure band
-
-         The system handles uncertain cases well.
-
-         **Why this target:** ...
-
-         > **Revised in unit 8:** Text I judged borderline scores between
-         > 0.4 and 0.6 in at least 4 of 5 cases.
-         >
-         > **Why revised:** "well" gave me nothing to check. I couldn't
-         > reach a verdict from it at all.
-
-     That's a revision because the criterion couldn't be MEASURED.
-
-     Lowering a target because you missed it is not a revision, and it costs
-     you the point:
-
-         ✗ "At most 1 of 10 of my own pieces flagged as AI" → "at most 3
-            of 10", because 1 of 10 turned out to be hard.
-
-     A number you missed stays where it is, gets diagnosed, and gets a fix
-     attempted. That's where the points are.
-     ───────────────────────────────────────────────────────────────────────── -->
+Keep these targets unchanged during evaluation. Report misses against the
+selected targets rather than lowering them. Revise a criterion only if it
+proves unmeasurable, and preserve the original wording when documenting any
+revision.
