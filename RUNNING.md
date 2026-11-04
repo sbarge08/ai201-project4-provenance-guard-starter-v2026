@@ -159,14 +159,12 @@ the current formulas, thresholds, and limitations.
 
 ---
 
-## Turning on rate limiting (unit 8)
+## Rate limiting (unit 8)
 
-Three steps:
-
-1. In `config.py`, set `RATE_LIMITING_ENABLED = True` — or run with
-   `AI201_RATE_LIMITS=1`.
-2. Choose your numbers there.
-3. In `app.py`, uncomment the `@limiter.limit(...)` line above `submit`.
+Rate limiting is enabled by default for `POST /submit`. The existing
+Flask-Limiter decorator allows 10 submissions per minute and 200 per day.
+Requests are counted by `creator_id`; a missing or invalid ID falls back to
+the caller's remote address. Set `AI201_RATE_LIMITS=0` to disable it locally.
 
 Then push past your limit and watch for `429`:
 
@@ -175,19 +173,19 @@ python run_attacks.py --flood 15
 ```
 
 That sends 15 submissions from one `creator_id` and prints the run of status
-codes — `200 200 200 ... 429 429` — which is exactly what your README's **Rate
-Limiting** section asks you to paste. It also writes `results/flood_<date>.md`.
+codes. It also writes `results/flood_<date>.md`; the `429` rejections appear
+in `GET /log` with their reason and HTTP status.
 
 The attack set can't do this for you. Every attack row submits under its own
 `creator_id`, so a full attack run looks like forty-odd different callers and
 never trips a limit however long it is.
 
-No `429` at all? Either your limit is above 15 a minute, or rate limiting is
-still off. `GET /health` reports which.
+`GET /health` reports whether rate limiting is enabled.
 
-Rejections are logged for you. **An attack that shows up only as an absence is
-one you'll never find** — a thousand requests that got a `429` and left no
-trace look exactly like a quiet afternoon.
+The limits use in-memory storage, so a restart resets counters and separate
+service processes do not share them. They also do not authenticate `creator_id`:
+a caller can rotate IDs to get fresh buckets. This is a local abuse brake, not
+a production security boundary.
 
 ---
 

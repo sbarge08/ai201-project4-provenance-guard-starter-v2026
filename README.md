@@ -291,24 +291,49 @@ resulting changes and test outputs while building the service.
 
 ## Rate Limiting
 
-**My limits:** ___ per minute, ___ per day
+**My limits:** 10 submissions per minute and 200 per day, per caller key.
 
-**Why those numbers and not others:**
-<!-- Think about two people: a real writer submitting their own work a few
-     times an hour, and a script sending a thousand variations to map your
-     thresholds. Your numbers have to be liveable for the first and hostile to
-     the second. -->
+**Why those numbers:** A normal writer should be able to submit a few revisions
+without hitting the limit, while 10 requests in a minute makes a rapid
+same-identity sweep of score variations harder. The 200-per-day cap also slows
+sustained repeated submissions under one identity.
 
-**What a caller counts as:** <!-- per address, or per creator_id? They fail
-differently — one script can look like a thousand callers, and one household
-can look like one. -->
+**What counts as a caller:** Flask-Limiter keys requests by `creator_id`; a
+missing or invalid ID falls back to the caller's remote address. This is
+convenient for the local exercise, but it does not authenticate that ID.
+Someone can rotate or invent creator IDs to get fresh buckets, while people
+sharing an ID or a fallback IP share a bucket. The in-memory counter resets
+when the service restarts and is not shared across multiple service processes.
+These limits slow repeated requests from the same key; they do not prevent
+distributed requests, identity rotation, or other denial-of-service traffic,
+and are not a production security boundary.
 
-**The run of status codes when I pushed past it:**
+**Actual status codes from `python run_attacks.py --flood 15`:**
 
-<!-- python run_attacks.py --flood 15 -->
+The 15 requests returned 10 successful responses followed by five rate-limit
+rejections. The generated run is preserved in
+[`results/flood_2026-11-04_1837.md`](results/flood_2026-11-04_1837.md).
 
 ```
+200 200 200 200 200 200 200 200 200 200 429 429 429 429 429
+```
 
+The five rejected requests were recorded by `audit.log_rejection` and are
+visible through `GET /log`. Each entry records the caller key, rejection
+reason, route, HTTP status, applicable limit, and timestamp; invalid
+submissions are also audited without storing their raw writing. For example:
+
+```json
+{
+  "creator_id": "flood_tester",
+  "event": "rejected",
+  "http_status": 429,
+  "limit": "10 per 1 minute",
+  "reason": "rate_limited",
+  "route": "/submit",
+  "status": "rejected",
+  "timestamp": "2026-11-04T18:37:29-05:00"
+}
 ```
 
 ---

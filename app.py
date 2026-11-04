@@ -38,15 +38,8 @@ app = Flask(__name__)
 
 
 # ── Rate limiting — UNIT 8 ────────────────────────────────────────────────────
-# Off until you turn it on. In unit 8, Milestone 1:
-#
-#   1. Set RATE_LIMITING_ENABLED = True in config.py (or AI201_RATE_LIMITS=1)
-#   2. Choose your numbers there
-#   3. Uncomment the @limiter.limit(...) line on /submit below
-#
-# The order doesn't matter. While limiting is off, that decorator is a no-op
-# that quietly does nothing, so uncommenting it early costs you nothing — but
-# it also means no 429 until you've done step 1.
+# Enabled by default in config.py. Setting AI201_RATE_LIMITS=0 keeps the
+# decorator available as a no-op for local troubleshooting.
 #
 # The storage backend is preconfigured, which stops Flask-Limiter printing a
 # warning on every start. In-memory is right for one laptop and wrong for
@@ -87,7 +80,9 @@ if config.RATE_LIMITING_ENABLED:
         if not isinstance(payload, dict):
             return get_remote_address()
         creator = payload.get("creator_id")
-        return creator if isinstance(creator, str) and creator.strip() else get_remote_address()
+        if isinstance(creator, str) and creator.strip():
+            return creator.strip()
+        return get_remote_address()
 
     limiter = Limiter(
         key_func=rate_limit_key,
@@ -103,13 +98,12 @@ if config.RATE_LIMITING_ENABLED:
 
         ⚠️ An attack that shows up only as an absence is one you'll never find.
         """
-        payload = request.get_json(silent=True)
-        if not isinstance(payload, dict):
-            payload = {}
         audit.log_rejection(
-            creator_id=payload.get("creator_id", "unknown"),
+            creator_id=rate_limit_key(),
             reason="rate_limited",
             limit=str(exc.description),
+            route="/submit",
+            http_status=429,
         )
         return jsonify({
             "error": "rate_limited",
@@ -151,21 +145,29 @@ def health():
     })
 
 
-def _log_submission_rejection(creator_id: str, content_id: str, reason: str) -> None:
+def _log_submission_rejection(
+    creator_id: str,
+    reason: str,
+    http_status: int,
+    content_id: str | None = None,
+) -> None:
+    entry_details = {"route": "/submit", "http_status": http_status}
+    if content_id is not None:
+        entry_details["content_id"] = content_id
     try:
         audit.log_rejection(
             creator_id=creator_id,
             reason=reason,
-            content_id=content_id,
+            **entry_details,
         )
     except OSError:
-        app.logger.exception("Could not log rejected content_id=%s", content_id)
+        app.logger.exception("Could not log rejected submission content_id=%s", content_id)
 
 
 # ── Submission route ─────────────────────────────────────────────────────────
 
 @app.post("/submit")
-# @limiter.limit(f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day")
+@limiter.limit(f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day")
 def submit():
     """
     Validate a submission, calculate both signals, combine, and record scores.
@@ -177,6 +179,11 @@ def submit():
     """
     payload = request.get_json(silent=True)
     if not isinstance(payload, dict):
+        _log_submission_rejection(
+            request.remote_addr or "unknown",
+            "invalid_json_object",
+            400,
+        )
         return jsonify({
             "error": "invalid_request",
             "message": "Request body must be a JSON object.",
@@ -185,16 +192,28 @@ def submit():
     text = payload.get("text")
     creator_id = payload.get("creator_id")
     if not isinstance(text, str) or not text.strip():
+        rejection_creator = (
+            creator_id
+            if isinstance(creator_id, str) and creator_id.strip()
+            else request.remote_addr or "unknown"
+        )
+        _log_submission_rejection(rejection_creator, "invalid_text", 400)
         return jsonify({
             "error": "invalid_request",
             "message": "'text' must be a non-empty string.",
         }), 400
     if not isinstance(creator_id, str) or not creator_id.strip():
+        _log_submission_rejection(
+            request.remote_addr or "unknown",
+            "invalid_creator_id",
+            400,
+        )
         return jsonify({
             "error": "invalid_request",
             "message": "'creator_id' must be a non-empty string.",
         }), 400
     if len(text) > 5000:
+        _log_submission_rejection(creator_id, "text_too_long", 413)
         return jsonify({
             "error": "text_too_long",
             "message": "'text' must not exceed 5000 characters.",
@@ -205,7 +224,7 @@ def submit():
     try:
         model_score = detector.model_signal(text)
     except ValueError as exc:
-        _log_submission_rejection(creator_id, content_id, "unscorable_text")
+        _log_submission_rejection(creator_id, "unscorable_text", 422, content_id)
         return jsonify({
             "error": "unscorable_text",
             "message": str(exc),
@@ -213,7 +232,7 @@ def submit():
         }), 422
     except detector.DetectorUnavailable:
         app.logger.exception("Detector unavailable for content_id=%s", content_id)
-        _log_submission_rejection(creator_id, content_id, "detector_unavailable")
+        _log_submission_rejection(creator_id, "detector_unavailable", 503, content_id)
         return jsonify({
             "error": "detector_unavailable",
             "message": "The text could not be scored because a signal is unavailable.",
@@ -221,7 +240,7 @@ def submit():
         }), 503
     except Exception:
         app.logger.exception("Detector failed for content_id=%s", content_id)
-        _log_submission_rejection(creator_id, content_id, "detector_error")
+        _log_submission_rejection(creator_id, "detector_error", 503, content_id)
         return jsonify({
             "error": "detector_error",
             "message": "The detector could not score this submission.",
@@ -233,7 +252,7 @@ def submit():
         combined_score = scoring.combine_signals(model_score, style_score)
     except Exception:
         app.logger.exception("Signal processing failed for content_id=%s", content_id)
-        _log_submission_rejection(creator_id, content_id, "signal_error")
+        _log_submission_rejection(creator_id, "signal_error", 503, content_id)
         return jsonify({
             "error": "signal_error",
             "message": "The submission could not be scored.",
@@ -245,7 +264,7 @@ def submit():
         confidence = scoring.classification_confidence(combined_score, guess)
     except ValueError:
         app.logger.exception("Could not label content_id=%s", content_id)
-        _log_submission_rejection(creator_id, content_id, "labeling_error")
+        _log_submission_rejection(creator_id, "labeling_error", 503, content_id)
         return jsonify({
             "error": "labeling_error",
             "message": "The submission could not be assigned a label.",
