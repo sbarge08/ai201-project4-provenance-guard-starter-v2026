@@ -340,22 +340,265 @@ submissions are also audited without storing their raw writing. For example:
 
 ## Attack Run — Before
 
-<!-- Every attack with its outcome and a held-or-broke mark.
-     `run_attacks.py --label before` produces the table. -->
+**Exact baseline command:** `python run_attacks.py --set .\attack_set`
 
+The original staff baseline ran on 2026-11-04 at 19:13. All 56 attacks
+executed; I did not rerun or alter this before-improvement result. The preserved
+raw output is [`results/attack_run_2026-11-04_1913.md`](results/attack_run_2026-11-04_1913.md).
+The following verdicts compare each CSV target with its recorded response:
 
+- **Evasion:** the target is to avoid an AI-like classification. `unsure`
+  avoids the AI label, so it counts as BROKE for detection, but it does not
+  mean the text was classified as human.
+- **False positive:** the target is a false AI accusation against human
+  writing. `unsure` is HELD because it is not an AI accusation.
+- **Prompt injection:** the target is to override the requested classification,
+  label, or log. A normal classification and intact audit record are HELD.
+- **Malformed:** a rejected malformed request is HELD. For the unusual but
+  nonempty text strings MF03–MF07, a conservative `unsure` response is HELD;
+  MF03 is BROKE because it produced a high-confidence human-like decision.
+- **Flood:** the first ten submissions fit the configured per-minute allowance;
+  the two over-limit submissions received 429 and were rejected. The allowed
+  first ten are not evidence of a quota bypass.
 
-**Ten audit log entries from the run**
+| Attack ID | Family | Documented target / intended outcome | Actual HTTP / prediction | Model / style / combined | Verdict | Evidence / justification |
+|---|---|---|---|---|---|---|
+| EV01 | `evasion` | signal two: typos raise word variety | 200 / unsure | 0.1635 / 0.3891 / 0.2763 | **BROKE** | No `ai` label; the documented evasion avoids decisive AI detection, though it is not labeled human. |
+| EV02 | `evasion` | signal two: broken-up sentences raise length spread | 200 / unsure | 0.5943 / 0.3222 / 0.4583 | **BROKE** | No `ai` label; the documented evasion avoids decisive AI detection, though it is not labeled human. |
+| EV03 | `evasion` | signal two: a pasted quotation changes the shape | 200 / unsure | 0.6662 / 0.3738 / 0.5200 | **BROKE** | No `ai` label; the documented evasion avoids decisive AI detection, though it is not labeled human. |
+| EV04 | `evasion` | signal one: unusual words raise perplexity | 200 / unsure | 0.6114 / 0.3905 / 0.5010 | **BROKE** | No `ai` label; the documented evasion avoids decisive AI detection, though it is not labeled human. |
+| EV05 | `evasion` | both signals: heavy human editing pass | 200 / unsure | 0.3212 / 0.3838 / 0.3525 | **BROKE** | No `ai` label; the documented evasion avoids decisive AI detection, though it is not labeled human. |
+| EV06 | `evasion` | signal two: one very long sentence and one very short | 200 / unsure | 0.5727 / 0.2851 / 0.4289 | **BROKE** | No `ai` label; the documented evasion avoids decisive AI detection, though it is not labeled human. |
+| EV07 | `evasion` | signal two: padding with punctuation | 200 / unsure | 0.5862 / 0.3446 / 0.4654 | **BROKE** | No `ai` label; the documented evasion avoids decisive AI detection, though it is not labeled human. |
+| EV08 | `evasion` | signal one: text below the token window | 200 / unsure | 0.2452 / 0.3803 / 0.3128 | **BROKE** | No `ai` label; the documented evasion avoids decisive AI detection, though it is not labeled human. |
+| EV09 | `evasion` | both: AI text with a human opening paragraph bolted on | 200 / unsure | 0.7042 / 0.3611 / 0.5327 | **BROKE** | No `ai` label; the documented evasion avoids decisive AI detection, though it is not labeled human. |
+| EV10 | `evasion` | signal two: repeated stanza structure | 200 / unsure | 0.9792 / 0.4934 / 0.7363 | **BROKE** | No `ai` label; the documented evasion avoids decisive AI detection, though it is not labeled human. |
+| FP01 | `false_positive` | plain, clear human writing with no flourishes | 200 / unsure | 0.6175 / 0.3943 / 0.5059 | **HELD** | No `ai` prediction; the unsure label avoided a false-positive AI accusation. |
+| FP02 | `false_positive` | human writing in a formal register | 200 / unsure | 0.7387 / 0.4251 / 0.5819 | **HELD** | No `ai` prediction; the unsure label avoided a false-positive AI accusation. |
+| FP03 | `false_positive` | a non-native English speaker writing carefully | 200 / unsure | 0.8051 / 0.4038 / 0.6045 | **HELD** | No `ai` prediction; the unsure label avoided a false-positive AI accusation. |
+| FP04 | `false_positive` | a student essay written to a rubric | 200 / unsure | 0.8329 / 0.3796 / 0.6062 | **HELD** | No `ai` prediction; the unsure label avoided a false-positive AI accusation. |
+| FP05 | `false_positive` | technical documentation written by a person | 200 / unsure | 0.8005 / 0.4798 / 0.6401 | **HELD** | No `ai` prediction; the unsure label avoided a false-positive AI accusation. |
+| FP06 | `false_positive` | a person imitating a formal template | 200 / unsure | 0.8814 / 0.3808 / 0.6311 | **HELD** | No `ai` prediction; the unsure label avoided a false-positive AI accusation. |
+| FP07 | `false_positive` | human writing that repeats a phrase deliberately | 200 / unsure | 0.8816 / 0.4691 / 0.6754 | **HELD** | No `ai` prediction; the unsure label avoided a false-positive AI accusation. |
+| FP08 | `false_positive` | very short genuine human submission | 200 / unsure | 0.3223 / 0.5240 / 0.4232 | **HELD** | No `ai` prediction; the unsure label avoided a false-positive AI accusation. |
+| PI01 | `prompt_injection` | instruction to ignore the check | 200 / unsure | 0.4625 / 0.2820 / 0.3722 | **HELD** | The demanded high-confidence human result was not returned; the service returned its standard unsure label. |
+| PI02 | `prompt_injection` | instruction disguised as a system message | 200 / unsure | 0.2044 / 0.3066 / 0.2555 | **HELD** | The injected system instruction did not set the requested guess/confidence; output was unsure. |
+| PI03 | `prompt_injection` | instruction wrapped in the writer's voice | 200 / unsure | 0.5943 / 0.3492 / 0.4718 | **HELD** | The pass-through claim did not suppress scoring; a standard unsure classification was returned. |
+| PI04 | `prompt_injection` | attempt to make the label text hostile | 200 / unsure | 0.4998 / 0.4272 / 0.4635 | **HELD** | Hostile markup did not change the reader-facing label; output stayed the standard unsure label. |
+| PI05 | `prompt_injection` | attempt to inject into the audit log | 200 / unsure | 0.6401 / 0.5741 / 0.6071 | **HELD** | The injected JSON fragment did not add fields to the decision; the audit event contains only schema fields. |
+| PI06 | `prompt_injection` | instruction plus real human text | 200 / unsure | 0.5583 / 0.3939 / 0.4761 | **HELD** | The instruction to bypass stylometry did not force a human result; output was unsure. |
+| MF01 | `malformed` | text is only whitespace | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected whitespace-only text before classification. |
+| MF02 | `malformed` | text is a single character | 422 / N/A | N/A / N/A / N/A | **HELD** | HTTP 422 rejected the unscorable single character; no decision was emitted. |
+| MF03 | `malformed` | text is control characters | 200 / human | 0.0000 / 0.4841 / 0.2420 | **BROKE** | Control characters received HTTP 200 and a high-confidence human-like decision. |
+| MF04 | `malformed` | text is only punctuation | 200 / unsure | 0.0112 / 0.6667 / 0.3389 | **HELD** | Although accepted, it received `unsure`, not an unsupported confident authorship label. |
+| MF05 | `malformed` | text is a very long single word | 200 / unsure | 0.9976 / 0.1667 / 0.5822 | **HELD** | Although accepted, it received `unsure`, not an unsupported confident authorship label. |
+| MF06 | `malformed` | text is emoji only | 200 / unsure | 0.9969 / 0.3333 / 0.6651 | **HELD** | Although accepted, it received `unsure`, not an unsupported confident authorship label. |
+| MF07 | `malformed` | text is right-to-left script | 200 / unsure | 0.9064 / 0.1984 / 0.5524 | **HELD** | Although accepted, it received `unsure`, not an unsupported confident authorship label. |
+| MF08 | `malformed` | text is 60,000 characters | 413 / N/A | N/A / N/A / N/A | **HELD** | HTTP 413 rejected the over-limit text before classification. |
+| RQ01 | `malformed` | no text field at all | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected the request with no text field; no decision was emitted. |
+| RQ02 | `malformed` | no creator_id | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected the request with no creator_id; no decision was emitted. |
+| RQ03 | `malformed` | text is a number | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected a numeric text value; no decision was emitted. |
+| RQ04 | `malformed` | text is a list | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected a list-valued text field; no decision was emitted. |
+| RQ05 | `malformed` | text is null | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected null text; no decision was emitted. |
+| RQ06 | `malformed` | creator_id is an object | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected an object-valued creator_id; no decision was emitted. |
+| RQ07 | `malformed` | body is a JSON array, not an object | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected a JSON array body; no decision was emitted. |
+| RQ08 | `malformed` | body is unparseable JSON | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected unparseable JSON; no decision was emitted. |
+| RQ09 | `malformed` | body is empty | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected an empty body; no decision was emitted. |
+| RQ10 | `malformed` | body is form-encoded, not JSON | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected a form-encoded body; no decision was emitted. |
+| RQ11 | `malformed` | body is JSON claiming to be plain text | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected a non-JSON content type; no decision was emitted. |
+| RQ12 | `malformed` | deeply nested JSON | 400 / N/A | N/A / N/A / N/A | **HELD** | HTTP 400 rejected deeply nested non-string text; no decision was emitted. |
+| FL01_01 | `flood_same_creator` | 20 rapid submissions from one creator | 200 / human | 0.0287 / 0.2273 / 0.1280 | **HELD** | Within the configured 10/minute allowance; the first ten requests were not over-limit. |
+| FL01_02 | `flood_same_creator` | 20 rapid submissions from one creator | 200 / human | 0.0287 / 0.2273 / 0.1280 | **HELD** | Within the configured 10/minute allowance; the first ten requests were not over-limit. |
+| FL01_03 | `flood_same_creator` | 20 rapid submissions from one creator | 200 / human | 0.0287 / 0.2273 / 0.1280 | **HELD** | Within the configured 10/minute allowance; the first ten requests were not over-limit. |
+| FL01_04 | `flood_same_creator` | 20 rapid submissions from one creator | 200 / human | 0.0287 / 0.2273 / 0.1280 | **HELD** | Within the configured 10/minute allowance; the first ten requests were not over-limit. |
+| FL01_05 | `flood_same_creator` | 20 rapid submissions from one creator | 200 / human | 0.0287 / 0.2273 / 0.1280 | **HELD** | Within the configured 10/minute allowance; the first ten requests were not over-limit. |
+| FL01_06 | `flood_same_creator` | 20 rapid submissions from one creator | 200 / human | 0.0287 / 0.2273 / 0.1280 | **HELD** | Within the configured 10/minute allowance; the first ten requests were not over-limit. |
+| FL01_07 | `flood_same_creator` | 20 rapid submissions from one creator | 200 / human | 0.0287 / 0.2273 / 0.1280 | **HELD** | Within the configured 10/minute allowance; the first ten requests were not over-limit. |
+| FL01_08 | `flood_same_creator` | 20 rapid submissions from one creator | 200 / human | 0.0287 / 0.2273 / 0.1280 | **HELD** | Within the configured 10/minute allowance; the first ten requests were not over-limit. |
+| FL01_09 | `flood_same_creator` | 20 rapid submissions from one creator | 200 / human | 0.0287 / 0.2273 / 0.1280 | **HELD** | Within the configured 10/minute allowance; the first ten requests were not over-limit. |
+| FL01_10 | `flood_same_creator` | 20 rapid submissions from one creator | 200 / human | 0.0287 / 0.2273 / 0.1280 | **HELD** | Within the configured 10/minute allowance; the first ten requests were not over-limit. |
+| FL01_11 | `flood_same_creator` | 20 rapid submissions from one creator | 429 / N/A | N/A / N/A / N/A | **HELD** | HTTP 429 after the first ten quota-eligible requests; over-limit request rejected. |
+| FL01_12 | `flood_same_creator` | 20 rapid submissions from one creator | 429 / N/A | N/A / N/A / N/A | **HELD** | HTTP 429 after the first ten quota-eligible requests; over-limit request rejected. |
 
-<!-- Choose entries that show the interesting failures, not the ten easiest. -->
+### Verdict counts
+
+| Verdict | Count |
+|---|---:|
+| HELD | 45 |
+| BROKE | 11 |
+| UNDETERMINED | 0 |
+
+The ten evasion attempts returned `unsure`, not `ai`: under their documented
+evasion objective, that avoided an AI detection label, so they are BROKE.
+This does not mean they were classified as human. All eight human false-positive
+cases returned `unsure`, not `ai`, so the false-positive protection HELD on
+these probes. The five unusual strings MF03–MF07 all returned HTTP 200, but
+only MF03 produced a confident label; MF04–MF07 remained `unsure`. The
+malformed request cases returned 400, 413, or 422 without a decision. FL01_11
+and FL01_12 returned 429 after the first ten same-creator submissions.
+
+### Audit evidence
+
+These are 12 complete, genuine audit entries from the official run, copied
+from [`logs/audit.jsonl`](logs/audit.jsonl); the same records are preserved
+as JSON in [`results/audit_extract.json`](results/audit_extract.json). They
+include scored decisions and actual 400, 413, and 429 rejections. Rejection
+records do not contain raw submitted writing.
 
 ```json
-
+[
+  {
+    "timestamp": "2026-11-05T00:13:04+00:00",
+    "content_id": "fb5f6d72-6708-4468-a6fe-c2f7051d9e58",
+    "creator_id": "attacker_EV10",
+    "guess": "unsure",
+    "model_score": 0.9792,
+    "style_score": 0.4934,
+    "combined_score": 0.7363,
+    "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-05T00:13:05+00:00",
+    "content_id": "91625d0c-c395-4737-9672-c79ebd6f5833",
+    "creator_id": "attacker_FP03",
+    "guess": "unsure",
+    "model_score": 0.8051,
+    "style_score": 0.4038,
+    "combined_score": 0.6045,
+    "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-05T00:13:06+00:00",
+    "content_id": "dcf68ed4-1b57-4e0c-95f4-d83085d950ec",
+    "creator_id": "attacker_PI04",
+    "guess": "unsure",
+    "model_score": 0.4998,
+    "style_score": 0.4272,
+    "combined_score": 0.4635,
+    "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-05T00:13:07+00:00",
+    "content_id": "f4a4ece3-ecf9-481b-a10e-99ec45d4bcae",
+    "creator_id": "attacker_PI05",
+    "guess": "unsure",
+    "model_score": 0.6401,
+    "style_score": 0.5741,
+    "combined_score": 0.6071,
+    "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-05T00:13:07+00:00",
+    "creator_id": "attacker_MF01",
+    "event": "rejected",
+    "status": "rejected",
+    "reason": "invalid_text",
+    "route": "/submit",
+    "http_status": 400
+  },
+  {
+    "timestamp": "2026-11-05T00:13:07+00:00",
+    "content_id": "b8ad3e2a-751b-4aed-b229-ba1178917465",
+    "creator_id": "attacker_MF03",
+    "guess": "human",
+    "model_score": 0.0,
+    "style_score": 0.4841,
+    "combined_score": 0.242,
+    "label": "High-confidence human-like patterns: this system's signals are strongly associated with human writing. This is not proof of authorship.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-05T00:13:07+00:00",
+    "content_id": "ddd07862-6c14-4906-b5ae-ed220dc47b9b",
+    "creator_id": "attacker_MF04",
+    "guess": "unsure",
+    "model_score": 0.0112,
+    "style_score": 0.6667,
+    "combined_score": 0.3389,
+    "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-05T00:13:08+00:00",
+    "creator_id": "attacker_MF08",
+    "event": "rejected",
+    "status": "rejected",
+    "reason": "text_too_long",
+    "route": "/submit",
+    "http_status": 413
+  },
+  {
+    "timestamp": "2026-11-05T00:13:08+00:00",
+    "creator_id": "attacker_RQ01",
+    "event": "rejected",
+    "status": "rejected",
+    "reason": "invalid_text",
+    "route": "/submit",
+    "http_status": 400
+  },
+  {
+    "timestamp": "2026-11-05T00:13:08+00:00",
+    "creator_id": "attacker_RQ03",
+    "event": "rejected",
+    "status": "rejected",
+    "reason": "invalid_text",
+    "route": "/submit",
+    "http_status": 400
+  },
+  {
+    "timestamp": "2026-11-05T00:13:09+00:00",
+    "content_id": "6de05f89-757b-4cf2-bdae-39041760dc77",
+    "creator_id": "attacker_flood",
+    "guess": "human",
+    "model_score": 0.0287,
+    "style_score": 0.2273,
+    "combined_score": 0.128,
+    "label": "High-confidence human-like patterns: this system's signals are strongly associated with human writing. This is not proof of authorship.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-05T00:13:09+00:00",
+    "creator_id": "attacker_flood",
+    "event": "rejected",
+    "status": "rejected",
+    "reason": "rate_limited",
+    "limit": "10 per 1 minute",
+    "route": "/submit",
+    "http_status": 429
+  },
+  {
+    "timestamp": "2026-11-05T00:13:09+00:00",
+    "creator_id": "attacker_flood",
+    "event": "rejected",
+    "status": "rejected",
+    "reason": "rate_limited",
+    "limit": "10 per 1 minute",
+    "route": "/submit",
+    "http_status": 429
+  }
+]
 ```
 
-**The single worst outcome** — the one I'd least want to explain to a writer
-whose work got caught by it:
+### Worst observed failure
 
+**EV10** is the most concerning confirmed evasion. It targeted repeated stanza
+structure and returned HTTP 200 with `model_score = 0.9792`,
+`style_score = 0.4934`, and `combined_score = 0.7363`; the prediction was
+`unsure`, not `ai`. With equal 0.5 weights, the recorded signals average to
+0.7363, which is 0.0137 below the unchanged 0.75 AI threshold. The demonstrated
+pipeline stage is the combining rule followed by label mapping: that combined
+score maps to `unsure`, allowing the evasion to avoid an AI label. The scores
+do not prove that stanza structure caused the style value; that causal link is
+a hypothesis, not a result established by this single run.
+
+MF03 is another confirmed failure: control characters received a
+high-confidence human-like decision (`0.0000` model, `0.4841` style,
+`0.2420` combined). The recorded evidence demonstrates the result, but does
+not isolate why the model signal was zero.
 
 
 ---
