@@ -775,21 +775,123 @@ establish the criterion's individual verified-authorship requirement; its
 observed numeric gap also fell short of 0.20. Criteria 3–5 met their targets
 in all three previously recorded trials.
 
-<!-- For each miss AND each broken attack: the stage and the mechanism.
+---
 
-     Your service has five stages: the route, signal one, signal two, the
-     combining rule, and the label mapping.
+## Milestone 4 — Verdicts and Failure Diagnosis
 
-     Not a diagnosis:  "The evasion attacks got through."
-     A diagnosis:      "Four evasion inputs got through. All four had typos
-                        added to AI-generated text. My second signal measures
-                        word variety, and typos raise word variety — so it read
-                        them as more human. My combining rule weights that
-                        signal at 0.6, so it dragged the whole score down."
+This section interprets the preserved Milestone 3 outputs and the original
+56-attack baseline. It makes no claim that a missing or dataset-labeled sample
+is verified authorship. The original targets are quoted from
+[criteria.md](criteria.md); the records are
+[run_2026-11-04_193334_before.json](results/run_2026-11-04_193334_before.json),
+[run_2026-11-04_194923_hc3.json](results/run_2026-11-04_194923_hc3.json), and
+[attack_run_2026-11-04_1913.md](results/attack_run_2026-11-04_1913.md).
 
-     Look for a pattern. Five failures on one signal is one problem, not five. -->
+### Verdicts against the five original criteria
 
+| Criterion | Exact original target | Trial 1 | Trial 2 | Trial 3 | Verdict and evidence |
+|---|---|---|---|---|---|
+| 1. False-positive rate | “Of 20 verified human-written texts, at most one may receive the high-confidence AI label in each of three trials.” | NOT EVALUATED | NOT EVALUATED | NOT EVALUATED | **NOT EVALUATED.** Both runs record that 20 verified human samples are unavailable. HC3 human-labeled answers do not establish individually verified human authorship, and no false-positive rate for the required group was measured. |
+| 2. Score separation | “The average combined AI-likeness score for 20 known AI-generated texts must exceed the average for 20 verified human-written texts by at least 0.20 in each of three trials.” | NOT EVALUATED; HC3 diagnostic gap 0.121915 | NOT EVALUATED; HC3 diagnostic gap 0.121915 | NOT EVALUATED; HC3 diagnostic gap 0.121915 | **NOT EVALUATED.** The HC3 diagnostic used 20 ChatGPT-labeled and 20 dataset-labeled human answers, not the criterion's verified-human set. Its measured means were AI 0.701915 and human-labeled 0.580000; the difference 0.121915 numerically falls short of 0.20 in each trial, but is not a valid measurement of the original criterion. |
+| 3. Label coverage | “All three labels (`ai`, `human`, `unsure`) must be reachable, and every combined score from 0 through 1 must map to exactly one label.” | MET — all three labels, partition verified, 9 boundary cases | MET — same | MET — same | **MET.** The stored result marks `all_labels_reached`, `partition_verified`, and `metric_met` true in all three trials. Exact thresholds and immediately adjacent floating-point values were included. |
+| 4. Appeal reliability | “All 10 valid appeals in each of three trials must be recorded and move their corresponding submission to `under_review`.” | MET — 10/10, 0 rate-limited | MET — 10/10, 0 rate-limited | MET — 10/10, 0 rate-limited | **MET.** All three stored trial summaries record 10 successful appeals of 10 expected and no rate limiting. |
+| 5. Invalid-input handling | “All six predefined invalid requests must receive an appropriate HTTP 4xx response and must not create a valid decision record, in every one of three trials.” | MET — 6/6, 0 rate-limited | MET — 6/6, 0 rate-limited | MET — 6/6, 0 rate-limited | **MET.** All three summaries record six rejected cases of six expected and no rate limiting. The runner also checked that no valid decision was logged for those requests. |
 
+The evaluator result sets preserve the evidence for these verdicts. The
+`before` run contains the three Criterion 3–5 trials and marks Criteria 1–2
+NOT EVALUATED for missing data. The separate `hc3` run records the three
+HC3-only Criterion 2 diagnostic measurements, while retaining NOT EVALUATED
+as the acceptance verdict for Criteria 1–2. No missing result is treated as
+a pass or a measured failure.
+
+### Diagnosis of all 11 BROKE attacks
+
+The baseline contains ten evasion failures and one malformed-input failure.
+The “actual result” values below are the recorded HTTP response and scores;
+the targets are the attack CSV's documented objectives. For accepted
+submissions, `unsure` means no decisive AI label was produced, not that the
+text was judged human. In every evasion row the demonstrated common path is
+that the returned combined score was below the configured 0.75 AI threshold
+and `scoring.score_to_label` consequently returned `unsure`. The baseline
+records signal outputs, but not raw perplexity or the three separate
+stylometry feature values. An attack's intended manipulation is not, by
+itself, proof that it caused a particular signal value.
+
+| Attack | Objective in attack set | Actual status, scores, returned label | Pipeline stage and evidence-based mechanism | Remaining uncertainty |
+|---|---|---|---|---|
+| EV01 | Typos raise word variety (stylometry) | HTTP 200; model 0.1635, style 0.3891, combined 0.2763; `unsure` | **Stylometry signal → combination → label mapping.** The measured combined score is below 0.75, so the label mapper returns `unsure`. The measured model score is also low; equal weighting yields 0.2763. | No clean paired input or logged type-token ratio isolates the effect of the typos. |
+| EV02 | Broken-up sentences raise sentence-length variation (stylometry) | HTTP 200; model 0.5943, style 0.3222, combined 0.4583; `unsure` | **Stylometry signal → combination → label mapping.** The measured style score is 0.3222 and the mean of the two signals is 0.4583, below the AI threshold. | Sentence-length component values and an unmodified comparison are absent, so the causal effect of the added short sentences is not measured. |
+| EV03 | A pasted quotation changes the text shape (stylometry) | HTTP 200; model 0.6662, style 0.3738, combined 0.5200; `unsure` | **Stylometry signal → combination → label mapping.** Despite the quoted passage, recorded style and combined scores leave the result in the unsure interval. | The baseline has no pre-quotation control or per-feature style breakdown; the quotation's isolated effect is unknown. |
+| EV04 | Unusual words raise GPT-2 perplexity (model signal) | HTTP 200; model 0.6114, style 0.3905, combined 0.5010; `unsure` | **GPT-2 signal → combination → label mapping.** The model signal recorded for this input is 0.6114, not enough to place the combined score at 0.75; the style score brings the equal-weight result to 0.5010. | Perplexity itself is not recorded, and there is no ordinary-word control. The record cannot show whether the unusual words increased perplexity relative to a baseline. |
+| EV05 | Heavy human editing changes both signals | HTTP 200; model 0.3212, style 0.3838, combined 0.3525; `unsure` | **Both signal stages → combination → label mapping.** Both recorded inputs to the equal-weight mean are below 0.5, resulting in a combined score well below the AI threshold. | There is no unedited counterpart or provenance experiment proving the passage was generated then edited; only the attack's stated objective and returned measurements are available. |
+| EV06 | One very long sentence and one very short sentence change sentence-length variation | HTTP 200; model 0.5727, style 0.2851, combined 0.4289; `unsure` | **Stylometry signal → combination → label mapping.** The style score is 0.2851 and the combined result remains below 0.75. | The component sentence lengths were not separately logged, and no paired control establishes how much this structure changed the style score. |
+| EV07 | Punctuation padding changes punctuation density (stylometry) | HTTP 200; model 0.5862, style 0.3446, combined 0.4654; `unsure` | **Stylometry signal → combination → label mapping.** The punctuation-padded input still received a 0.3446 style score; averaging it with 0.5862 gives 0.4654, not an AI label. | The punctuation-density feature and a version without padding were not separately recorded; the target's claimed effect is not isolated. |
+| EV08 | Text below the model token window evades signal one | HTTP 200; model 0.2452, style 0.3803, combined 0.3128; `unsure` | **GPT-2 signal → combination → label mapping.** The model signal is low for the submitted short text, producing a combined score in the unsure range. The route accepted and scored it. | The record has no token count or perplexity. It does not establish that being below the 400-token truncation limit caused the model score; the configured maximum is not evidence of a minimum-length check. |
+| EV09 | AI text with a human-sounding opening paragraph (both signals) | HTTP 200; model 0.7042, style 0.3611, combined 0.5327; `unsure` | **Both signal stages → combination → label mapping.** The recorded style score is lower than the model score; equal weighting yields 0.5327, below the AI cutoff. | No result for the AI body alone or the opening paragraph alone is recorded, so the relative causal contribution of each part is unknown. |
+| EV10 | Repeated stanza structure changes stylometry | HTTP 200; model 0.9792, style 0.4934, combined 0.7363; `unsure` | **Signal combination → label mapping** is the demonstrated miss. With equal 0.5 weights, `(0.9792 + 0.4934) / 2 = 0.7363`; `score_to_label` maps scores below 0.75 and above 0.25 to `unsure`. The score is 0.0137 below the AI threshold. | The result establishes the numeric/style outputs for this submission, not that stanza formatting caused style score 0.4934. The raw three style components and an otherwise identical control were not recorded. |
+| MF03 | Control-character input should not be classified as ordinary writing | HTTP 200; model 0.0000, style 0.4841, combined 0.2420; `human` | **Route and validation** is the actionable failure. `app.submit` checks that `text` is a nonempty string and at most 5,000 characters; this mixed control/printable string passed those checks and proceeded to both signals. With equal weights, the recorded signals average to 0.24205, rounded to 0.2420. Since 0.2420 is at or below the 0.25 human threshold, the label mapper returns a confident human-like label. | The response demonstrates the confident label for this control-character input. The baseline does not log GPT-2 perplexity or the reason `model_signal` saturated at 0.0000, so that signal's internal cause is not established. |
+
+**EV10 arithmetic in detail:** the unchanged configuration gives each signal
+weight 0.5. The weighted average is
+`(0.5 × 0.9792 + 0.5 × 0.4934) / (0.5 + 0.5) = 0.7363`.
+The label boundary is inclusive at 0.75 for `ai`; because 0.7363 is below
+that boundary and above 0.25, the current rule maps it to `unsure`. The
+recorded style score alone does not establish that repeated stanza formatting
+caused it.
+
+**MF03 route evidence:** the attack CSV input is
+`\u0000\u0001\u0002 test \u001b[31mred\u001b[0m`. The route's text validation
+requires a string with non-whitespace content and enforces a 5,000-character
+maximum; it does not require printable prose or recognized words. The input
+therefore reached classification and was recorded as a decision instead of
+being rejected as unsuitable text.
+
+### Common mechanisms and priority
+
+- **10 of 11 failures (EV01–EV10) are evasion cases.** Six target
+  surface-style features, two target changes across both signals, and two
+  target the model signal. Their common measured outcome is a
+  combined score below 0.75, hence an `unsure` label instead of an AI label.
+  The most frequent *pipeline* mechanism is the combination and label-mapping
+  path not reaching a decisive AI score on modified AI text. Without paired
+  controls and component-level logs, the attacks' causal effects on individual
+  signals are not demonstrated.
+- **MF03 is the remaining failure.** Validation accepts nonempty control
+  characters; the resulting anomalous model score then pulls the average
+  into the human-labeled range. This is separate from the ten evasion cases.
+- **Most important Milestone 5 problem:** prevent evasive AI-like submissions
+  from avoiding a decisive AI result while preserving conservative treatment
+  of human writing. EV10 is the clearest single demonstration: the model
+  signal is 0.9792, yet the equal-weight combination is just below the AI
+  cutoff. Any more aggressive decision must be evaluated against the missing
+  verified-human criterion rather than presumed safe. MF03 also warrants a
+  focused input-validation check.
+
+### Two one-change proposals for Milestone 5 (not implemented)
+
+1. **Lower `config.AI_THRESHOLD` from 0.75 to 0.73.** This is one
+   configuration-value change. EV10's recorded 0.7363 would map to `ai`
+   under the existing `>= AI_THRESHOLD` rule. The tradeoff is that more
+   borderline human writing may receive a high-confidence AI-like label.
+   Criterion 1 is directly at risk; Criterion 3's boundaries must be
+   re-evaluated, although the three-label contiguous partition remains
+   structurally possible. Criterion 2's combined-score metric is unchanged
+   by a label-only threshold change; appeal and invalid-input behavior are
+   not directly changed.
+2. **Reduce `config.WEIGHT_STYLE_SIGNAL` from 0.5 to 0.4, leaving
+   `WEIGHT_MODEL_SIGNAL` at 0.5.** This changes one parameter; the existing
+   normalization then makes the model signal's share 0.5/0.9. On EV10's
+   recorded scores the resulting weighted mean would be approximately 0.7633,
+   above 0.75. This makes the model signal more influential but may make
+   style-targeted attacks less effective; it also changes scores for every
+   submission and could increase false AI labels. Criteria 1 and 2 require
+   fresh trials, and Criterion 3 should be rechecked even though its
+   thresholds are unchanged. Criteria 4 and 5 do not directly measure the
+   changed scoring rule.
+
+These are alternatives, not commitments. No threshold, weight, classifier,
+or route change was made during Milestone 4, and neither proposal's expected
+behavior is presented as a test result.
 
 ---
 
