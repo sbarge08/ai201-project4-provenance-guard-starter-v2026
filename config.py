@@ -70,7 +70,7 @@ WEIGHT_STYLE_SIGNAL = 0.5
 # that decide who pays for it.
 
 HUMAN_THRESHOLD = 0.25
-AI_THRESHOLD = 0.75
+AI_THRESHOLD = 0.73
 
 # The wider unsure band is a conservative choice to reduce high-confidence
 # accusations when the two heuristic signals provide limited evidence.

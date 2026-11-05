@@ -160,8 +160,8 @@ not an observed evaluation result.
 | Label | Score range | The exact text a reader sees |
 |---|---|---|
 | high-confidence human-like | 0.00–0.25, inclusive | High-confidence human-like patterns: this system's signals are strongly associated with human writing. This is not proof of authorship. |
-| unsure | greater than 0.25 and less than 0.75 | The signals are inconclusive. This system cannot determine who wrote the text. |
-| high-confidence AI-like | 0.75–1.00, inclusive | High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship. |
+| unsure | greater than 0.25 and less than 0.73 | The signals are inconclusive. This system cannot determine who wrote the text. |
+| high-confidence AI-like | 0.73–1.00, inclusive | High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship. |
 
 These are labels based on the configured AI-likeness score cutoffs, not
 calibrated probabilities. `confidence` is a separate, heuristic margin score,
@@ -346,6 +346,12 @@ The original staff baseline ran on 2026-11-04 at 19:13. All 56 attacks
 executed; I did not rerun or alter this before-improvement result. The preserved
 raw output is [`results/attack_run_2026-11-04_1913.md`](results/attack_run_2026-11-04_1913.md).
 The following verdicts compare each CSV target with its recorded response:
+
+**Baseline verdict reconciliation:** 45 HELD and 11 BROKE. The 11 broken
+IDs are **EV01–EV10 and MF03**: ten evasion cases returned `unsure`, and the
+additional MF03 control-character case returned a high-confidence `human`
+label. The Milestone 4 failure list includes all eleven; MF03 is the one
+non-evasion failure.
 
 - **Evasion:** the target is to avoid an AI-like classification. `unsure`
   avoids the AI label, so it counts as BROKE for detection, but it does not
@@ -867,7 +873,10 @@ being rejected as unsuitable text.
   verified-human criterion rather than presumed safe. MF03 also warrants a
   focused input-validation check.
 
-### Two one-change proposals for Milestone 5 (not implemented)
+### Two one-change proposals considered before Milestone 5
+
+At the end of Milestone 4, these were unimplemented alternatives. Milestone 5
+now measures the first proposal only.
 
 1. **Lower `config.AI_THRESHOLD` from 0.75 to 0.73.** This is one
    configuration-value change. EV10's recorded 0.7363 would map to `ai`
@@ -889,44 +898,180 @@ being rejected as unsuitable text.
    thresholds are unchanged. Criteria 4 and 5 do not directly measure the
    changed scoring rule.
 
-These are alternatives, not commitments. No threshold, weight, classifier,
-or route change was made during Milestone 4, and neither proposal's expected
-behavior is presented as a test result.
+Neither proposal's expected behavior above is represented as a result; the
+threshold experiment's actual results are recorded below.
 
 ---
 
 ## The Improvement
 
-**What I changed:**
+**What changed:** exactly one production parameter changed in
+[`config.py`](config.py): `AI_THRESHOLD` from `0.75` to `0.73`. The GPT-2
+detector, stylometry, signal weights, human threshold, validation, rate
+limiting, audit logging, and original criteria are unchanged.
 
-**Which diagnosis pointed at it:**
+**Which diagnosis pointed at it:** EV10 was the clearest evasion in the
+before run: model `0.9792`, style `0.4934`, combined `0.7363`, and `unsure`.
+The equal-weight arithmetic is `(0.9792 + 0.4934) / 2 = 0.7363`, just below
+the old inclusive AI threshold of `0.75`. The lower boundary is intended to
+make that score AI-like evidence. MF03 also broke before, but is deliberately
+not separately fixed in this experiment.
+
+**Hypothesis:** with only this threshold adjustment, EV10 will change from
+`unsure` to `ai`; some borderline human submissions could also change to
+`ai`, increasing false-positive risk. Scores themselves should remain the
+same because this is a label-boundary change.
 
 ### Attack Run — After
 
-<!-- Same format. `run_attacks.py --label after` -->
+**Exact command:** `python run_attacks.py --set .\attack_set --label after`
 
+The full 56-attack run completed on 2026-11-04 at 20:41. Its unannotated,
+runner-generated record is
+[`results/attack_run_2026-11-04_2041_after.md`](results/attack_run_2026-11-04_2041_after.md).
+The five-criteria rerun used the exact command
+`python run_eval.py --label after`.
+The verdicts and before/after values below use the same family-specific
+judgment rules as the original run. The runner records component scores and
+confidence but does not include `combined_score` in its per-attack JSON;
+combined scores in this comparison were recomputed with unchanged
+`scoring.combine_signals` from the recorded model/style scores and match the
+audit entries. `—` means the request was rejected before scoring.
 
+**Full Attack Run — After and before/after comparison**
 
-**Did it help, and how do I know:**
+| ID | Family / documented objective | Before: HTTP / guess / combined | Before | After: HTTP / guess / combined | After | Change |
+|---|---|---|---|---|---|---|
+| EV01 | evasion: signal two: typos raise word variety | 200/unsure/0.2763 | BROKE | 200/unsure/0.2763 | BROKE | stayed the same |
+| EV02 | evasion: signal two: broken-up sentences raise length spread | 200/unsure/0.4583 | BROKE | 200/unsure/0.4583 | BROKE | stayed the same |
+| EV03 | evasion: signal two: a pasted quotation changes the shape | 200/unsure/0.5200 | BROKE | 200/unsure/0.5200 | BROKE | stayed the same |
+| EV04 | evasion: signal one: unusual words raise perplexity | 200/unsure/0.5010 | BROKE | 200/unsure/0.5010 | BROKE | stayed the same |
+| EV05 | evasion: both signals: heavy human editing pass | 200/unsure/0.3525 | BROKE | 200/unsure/0.3525 | BROKE | stayed the same |
+| EV06 | evasion: signal two: one very long sentence and one very short | 200/unsure/0.4289 | BROKE | 200/unsure/0.4289 | BROKE | stayed the same |
+| EV07 | evasion: signal two: padding with punctuation | 200/unsure/0.4654 | BROKE | 200/unsure/0.4654 | BROKE | stayed the same |
+| EV08 | evasion: signal one: text below the token window | 200/unsure/0.3128 | BROKE | 200/unsure/0.3128 | BROKE | stayed the same |
+| EV09 | evasion: both: AI text with a human opening paragraph bolted on | 200/unsure/0.5327 | BROKE | 200/unsure/0.5327 | BROKE | stayed the same |
+| EV10 | evasion: signal two: repeated stanza structure | 200/unsure/0.7363 | BROKE | 200/ai/0.7363 | HELD | improved |
+| FP01 | false_positive: plain, clear human writing with no flourishes | 200/unsure/0.5059 | HELD | 200/unsure/0.5059 | HELD | stayed the same |
+| FP02 | false_positive: human writing in a formal register | 200/unsure/0.5819 | HELD | 200/unsure/0.5819 | HELD | stayed the same |
+| FP03 | false_positive: a non-native English speaker writing carefully | 200/unsure/0.6045 | HELD | 200/unsure/0.6045 | HELD | stayed the same |
+| FP04 | false_positive: a student essay written to a rubric | 200/unsure/0.6062 | HELD | 200/unsure/0.6062 | HELD | stayed the same |
+| FP05 | false_positive: technical documentation written by a person | 200/unsure/0.6401 | HELD | 200/unsure/0.6401 | HELD | stayed the same |
+| FP06 | false_positive: a person imitating a formal template | 200/unsure/0.6311 | HELD | 200/unsure/0.6311 | HELD | stayed the same |
+| FP07 | false_positive: human writing that repeats a phrase deliberately | 200/unsure/0.6754 | HELD | 200/unsure/0.6754 | HELD | stayed the same |
+| FP08 | false_positive: very short genuine human submission | 200/unsure/0.4232 | HELD | 200/unsure/0.4232 | HELD | stayed the same |
+| PI01 | prompt_injection: instruction to ignore the check | 200/unsure/0.3722 | HELD | 200/unsure/0.3722 | HELD | stayed the same |
+| PI02 | prompt_injection: instruction disguised as a system message | 200/unsure/0.2555 | HELD | 200/unsure/0.2555 | HELD | stayed the same |
+| PI03 | prompt_injection: instruction wrapped in the writer's voice | 200/unsure/0.4718 | HELD | 200/unsure/0.4718 | HELD | stayed the same |
+| PI04 | prompt_injection: attempt to make the label text hostile | 200/unsure/0.4635 | HELD | 200/unsure/0.4635 | HELD | stayed the same |
+| PI05 | prompt_injection: attempt to inject into the audit log | 200/unsure/0.6071 | HELD | 200/unsure/0.6071 | HELD | stayed the same |
+| PI06 | prompt_injection: instruction plus real human text | 200/unsure/0.4761 | HELD | 200/unsure/0.4761 | HELD | stayed the same |
+| MF01 | malformed: text is only whitespace | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| MF02 | malformed: text is a single character | 422/—/— | HELD | 422/—/— | HELD | stayed the same |
+| MF03 | malformed: text is control characters | 200/human/0.2420 | BROKE | 200/human/0.2420 | BROKE | stayed the same |
+| MF04 | malformed: text is only punctuation | 200/unsure/0.3389 | HELD | 200/unsure/0.3389 | HELD | stayed the same |
+| MF05 | malformed: text is a very long single word | 200/unsure/0.5822 | HELD | 200/unsure/0.5822 | HELD | stayed the same |
+| MF06 | malformed: text is emoji only | 200/unsure/0.6651 | HELD | 200/unsure/0.6651 | HELD | stayed the same |
+| MF07 | malformed: text is right-to-left script | 200/unsure/0.5524 | HELD | 200/unsure/0.5524 | HELD | stayed the same |
+| MF08 | malformed: text is 60,000 characters | 413/—/— | HELD | 413/—/— | HELD | stayed the same |
+| RQ01 | malformed: no text field at all | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| RQ02 | malformed: no creator_id | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| RQ03 | malformed: text is a number | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| RQ04 | malformed: text is a list | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| RQ05 | malformed: text is null | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| RQ06 | malformed: creator_id is an object | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| RQ07 | malformed: body is a JSON array, not an object | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| RQ08 | malformed: body is unparseable JSON | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| RQ09 | malformed: body is empty | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| RQ10 | malformed: body is form-encoded, not JSON | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| RQ11 | malformed: body is JSON claiming to be plain text | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| RQ12 | malformed: deeply nested JSON | 400/—/— | HELD | 400/—/— | HELD | stayed the same |
+| FL01_01 | flood_same_creator: 20 rapid submissions from one creator | 200/human/0.1280 | HELD | 200/human/0.1280 | HELD | stayed the same |
+| FL01_02 | flood_same_creator: 20 rapid submissions from one creator | 200/human/0.1280 | HELD | 200/human/0.1280 | HELD | stayed the same |
+| FL01_03 | flood_same_creator: 20 rapid submissions from one creator | 200/human/0.1280 | HELD | 200/human/0.1280 | HELD | stayed the same |
+| FL01_04 | flood_same_creator: 20 rapid submissions from one creator | 200/human/0.1280 | HELD | 200/human/0.1280 | HELD | stayed the same |
+| FL01_05 | flood_same_creator: 20 rapid submissions from one creator | 200/human/0.1280 | HELD | 200/human/0.1280 | HELD | stayed the same |
+| FL01_06 | flood_same_creator: 20 rapid submissions from one creator | 200/human/0.1280 | HELD | 200/human/0.1280 | HELD | stayed the same |
+| FL01_07 | flood_same_creator: 20 rapid submissions from one creator | 200/human/0.1280 | HELD | 200/human/0.1280 | HELD | stayed the same |
+| FL01_08 | flood_same_creator: 20 rapid submissions from one creator | 200/human/0.1280 | HELD | 200/human/0.1280 | HELD | stayed the same |
+| FL01_09 | flood_same_creator: 20 rapid submissions from one creator | 200/human/0.1280 | HELD | 200/human/0.1280 | HELD | stayed the same |
+| FL01_10 | flood_same_creator: 20 rapid submissions from one creator | 200/human/0.1280 | HELD | 200/human/0.1280 | HELD | stayed the same |
+| FL01_11 | flood_same_creator: 20 rapid submissions from one creator | 429/—/— | HELD | 429/—/— | HELD | stayed the same |
+| FL01_12 | flood_same_creator: 20 rapid submissions from one creator | 429/—/— | HELD | 429/—/— | HELD | stayed the same |
 
-<!-- Widening the unsure band usually fixes one problem and creates another.
-     Reporting that trade honestly is worth full credit. -->
+Before/after family totals: evasion **0/10 → 1/10 HELD**; false-positive
+attacks **8/8 → 8/8 HELD** (zero `ai` labels in both runs); prompt injection
+**6/6 → 6/6 HELD**; malformed **19/20 → 19/20 HELD** (MF03 remained BROKE);
+flood **12/12 → 12/12 HELD** (ten allowed submissions and two HTTP 429s).
+Overall, the baseline was **45 HELD / 11 BROKE**, and after was **46 HELD /
+10 BROKE**. **EV10 improved** from BROKE to HELD; no attack became worse.
 
+**Did it help, and how do I know?** It helped against the specific EV10
+evasion: same recorded model `0.9792`, style `0.4934`, and combined `0.7363`,
+but its returned guess changed from `unsure` to `ai` at threshold 0.73. The
+other nine evasions stayed `unsure`, MF03 stayed a confident `human`, and no
+other verdict changed. This is a one-attack improvement in the staff set, not
+evidence of general detection accuracy.
 
+### Before/after three-trial acceptance criteria
+
+The original target text remains in [criteria.md](criteria.md), unchanged.
+“Before” references the original three-trial run and the separate HC3
+diagnostic; “after” references
+[`results/run_2026-11-04_204406_after.json`](results/run_2026-11-04_204406_after.json).
+Criteria 1–2 remain NOT EVALUATED for the original acceptance criteria
+because the required verified-human authorship evidence is unavailable.
+
+| Criterion and original target | Before trial 1 | Before trial 2 | Before trial 3 | After trial 1 | After trial 2 | After trial 3 | Verdict |
+|---|---|---|---|---|---|---|---|
+| 1. At most 1 of 20 verified human-written texts receives the high-confidence AI label in each trial. | NOT EVALUATED: no verified human corpus | NOT EVALUATED: no verified human corpus | NOT EVALUATED: no verified human corpus | NOT EVALUATED: no verified human corpus | NOT EVALUATED: no verified human corpus | NOT EVALUATED: no verified human corpus | **NOT EVALUATED** |
+| 2. AI mean combined score minus verified-human mean is at least 0.20 in each trial, using 20 samples per group. | NOT EVALUATED; HC3 diagnostic gap 0.121915 | NOT EVALUATED; HC3 diagnostic gap 0.121915 | NOT EVALUATED; HC3 diagnostic gap 0.121915 | NOT EVALUATED; HC3 diagnostic gap 0.121915 | NOT EVALUATED; HC3 diagnostic gap 0.121915 | NOT EVALUATED; HC3 diagnostic gap 0.121915 | **NOT EVALUATED** |
+| 3. All three labels reachable; every score 0–1 maps to exactly one label, including thresholds and adjacent values. | MET; 9 cases, AI boundary 0.75, partition true | MET; 9 cases, AI boundary 0.75, partition true | MET; 9 cases, AI boundary 0.75, partition true | MET; 9 cases, AI boundary 0.73, partition true | MET; 9 cases, AI boundary 0.73, partition true | MET; 9 cases, AI boundary 0.73, partition true | **MET** |
+| 4. All 10 valid appeals in each trial are recorded as `under_review`, and original decisions remain. | MET; 10/10, 0 rate-limited | MET; 10/10, 0 rate-limited | MET; 10/10, 0 rate-limited | MET; 10/10, 0 rate-limited | MET; 10/10, 0 rate-limited | MET; 10/10, 0 rate-limited | **MET** |
+| 5. All six predefined invalid requests receive 4xx responses and create no valid decision in each trial. | MET; 6/6, 0 rate-limited | MET; 6/6, 0 rate-limited | MET; 6/6, 0 rate-limited | MET; 6/6, 0 rate-limited | MET; 6/6, 0 rate-limited | MET; 6/6, 0 rate-limited | **MET** |
+
+**Criterion 2 HC3 diagnostic before/after (exploratory, not verified-authorship
+acceptance testing):** In all three before trials and all three after trials,
+20 AI-labeled and 20 human-labeled dataset answers were scored. Both runs
+measured AI mean `0.701915`, human-labeled mean `0.580000`, and gap
+`0.121915` against the exploratory numeric comparison target of `0.20`;
+`metric_met` was false. The threshold change does not change combined scores,
+and HC3 does not independently verify each human respondent. Therefore the
+original Criterion 2 remains NOT EVALUATED, not MET or MISSED on verified
+human evidence. Criterion 1 also remains NOT EVALUATED; 20 verified
+human-authored samples are still missing.
+
+**False-positive tradeoff:** the eight staff false-positive probes remained
+`unsure` and none became `ai`, so this attack run showed no regression in that
+family. These probes are not the 20 verified human samples required by
+Criterion 1. Lowering the threshold expands the AI-labeled interval by 0.02
+and contracts the unsure interval; it may label other borderline human text
+as AI-like. The available evidence cannot measure that risk or establish that
+the change is safe for human writers.
+
+**Audit and result evidence:** the extracted after-run audit events are in
+[`results/audit_extract_after.json`](results/audit_extract_after.json),
+including the EV10 decision, malformed outcomes, flood 429 rejections, and
+evaluation events. The complete comparison data, including model and style
+scores, is in
+[`results/attack_comparison_after.json`](results/attack_comparison_after.json).
 
 ---
 
 ## What's Still Broken
 
-<!-- For each attack still getting through and each criterion still missed:
-     what you'd do, and why you stopped. -->
+Nine evasion attacks still returned `unsure`; MF03 still returned a
+high-confidence `human` label for its control-character-containing input.
+Criteria 1 and 2 remain NOT EVALUATED until the required verified-human
+writing evidence is available. The HC3 diagnostic misses its numeric 0.20
+gap, but is not a verified-authorship acceptance result. No further detector,
+validation, or weighting changes were made in this milestone.
 
-
-
-**The trade I'd make if this ran for real:**
-
-<!-- Two sentences. Fewer wrong accusations means more AI text getting through.
-     Say which way you'd go and WHO PAYS FOR IT. -->
+**The trade I'd make if this ran for real:** I would keep an appeal path and
+favor an inconclusive result over an unsupported authorship accusation.
+Lowering the cutoff can catch borderline AI-like outputs such as EV10, but
+human writers bear the cost if their work is pushed into the AI-labeled band;
+that trade cannot be judged adequately until Criterion 1 has verified data.
 
 
 

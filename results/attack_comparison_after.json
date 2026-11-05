@@ -1,0 +1,1364 @@
+{
+  "baseline_file": "results\\attack_run_2026-11-04_1913.md",
+  "baseline_sha256": "4999BBC38FE2CB08A067E308AAC13B710DCA92A0BB5F7EFB32116294A817C476",
+  "after_file": "results\\attack_run_2026-11-04_2041_after.md",
+  "combined_score_note": "The runner records component scores and confidence, not combined_score. The combined scores here were recomputed with scoring.combine_signals from each run’s recorded model_score and style_score; that function and the equal 0.5/0.5 weights are unchanged. Values therefore match the returned score/audit entries.",
+  "verdict_rules": "Baseline rubric reused: evasion HELD only when guess=ai; false-positive HELD unless guess=ai; prompt injection HELD when standard classification returns; malformed non-prose MF03–MF07 HELD only when rejected or unsure; flood HELD when first ten receive 200 and later requests receive 429.",
+  "counts": {
+    "before_held": 45,
+    "before_broke": 11,
+    "after_held": 46,
+    "after_broke": 10,
+    "improved": [
+      "EV10"
+    ],
+    "worsened": [],
+    "unchanged": [
+      "EV01",
+      "EV02",
+      "EV03",
+      "EV04",
+      "EV05",
+      "EV06",
+      "EV07",
+      "EV08",
+      "EV09",
+      "FP01",
+      "FP02",
+      "FP03",
+      "FP04",
+      "FP05",
+      "FP06",
+      "FP07",
+      "FP08",
+      "PI01",
+      "PI02",
+      "PI03",
+      "PI04",
+      "PI05",
+      "PI06",
+      "MF01",
+      "MF02",
+      "MF03",
+      "MF04",
+      "MF05",
+      "MF06",
+      "MF07",
+      "MF08",
+      "RQ01",
+      "RQ02",
+      "RQ03",
+      "RQ04",
+      "RQ05",
+      "RQ06",
+      "RQ07",
+      "RQ08",
+      "RQ09",
+      "RQ10",
+      "RQ11",
+      "RQ12",
+      "FL01_01",
+      "FL01_02",
+      "FL01_03",
+      "FL01_04",
+      "FL01_05",
+      "FL01_06",
+      "FL01_07",
+      "FL01_08",
+      "FL01_09",
+      "FL01_10",
+      "FL01_11",
+      "FL01_12"
+    ]
+  },
+  "attacks": [
+    {
+      "id": "EV01",
+      "family": "evasion",
+      "objective": "signal two: typos raise word variety",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.1635,
+        "style_score": 0.3891,
+        "combined_score": 0.2763,
+        "verdict": "BROKE"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.1635,
+        "style_score": 0.3891,
+        "combined_score": 0.2763,
+        "verdict": "BROKE",
+        "content_id": "deb57601-bcb1-45bc-8ce7-e2fea1b61f3f"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "EV02",
+      "family": "evasion",
+      "objective": "signal two: broken-up sentences raise length spread",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.5943,
+        "style_score": 0.3222,
+        "combined_score": 0.4583,
+        "verdict": "BROKE"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.5943,
+        "style_score": 0.3222,
+        "combined_score": 0.4583,
+        "verdict": "BROKE",
+        "content_id": "7578d3c3-4787-4f9b-bbbe-00c6465b6926"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "EV03",
+      "family": "evasion",
+      "objective": "signal two: a pasted quotation changes the shape",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.6662,
+        "style_score": 0.3738,
+        "combined_score": 0.52,
+        "verdict": "BROKE"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.6662,
+        "style_score": 0.3738,
+        "combined_score": 0.52,
+        "verdict": "BROKE",
+        "content_id": "b63af6bc-8626-42c3-9a8c-f82e8dd0b141"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "EV04",
+      "family": "evasion",
+      "objective": "signal one: unusual words raise perplexity",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.6114,
+        "style_score": 0.3905,
+        "combined_score": 0.501,
+        "verdict": "BROKE"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.6114,
+        "style_score": 0.3905,
+        "combined_score": 0.501,
+        "verdict": "BROKE",
+        "content_id": "24fb6bfe-6f2b-49e2-862e-275f03add19b"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "EV05",
+      "family": "evasion",
+      "objective": "both signals: heavy human editing pass",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.3212,
+        "style_score": 0.3838,
+        "combined_score": 0.3525,
+        "verdict": "BROKE"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.3212,
+        "style_score": 0.3838,
+        "combined_score": 0.3525,
+        "verdict": "BROKE",
+        "content_id": "9eaa99ab-3014-4a3e-9a26-381074bbd0e2"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "EV06",
+      "family": "evasion",
+      "objective": "signal two: one very long sentence and one very short",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.5727,
+        "style_score": 0.2851,
+        "combined_score": 0.4289,
+        "verdict": "BROKE"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.5727,
+        "style_score": 0.2851,
+        "combined_score": 0.4289,
+        "verdict": "BROKE",
+        "content_id": "ae85c5d8-9ecc-4d8b-9d8f-f9e208573f20"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "EV07",
+      "family": "evasion",
+      "objective": "signal two: padding with punctuation",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.5862,
+        "style_score": 0.3446,
+        "combined_score": 0.4654,
+        "verdict": "BROKE"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.5862,
+        "style_score": 0.3446,
+        "combined_score": 0.4654,
+        "verdict": "BROKE",
+        "content_id": "060da6a3-2507-47e7-b137-93bd2f254049"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "EV08",
+      "family": "evasion",
+      "objective": "signal one: text below the token window",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.2452,
+        "style_score": 0.3803,
+        "combined_score": 0.3128,
+        "verdict": "BROKE"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.2452,
+        "style_score": 0.3803,
+        "combined_score": 0.3128,
+        "verdict": "BROKE",
+        "content_id": "0a30fa7f-461c-49e8-b3cb-302243632dfe"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "EV09",
+      "family": "evasion",
+      "objective": "both: AI text with a human opening paragraph bolted on",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.7042,
+        "style_score": 0.3611,
+        "combined_score": 0.5327,
+        "verdict": "BROKE"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.7042,
+        "style_score": 0.3611,
+        "combined_score": 0.5327,
+        "verdict": "BROKE",
+        "content_id": "39e84cf1-81c6-499e-8ed5-7ac56a4ab765"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "EV10",
+      "family": "evasion",
+      "objective": "signal two: repeated stanza structure",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.9792,
+        "style_score": 0.4934,
+        "combined_score": 0.7363,
+        "verdict": "BROKE"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "ai",
+        "model_score": 0.9792,
+        "style_score": 0.4934,
+        "combined_score": 0.7363,
+        "verdict": "HELD",
+        "content_id": "8a5c44f9-7cd0-4c1e-adb0-a52fcc37fe6e"
+      },
+      "change": "improved"
+    },
+    {
+      "id": "FP01",
+      "family": "false_positive",
+      "objective": "plain, clear human writing with no flourishes",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.6175,
+        "style_score": 0.3943,
+        "combined_score": 0.5059,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.6175,
+        "style_score": 0.3943,
+        "combined_score": 0.5059,
+        "verdict": "HELD",
+        "content_id": "2d0dcd6c-d59f-4a25-b7da-d73ceda286f7"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FP02",
+      "family": "false_positive",
+      "objective": "human writing in a formal register",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.7387,
+        "style_score": 0.4251,
+        "combined_score": 0.5819,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.7387,
+        "style_score": 0.4251,
+        "combined_score": 0.5819,
+        "verdict": "HELD",
+        "content_id": "88cdfe7a-a514-4b57-9bef-0385a6cac80d"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FP03",
+      "family": "false_positive",
+      "objective": "a non-native English speaker writing carefully",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.8051,
+        "style_score": 0.4038,
+        "combined_score": 0.6045,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.8051,
+        "style_score": 0.4038,
+        "combined_score": 0.6045,
+        "verdict": "HELD",
+        "content_id": "814fec47-cf86-4c0b-8b3e-459c69db0614"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FP04",
+      "family": "false_positive",
+      "objective": "a student essay written to a rubric",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.8329,
+        "style_score": 0.3796,
+        "combined_score": 0.6062,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.8329,
+        "style_score": 0.3796,
+        "combined_score": 0.6062,
+        "verdict": "HELD",
+        "content_id": "b64dd67d-7ed5-438e-9052-0f3379139431"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FP05",
+      "family": "false_positive",
+      "objective": "technical documentation written by a person",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.8005,
+        "style_score": 0.4798,
+        "combined_score": 0.6401,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.8005,
+        "style_score": 0.4798,
+        "combined_score": 0.6401,
+        "verdict": "HELD",
+        "content_id": "7a933a48-3189-4a94-bc6b-dea32520955b"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FP06",
+      "family": "false_positive",
+      "objective": "a person imitating a formal template",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.8814,
+        "style_score": 0.3808,
+        "combined_score": 0.6311,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.8814,
+        "style_score": 0.3808,
+        "combined_score": 0.6311,
+        "verdict": "HELD",
+        "content_id": "12997357-0a53-4e3f-bdff-70645c0e3b6c"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FP07",
+      "family": "false_positive",
+      "objective": "human writing that repeats a phrase deliberately",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.8816,
+        "style_score": 0.4691,
+        "combined_score": 0.6754,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.8816,
+        "style_score": 0.4691,
+        "combined_score": 0.6754,
+        "verdict": "HELD",
+        "content_id": "7d42a06c-e2e8-4811-8a60-4380d454cd8e"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FP08",
+      "family": "false_positive",
+      "objective": "very short genuine human submission",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.3223,
+        "style_score": 0.524,
+        "combined_score": 0.4232,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.3223,
+        "style_score": 0.524,
+        "combined_score": 0.4232,
+        "verdict": "HELD",
+        "content_id": "5c30935a-8532-4db3-9937-2c45833c93db"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "PI01",
+      "family": "prompt_injection",
+      "objective": "instruction to ignore the check",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.4625,
+        "style_score": 0.282,
+        "combined_score": 0.3722,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.4625,
+        "style_score": 0.282,
+        "combined_score": 0.3722,
+        "verdict": "HELD",
+        "content_id": "3143c09e-3157-4d43-8883-2530d867956c"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "PI02",
+      "family": "prompt_injection",
+      "objective": "instruction disguised as a system message",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.2044,
+        "style_score": 0.3066,
+        "combined_score": 0.2555,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.2044,
+        "style_score": 0.3066,
+        "combined_score": 0.2555,
+        "verdict": "HELD",
+        "content_id": "3ba38da5-2f0c-41cf-92cf-c0db24ec226e"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "PI03",
+      "family": "prompt_injection",
+      "objective": "instruction wrapped in the writer's voice",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.5943,
+        "style_score": 0.3492,
+        "combined_score": 0.4718,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.5943,
+        "style_score": 0.3492,
+        "combined_score": 0.4718,
+        "verdict": "HELD",
+        "content_id": "0c9acbab-e5d9-4222-98b6-97b13429fa68"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "PI04",
+      "family": "prompt_injection",
+      "objective": "attempt to make the label text hostile",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.4998,
+        "style_score": 0.4272,
+        "combined_score": 0.4635,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.4998,
+        "style_score": 0.4272,
+        "combined_score": 0.4635,
+        "verdict": "HELD",
+        "content_id": "0f3a5309-9c62-4884-b5b1-70f9b9d41605"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "PI05",
+      "family": "prompt_injection",
+      "objective": "attempt to inject into the audit log",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.6401,
+        "style_score": 0.5741,
+        "combined_score": 0.6071,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.6401,
+        "style_score": 0.5741,
+        "combined_score": 0.6071,
+        "verdict": "HELD",
+        "content_id": "e8367556-8dc5-4fb1-b975-f20f7e178117"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "PI06",
+      "family": "prompt_injection",
+      "objective": "instruction plus real human text",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.5583,
+        "style_score": 0.3939,
+        "combined_score": 0.4761,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.5583,
+        "style_score": 0.3939,
+        "combined_score": 0.4761,
+        "verdict": "HELD",
+        "content_id": "51a63a51-d15d-4c95-8eef-dd650992713b"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "MF01",
+      "family": "malformed",
+      "objective": "text is only whitespace",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "MF02",
+      "family": "malformed",
+      "objective": "text is a single character",
+      "before": {
+        "http_status": 422,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 422,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": "ec7602af-464f-4728-9490-2bb757e678d9"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "MF03",
+      "family": "malformed",
+      "objective": "text is control characters",
+      "before": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0,
+        "style_score": 0.4841,
+        "combined_score": 0.242,
+        "verdict": "BROKE"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0,
+        "style_score": 0.4841,
+        "combined_score": 0.242,
+        "verdict": "BROKE",
+        "content_id": "9aa7edca-b855-4258-bf83-794473b666b8"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "MF04",
+      "family": "malformed",
+      "objective": "text is only punctuation",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.0112,
+        "style_score": 0.6667,
+        "combined_score": 0.3389,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.0112,
+        "style_score": 0.6667,
+        "combined_score": 0.3389,
+        "verdict": "HELD",
+        "content_id": "231e5bcb-1af6-4c16-b134-29bfb0003dd8"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "MF05",
+      "family": "malformed",
+      "objective": "text is a very long single word",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.9976,
+        "style_score": 0.1667,
+        "combined_score": 0.5822,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.9976,
+        "style_score": 0.1667,
+        "combined_score": 0.5822,
+        "verdict": "HELD",
+        "content_id": "ee30ad1c-9056-4597-925d-8d4fc75b8f66"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "MF06",
+      "family": "malformed",
+      "objective": "text is emoji only",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.9969,
+        "style_score": 0.3333,
+        "combined_score": 0.6651,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.9969,
+        "style_score": 0.3333,
+        "combined_score": 0.6651,
+        "verdict": "HELD",
+        "content_id": "a9c6225f-9bc4-4346-b30f-853e36551843"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "MF07",
+      "family": "malformed",
+      "objective": "text is right-to-left script",
+      "before": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.9064,
+        "style_score": 0.1984,
+        "combined_score": 0.5524,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "unsure",
+        "model_score": 0.9064,
+        "style_score": 0.1984,
+        "combined_score": 0.5524,
+        "verdict": "HELD",
+        "content_id": "5c0accca-6b33-4652-b894-0aba210f37ab"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "MF08",
+      "family": "malformed",
+      "objective": "text is 60,000 characters",
+      "before": {
+        "http_status": 413,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 413,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ01",
+      "family": "malformed",
+      "objective": "no text field at all",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ02",
+      "family": "malformed",
+      "objective": "no creator_id",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ03",
+      "family": "malformed",
+      "objective": "text is a number",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ04",
+      "family": "malformed",
+      "objective": "text is a list",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ05",
+      "family": "malformed",
+      "objective": "text is null",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ06",
+      "family": "malformed",
+      "objective": "creator_id is an object",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ07",
+      "family": "malformed",
+      "objective": "body is a JSON array, not an object",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ08",
+      "family": "malformed",
+      "objective": "body is unparseable JSON",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ09",
+      "family": "malformed",
+      "objective": "body is empty",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ10",
+      "family": "malformed",
+      "objective": "body is form-encoded, not JSON",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ11",
+      "family": "malformed",
+      "objective": "body is JSON claiming to be plain text",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "RQ12",
+      "family": "malformed",
+      "objective": "deeply nested JSON",
+      "before": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 400,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_01",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD",
+        "content_id": "ef38fe85-1b83-4824-96fa-f5e3d35cd3d1"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_02",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD",
+        "content_id": "71d9bd58-9995-478e-a90c-e45ff4df2b4a"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_03",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD",
+        "content_id": "3c7aab9a-5929-49a7-b4a4-92f6f2715578"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_04",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD",
+        "content_id": "65be1052-8476-4c0a-b201-53db70138746"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_05",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD",
+        "content_id": "26b7289a-3d4e-4bd6-a41c-e84dc282e166"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_06",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD",
+        "content_id": "7a7f6749-6764-44f2-985e-b8f2c0e9b98c"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_07",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD",
+        "content_id": "ef7e19b9-56c0-4676-84b7-ef4e8d1a1234"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_08",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD",
+        "content_id": "141ffd05-effb-4a6b-825c-6f37c3a64e1b"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_09",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD",
+        "content_id": "612402fb-840c-4e09-a4a1-ef9f6e35dd12"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_10",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 200,
+        "guess": "human",
+        "model_score": 0.0287,
+        "style_score": 0.2273,
+        "combined_score": 0.128,
+        "verdict": "HELD",
+        "content_id": "cd60bf9f-105b-4791-a5ac-adbdef429b50"
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_11",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 429,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 429,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    },
+    {
+      "id": "FL01_12",
+      "family": "flood_same_creator",
+      "objective": "20 rapid submissions from one creator",
+      "before": {
+        "http_status": 429,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD"
+      },
+      "after": {
+        "http_status": 429,
+        "guess": null,
+        "model_score": null,
+        "style_score": null,
+        "combined_score": null,
+        "verdict": "HELD",
+        "content_id": null
+      },
+      "change": "stayed the same"
+    }
+  ]
+}
