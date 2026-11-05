@@ -605,24 +605,175 @@ not isolate why the model signal was zero.
 
 ## Run Log and Verdicts
 
-<!-- Your five criteria across three trials. `run_eval.py --label before`. -->
+**Original targets:** [criteria.md](criteria.md) remains unchanged. The first
+three-trial run measured Criteria 3–5; the follow-up ran only Criteria 1–2 so
+the prior results were preserved:
 
-| Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
-|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
-
-**Real output from one trial**, pasted as text, naming the file and function
-that produced it:
-
-```json
-
+```powershell
+.venv\Scripts\python.exe run_eval.py --label before
+.venv\Scripts\python.exe run_eval.py --criteria 1,2 --label hc3
 ```
 
-**Diagnoses**
+### HC3 paired samples for Criterion 2
+
+The project now includes 20 paired questions from the published
+[Human ChatGPT Comparison Corpus (HC3)](https://huggingface.co/datasets/Hello-SimpleAI/HC3),
+subset `wiki_csai`, split `train`, rows 0–19 at dataset revision
+`4d0ff18143b5a7e1b1e79beb540c04549d1e59d3`. Each pair uses the dataset's first
+`human_answers` and first `chatgpt_answers` entry for the same question. The
+deterministic selector in [prepare_hc3_samples.py](prepare_hc3_samples.py)
+scans rows in ascending order, requires nonempty distinct answers within the
+5,000-character limit, and never examines detector scores. The result is 20
+human-labeled answers and 20 ChatGPT-labeled answers (40 distinct texts; max
+length 3,621 characters). Pair IDs, row IDs, questions, source labels, and
+row-level viewer/API references are stored with each sample in
+[evaluation_samples.json](evaluation_samples.json).
+
+HC3's paper describes the ChatGPT responses as coming from ChatGPT based on
+the GPT-3.5 series, but the published rows do not identify per-answer author
+identities, an exact deployed model version, or generation timestamps. The
+human rows are dataset-labeled; they are not independently verified individual
+human authorship. Those limitations are retained in each sample's provenance.
+The evaluation harness therefore records Criterion 2 as a dataset-label
+diagnostic and leaves the original acceptance criterion **NOT EVALUATED**
+because its verified-human requirement is not established by the dataset.
+
+The [HC3 dataset card](https://huggingface.co/datasets/Hello-SimpleAI/HC3)
+declares CC BY-SA 4.0 and says stricter source-dataset licenses apply. Its
+[source-license table](https://github.com/Hello-SimpleAI/chatgpt-comparison-detection#dataset-copyright)
+identifies `wiki_csai` as Wikipedia under CC BY-SA. The sample file includes
+dataset/publication attribution and exact source references; the copied
+dataset-derived material is provided under the declared CC BY-SA terms with
+share-alike attribution. This documentation does not independently establish
+rights in underlying individual contributions.
+
+### Human writing for Criterion 1
+
+No set of 20 genuine user-authored writing samples with authorship evidence
+was found in the repository. The HC3 human-labeled data is not used as a
+substitute. Criterion 1 therefore remains **NOT EVALUATED**; 20 verified
+human-written samples (`H01`–`H20`) with genuine authorship evidence are still
+needed. No generated or AI-assisted text was relabeled as human writing.
+
+### Three-trial results
+
+The table preserves the original targets. Criterion 2's HC3 metrics are shown
+as diagnostic measurements, not as satisfying the target's verified-human
+condition.
+
+| Criterion | Original target | Run 1 | Run 2 | Run 3 | MET/MISSED |
+|---|---|---|---|---|---|
+| 1. False-positive rate | At most 1 of 20 verified human-written texts receives the high-confidence AI label in each trial. | NOT EVALUATED — no verified human corpus | NOT EVALUATED — no verified human corpus | NOT EVALUATED — no verified human corpus | **NOT EVALUATED** |
+| 2. Score separation | AI mean combined score minus verified-human mean combined score is at least 0.20 in each trial, using 20 samples per group. | HC3 diagnostic: AI 0.701915 − human 0.580000 = **0.121915** (numeric target missed) | Same: **0.121915** | Same: **0.121915** | **NOT EVALUATED** — dataset-labeled human data is not independently verified; diagnostic numeric target MISSED |
+| 3. Label coverage | All three labels reachable; all scores 0–1 map to exactly one label, including thresholds and adjacent values. | All labels; 9 boundary cases; partition passed | Same | Same | **MET** |
+| 4. Appeal reliability | 10/10 valid appeals audited as `under_review`, with original decisions retained. | 10/10; 0 rate-limited | 10/10; 0 rate-limited | 10/10; 0 rate-limited | **MET** |
+| 5. Invalid-input handling | Six predefined invalid requests return 4xx without a valid decision being logged. | 6/6; 0 rate-limited | 6/6; 0 rate-limited | 6/6; 0 rate-limited | **MET** |
+
+Criterion 2 values were identical in all three trials: 20/20 HTTP 200 scores
+per group, mean AI combined score `0.701915`, mean human-labeled combined
+score `0.580000`, difference `0.121915` against the `0.20` numerical target.
+The numerical comparison missed. Since the sample group does not meet the
+original verified-human provenance condition, the acceptance verdict remains
+**NOT EVALUATED**, rather than a pass or a definitive failure on verified
+writing.
+
+The Criterion 1–2 run was produced by
+`run_eval.py::main` / `run_eval.py::evaluate_scenario`; the per-sample scores
+and complete provenance are in
+[run_2026-11-04_194923_hc3.json](results/run_2026-11-04_194923_hc3.json),
+with a readable report at
+[run_2026-11-04_194923_hc3.md](results/run_2026-11-04_194923_hc3.md).
+The original Criteria 3–5 measurements remain in
+[run_2026-11-04_193334_before.json](results/run_2026-11-04_193334_before.json)
+and [run_2026-11-04_193334_before.md](results/run_2026-11-04_193334_before.md);
+they were not rerun in the HC3 follow-up.
+
+Genuine Trial 1 JSON summaries follow. Criterion 1 was emitted by
+`run_eval.py::main`; Criteria 2, 3, 4, and 5 were emitted by
+`run_eval.py::evaluate_scenario` and the corresponding criterion helpers.
+
+**Criterion 1**
+
+```json
+{
+  "status": "NOT EVALUATED",
+  "reason": "Missing 20 verified user-authored human samples. HC3's dataset-labeled human answers are not substituted for the original criterion's verified writing requirement."
+}
+```
+
+**Criterion 2 — HC3 diagnostic; original target remains NOT EVALUATED**
+
+```json
+{
+  "ai_sample_count": 20,
+  "human_sample_count": 20,
+  "ai_mean_combined_score": 0.701915,
+  "human_mean_combined_score": 0.58,
+  "ai_minus_human_mean": 0.121915,
+  "target_minimum": 0.2,
+  "metric_met": false,
+  "rate_limited": 0
+}
+```
+
+**Criterion 3**
+
+```json
+{
+  "observed_labels": ["ai", "human", "unsure"],
+  "all_labels_reached": true,
+  "partition_verified": true,
+  "boundary_cases": [
+    {"case": "score_zero", "score": 0.0, "guess": "human"},
+    {"case": "just_below_human_threshold", "score": 0.24999999999999997, "guess": "human"},
+    {"case": "human_threshold", "score": 0.25, "guess": "human"},
+    {"case": "just_above_human_threshold", "score": 0.25000000000000006, "guess": "unsure"},
+    {"case": "unsure_band_midpoint", "score": 0.5, "guess": "unsure"},
+    {"case": "just_below_ai_threshold", "score": 0.7499999999999999, "guess": "unsure"},
+    {"case": "ai_threshold", "score": 0.75, "guess": "ai"},
+    {"case": "just_above_ai_threshold", "score": 0.7500000000000001, "guess": "ai"},
+    {"case": "score_one", "score": 1.0, "guess": "ai"}
+  ],
+  "metric_met": true
+}
+```
+
+**Criterion 4**
+
+```json
+{
+  "appeals_succeeded": 10,
+  "appeals_expected": 10,
+  "rate_limited": 0,
+  "metric_met": true
+}
+```
+
+**Criterion 5**
+
+```json
+{
+  "invalid_cases_rejected": 6,
+  "invalid_cases_expected": 6,
+  "rate_limited": 0,
+  "metric_met": true
+}
+```
+
+The original Criteria 3–5 run's nine cases and all detailed appeal and invalid
+request evidence are retained in its linked JSON report. In the HC3 follow-up,
+all 120 classification submissions returned HTTP 200 and none was
+rate-limited. The audit log contains those real decisions; earlier audit
+entries from Criteria 3–5 remain append-only. The rate limiter stayed enabled.
+The classifier, weights, thresholds, label mapping, and
+[criteria.md](criteria.md) were not changed.
+
+**Overall status: INCOMPLETE.** Criterion 1 is NOT EVALUATED for lack of 20
+verified human-authored samples. Criterion 2 has a genuine HC3 diagnostic, but
+its acceptance status is NOT EVALUATED because HC3's human labels do not
+establish the criterion's individual verified-authorship requirement; its
+observed numeric gap also fell short of 0.20. Criteria 3–5 met their targets
+in all three previously recorded trials.
 
 <!-- For each miss AND each broken attack: the stage and the mechanism.
 

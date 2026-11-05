@@ -1,0 +1,821 @@
+{
+  "dataset_provenance": {
+    "dataset": "Hello-SimpleAI/HC3",
+    "revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+    "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+    "publication_url": "https://arxiv.org/abs/2301.07597",
+    "dataset_url": "https://huggingface.co/datasets/Hello-SimpleAI/HC3",
+    "subset": "wiki_csai",
+    "split": "train",
+    "license": "The Hugging Face dataset card declares CC-BY-SA-4.0 and states that stricter source-dataset licenses apply. The project copyright table identifies the wiki_csai source as Wikipedia under CC-BY-SA.",
+    "chatgpt_model_context": "The paper describes ChatGPT as based on the GPT-3.5 series; the individual rows do not identify an exact serving version or generation timestamp.",
+    "selection": "At the pinned revision, scan wiki_csai/train rows in ascending row_idx and take the first 20 with nonempty question, nonempty first human_answers and chatgpt_answers, each answer at most 5,000 characters, distinct answer texts, and a question not previously selected. Selection does not inspect classifier scores.",
+    "retrieved_at": "2026-11-05T00:46:30+00:00",
+    "verified_human_samples_available": 0
+  },
+  "human": [
+    {
+      "id": "HC3-WIKI-CSAI-00000-HUMAN",
+      "text": "Animal cognition encompasses the mental capacities of non-human animals including insect cognition. The study of animal conditioning and learning used in this field was developed from comparative psychology. It has also been strongly influenced by research in ethology, behavioral ecology, and evolutionary psychology;  the alternative name cognitive ethology is sometimes used. Many behaviors associated with the term animal intelligence are also subsumed within animal cognition.\nResearchers have examined animal cognition in mammals (especially primates, cetaceans, elephants, dogs, cats, pigs, horses, cattle, raccoons and rodents), birds (including parrots, fowl, corvids and pigeons), reptiles (lizards, snakes, and turtles), fish and invertebrates (including cephalopods, spiders and insects).",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "0",
+        "row_index": 0,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:0",
+        "question": "Please explain what is \"Animal cognition\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=0",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=0&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00001-HUMAN",
+      "text": "Human intelligence is the intellectual capability of humans, which is marked by complex cognitive feats and high levels of motivation and self-awareness. High intelligence is associated with better outcomes in life.\nThrough intelligence, humans possess the cognitive abilities to learn, form concepts, understand, apply logic and reason, including the capacities to recognize patterns, plan, innovate, solve problems, make decisions, retain information, and use language to communicate. There are conflicting ideas about how intelligence is measured, ranging from the idea that intelligence is fixed upon birth, or that it is malleable and can change depending on an individual's mindset and efforts. Several subcategories of intelligence, such as emotional intelligence or social intelligence, are heavily debated as to whether they are traditional forms of intelligence. They are generally thought to be distinct processes that occur, though there is speculation that they tie into traditional intelligence more than previously suspected.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "1",
+        "row_index": 1,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:1",
+        "question": "Please explain what is \"Human intelligence\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=1",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=1&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00002-HUMAN",
+      "text": "The Oxford English Dictionary (OED) is the first and foundational historical dictionary of the English language, published by Oxford University Press (OUP). It traces the historical development of the English language, providing a comprehensive resource to scholars and academic researchers, as well as describing usage in its many variations throughout the world.\nWork began on the dictionary in 1857, but it was only in 1884 that it began to be published in unbound fascicles as work continued on the project, under the name of A New English Dictionary on Historical Principles; Founded Mainly on the Materials Collected by The Philological Society. In 1895, the title The Oxford English Dictionary was first used unofficially on the covers of the series, and in 1928 the full dictionary was republished in 10 bound volumes. In 1933, the title The Oxford English Dictionary fully replaced the former name in all occurrences in its reprinting as 12 volumes with a one-volume supplement. More supplements came over the years until 1989, when the second edition was published, comprising 21,728 pages in 20 volumes. Since 2000, compilation of a third edition of the dictionary has been underway, approximately half of which was complete by 2018.\nThe first electronic version of the dictionary was made available in 1988. The online version has been available since 2000, and by April 2014 was receiving over two million visits per month. The third edition of the dictionary is expected to be available exclusively in electronic form; the Chief Executive of Oxford University Press has stated that it is unlikely that it will ever be printed.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "2",
+        "row_index": 2,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:2",
+        "question": "Please explain what is \"Oxford English Dictionary\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=2",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=2&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00003-HUMAN",
+      "text": "Oxford University Press (OUP) is the university press of the University of Oxford. It is the largest university press in the world, and its printing history dates back to the 1480s. Having been officially granted the legal right to print books by decree in 1586, it is the second oldest university press after Cambridge University Press.\nIt is a department of the University of Oxford and is governed by a group of 15 academics known as the Delegates of the Press, who are appointed by the vice-chancellor of the University of Oxford. The Delegates of the Press are led by the Secretary to the Delegates, who serves as OUP's chief executive and as its major representative on other university bodies. Oxford University Press has had a similar governance structure since the 17th century. The press is located on Walton Street, Oxford, opposite Somerville College, in the inner suburb of Jericho.\nFor the last 500 years, OUP has primarily focused on the publication of pedagogical texts and continues this tradition today by publishing academic journals, dictionaries, English language resources, bibliographies, books on indology, music, classics, literature, history, as well as bibles and atlases.\nOUP has offices throughout the world, primarily in locations that were once part of the British Empire (mainly India and the United States).",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "3",
+        "row_index": 3,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:3",
+        "question": "Please explain what is \"Oxford University Press\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=3",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=3&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00004-HUMAN",
+      "text": "Artificial intelligence (AI) has been used in applications to alleviate certain problems throughout industry and academia. AI, like electricity or computers, is a general purpose technology that has a multitude of applications. It has been used in fields of language translation, image recognition, credit scoring, e-commerce and other domains.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "4",
+        "row_index": 4,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:4",
+        "question": "Please explain what is \"AI applications\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=4",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=4&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00005-HUMAN",
+      "text": "A search engine is a software system designed to carry out web searches.  They search the World Wide Web in a systematic way for particular information specified in a textual web search query. The search results are generally presented in a line of results, often referred to as search engine results pages (SERPs). When a user enters a query into a search engine, the engine scans its index of web pages to find those that are relevant to the user's query. The results are then ranked by relevancy and displayed to the user. The information may be a mix of links to web pages, images, videos, infographics, articles, research papers, and other types of files. Some search engines also mine data available in databases or open directories. Unlike web directories and social bookmarking sites, which are maintained by human editors, search engines also maintain real-time information by running an algorithm on a web crawler. Any internet-based content that can't be indexed and searched by a web search engine falls under the category of deep web.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "5",
+        "row_index": 5,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:5",
+        "question": "Please explain what is \"Web search\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=5",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=5&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00006-HUMAN",
+      "text": "Google Search (also known simply as Google) is a search engine provided by Google. Handling more than 3.5 billion searches per day, it has a 92% share of the global search engine market. It is also the most-visited website in the world.\nThe order of search results returned by Google is based, in part, on a priority rank system called \"PageRank\". Google Search also provides many different options for customized searches, using symbols to include, exclude, specify or require certain search behavior, and offers specialized interactive experiences, such as flight status and package tracking, weather forecasts, currency, unit, and time conversions, word definitions, and more.\nThe main purpose of Google Search is to search for text in publicly accessible documents offered by web servers, as opposed to other data, such as images or data contained in databases. It was originally developed in 1996 by Larry Page, Sergey Brin, and Scott Hassan. In 2011, Google introduced \"Google Voice Search\" to search for spoken, rather than typed, words. In 2012, Google introduced a Knowledge Graph semantic search feature.\nAnalysis of the frequency of search terms may indicate economic, social and health trends.[10] Data about the frequency of use of search terms on Google can be openly inquired via Google Trends and have been shown to correlate with flu outbreaks and unemployment levels, and provide the information faster than traditional reporting methods and surveys. As of mid-2016, Google's search engine has begun to rely on deep neural networks.[11]",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "6",
+        "row_index": 6,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:6",
+        "question": "Please explain what is \"Google Search\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=6",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=6&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00007-HUMAN",
+      "text": "A recommender system, or a recommendation system (sometimes replacing 'system' with a synonym such as platform or engine), is a subclass of information filtering system that provide suggestions for items that are most pertinent to a particular user. Typically, the suggestions refer to various decision-making processes, such as what product to purchase, what music to listen to, or what online news to read. Recommender systems are particularly useful when an individual needs to choose an item from a potentially overwhelming number of items that a service may offer.\nRecommender systems are used in a variety of areas, with commonly recognised examples taking the form of playlist generators for video and music services, product recommenders for online stores, or content recommenders for social media platforms and open web content recommenders. These systems can operate using a single input, like music, or multiple inputs within and across platforms like news, books and search queries. There are also popular recommender systems for specific topics like restaurants and online dating. Recommender systems have also been developed to explore research articles and experts, collaborators, and financial services.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "7",
+        "row_index": 7,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:7",
+        "question": "Please explain what is \"Recommender system\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=7",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=7&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00008-HUMAN",
+      "text": "Amazon.com, Inc. (/ˈæməzɒn/ AM-ə-zon) is an American multinational technology company focusing on e-commerce, cloud computing, online advertising, digital streaming, and artificial intelligence. It has been referred to as \"one of the most influential economic and cultural forces in the world\", and is one of the world's most valuable brands. It is one of the Big Five American information technology companies, alongside Alphabet, Apple, Meta, and Microsoft.\nAmazon was founded by Jeff Bezos from his garage in Bellevue, Washington, on July 5, 1994. Initially an online marketplace for books, it has expanded into a multitude of product categories, a strategy that has earned it the moniker The Everything Store. It has multiple subsidiaries including Amazon Web Services (cloud computing), Zoox (autonomous vehicles), Kuiper Systems (satellite Internet), and Amazon Lab126 (computer hardware R&D). Its other subsidiaries include Ring, Twitch, IMDb, and Whole Foods Market. Its acquisition of Whole Foods in August 2017 for US$13.4 billion substantially increased its footprint as a physical retailer.\nAmazon has earned a reputation as a disruptor of well-established industries through technological innovation and \"aggressive\" reinvestment of profits into capital expenditures.[10][11][12][13] As of 2022, it is the world's largest online retailer and marketplace, smart speaker provider, cloud computing service through AWS,[14] live-streaming service through Twitch, and Internet company as measured by revenue and market share.[15] In 2021, it surpassed Walmart as the world's largest retailer outside of China, driven in large part by its paid subscription plan, Amazon Prime, which has over 200 million subscribers worldwide.[16][17] It is the second-largest private employer in the United States.[18]\nAmazon also distributes a variety of downloadable and streaming content through its Amazon Prime Video, Amazon Music, Twitch, and Audible units. It publishes books through its publishing arm, Amazon Publishing, film and television content through Amazon Studios, and has been the owner of film and television studio Metro-Goldwyn-Mayer since March 2022. It also produces consumer electronics—most notably, Kindle e-readers, Echo devices, Fire tablets, and Fire TVs.\nAmazon has been criticized for customer data collection practices,[19] a toxic work culture,[20] tax avoidance,[21][22] and anti-competitive behavior.[23][24]",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "8",
+        "row_index": 8,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:8",
+        "question": "Please explain what is \"Amazon (company)\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=8",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=8&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00009-HUMAN",
+      "text": "Natural-language understanding (NLU) or natural-language interpretation (NLI) is a subtopic  of natural-language processing in artificial intelligence that deals with machine reading comprehension. Natural-language understanding is considered an AI-hard problem.\nThere is considerable commercial interest in the field because of its application to automated reasoning, machine translation, question answering, news-gathering, text categorization, voice-activation, archiving, and large-scale content analysis.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "9",
+        "row_index": 9,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:9",
+        "question": "Please explain what is \"Natural-language understanding\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=9",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=9&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00010-HUMAN",
+      "text": "Amazon Alexa, also known simply as Alexa, is a virtual assistant technology largely based on a Polish speech synthesiser named Ivona, bought by Amazon in 2013. It was first used in the Amazon Echo smart speaker and the Echo Dot, Echo Studio and Amazon Tap speakers developed by Amazon Lab126. It is capable of voice interaction, music playback, making to-do lists, setting alarms, streaming podcasts, playing audiobooks, and providing weather, traffic, sports, and other real-time information, such as news. Alexa can also control several smart devices using itself as a home automation system. Users are able to extend the Alexa capabilities by installing \"skills\" (additional functionality developed by third-party vendors, in other settings more commonly called apps) such as weather programs and audio features. It uses automatic speech recognition, natural language processing, and other forms of weak AI to perform these tasks.\nMost devices with Alexa allow users to activate the device using a wake-word (such as Alexa or Amazon); other devices (such as the Amazon mobile app on iOS or Android and Amazon Dash Wand) require the user to click a button to activate Alexa's listening mode, although, some phones also allow a user to say a command, such as \"Alexa\" or \"Alexa wake\".\nAs of November 2018[update], Amazon had more than 10,000 employees working on Alexa and related products. In January 2019, Amazon's devices team announced that they had sold over 100 million Alexa-enabled devices.\nIn September 2019, Amazon launched many new devices achieving many records while competing with the world's smart home industry. The new Echo Studio became the first smart speaker with 360 sound and Dolby sound. Other new devices included an Echo dot with a clock behind the fabric, a new third-generation Amazon Echo, Echo Show 8, a plug-in Echo device, Echo Flex, Alexa built-in wireless earphones, Echo buds, Alexa built-in spectacles, Echo frames, an Alexa built-in Ring, and Echo Loop.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "10",
+        "row_index": 10,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:10",
+        "question": "Please explain what is \"Amazon Alexa\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=10",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=10&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00011-HUMAN",
+      "text": "A self-driving car, also known as an autonomous car, driver-less car, or robotic car (robo-car), is a car that is capable of traveling without human input. Self-driving cars use sensors to perceive their surroundings, such as optical and thermographic cameras, radar, lidar, ultrasound/sonar, GPS, odometry and inertial measurement units. Control systems interpret sensory information to create a three-dimensional model of the surroundings. Based on the model, the car identifies appropriate navigation paths, and strategies for managing traffic controls (stop signs, etc.) and obstacles.[10][11]\nOnce the technology matures, autonomous vehicles are predicted to impact the automobile industry, health, welfare, urban planning, traffic, insurance, labor market and other fields. \nAutonomy in vehicles is often divided into six levels,[12] according to a system developed by SAE International (SAE J3016).[13] The SAE levels can be roughly understood as Level 0 – no automation; Level 1 – hands on/shared control; Level 2 – hands off; Level 3 – eyes off; Level 4 – mind off, and Level 5 – steering wheel optional.\nAs of December 2022[update], vehicles operating at Level 3 and above were an insignificant market factor. In December 2020, Waymo became the first service provider to offer driver-less taxi rides to the general public, in a part of Phoenix, Arizona. In March 2021, Honda was the first manufacturer to sell a legally approved Level 3 car.[14][15][16] Nuro began autonomous commercial delivery operations in California in 2021.[17] In December 2021, Mercedes-Benz received approval for a Level 3 car.[18] In February 2022, Cruise became the second service provider to offer driver-less taxi rides to the general public, in San Francisco.[19]\nAs of December 2022[update], several manufacturers had scaled back plans for self-driving technology, including Ford and Volkswagen.[20]",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "11",
+        "row_index": 11,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:11",
+        "question": "Please explain what is \"Self-driving car\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=11",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=11&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00012-HUMAN",
+      "text": "Automated decision-making (ADM) involves the use of data, machines and algorithms to make decisions in a range of contexts, including public administration, business, health, education, law, employment, transport, media and entertainment, with varying degrees of human oversight or intervention. ADM involves large-scale data from a range of sources, such as databases, text, social media, sensors, images or speech, that is processed using various technologies including computer software, algorithms, machine learning, natural language processing, artificial intelligence, augmented intelligence and robotics. The increasing use of automated decision-making systems (ADMS) across a range of contexts presents many benefits and challenges to human society requiring consideration of the technical, legal, ethical, societal, educational, economic and health consequences.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "12",
+        "row_index": 12,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:12",
+        "question": "Please explain what is \"Automated decision-making\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=12",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=12&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00013-HUMAN",
+      "text": "A strategy game or strategic game is a game (e.g. a board game) in which the players' uncoerced, and often autonomous, decision-making skills have a high significance in determining the outcome. Almost all strategy games require internal decision tree-style thinking, and typically very high situational awareness.\nStrategy games are also seen as a descendant of war games, and define strategy in terms of the context of war, but this is more partial. A strategy game is a game that relies primarily on strategy, and when it comes to defining what strategy is, two factors need to be taken into account: its complexity and game-scale actions, such as each placement in a Total War series. The definition of a strategy game in its cultural context should be any game that belongs to a tradition that goes back to war games, contains more strategy than the average video game, contains certain gameplay conventions, and is represented by a particular community. Although war is dominant in strategy games, it is not the whole story.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "13",
+        "row_index": 13,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:13",
+        "question": "Please explain what is \"Strategic game\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=13",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=13&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00014-HUMAN",
+      "text": "Go is an abstract strategy board game for two players in which the aim is to surround more territory than the opponent. The game was invented in China more than 2,500 years ago and is believed to be the oldest board game continuously played to the present day. A 2016 survey by the International Go Federation's 75 member nations found that there are over 46 million people worldwide who know how to play Go and over 20 million current players, the majority of whom live in East Asia.\nThe playing pieces are called stones. One player uses the white stones and the other, black. The players take turns placing the stones on the vacant intersections (points) of a board. Once placed on the board, stones may not be moved, but stones are removed from the board if the stone (or group of stones) is surrounded by opposing stones on all orthogonally adjacent points, in which case the stone or group is captured. The game proceeds until neither player wishes to make another move. When a game concludes, the winner is determined by counting each player's surrounded territory along with captured stones and komi (points added to the score of the player with the white stones as compensation for playing second). Games may also be terminated by resignation.\nThe standard Go board has a 19×19 grid of lines, containing 361 points. Beginners often play on smaller 9×9 and 13×13 boards, and archaeological evidence shows that the game was played in earlier centuries on a board with a 17×17 grid. However, boards with a 19×19 grid had become standard by the time the game reached Korea in the 5th century CE and Japan in the 7th century CE.\nGo was considered one of the four essential arts of the cultured aristocratic Chinese scholars in antiquity. The earliest written reference to the game is generally recognized as the historical annal Zuo Zhuan[10] (c. 4th century BCE).[11]\nDespite its relatively simple rules, Go is extremely complex. Compared to chess, Go has both a larger board with more scope for play and longer games and, on average, many more alternatives to consider per move. The number of legal board positions in Go has been calculated to be approximately 2.1×10170,[12][a] which is vastly greater than the number of atoms in the observable universe, estimated to be of the order of 1080.[14]",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "14",
+        "row_index": 14,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:14",
+        "question": "Please explain what is \"Go (game)\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=14",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=14&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00015-HUMAN",
+      "text": "The AI effect occurs when onlookers discount the behavior of an artificial intelligence program by arguing that it is not real intelligence.\nAuthor Pamela McCorduck writes: \"It's part of the history of the field of artificial intelligence that every time somebody figured out how to make a computer do something—play good checkers, solve simple but relatively informal problems—there was a chorus of critics to say, 'that's not thinking'.\" Researcher Rodney Brooks complains: \"Every time we figure out a piece of it, it stops being magical; we say, 'Oh, that's just a computation.'\"\n\"The AI effect\" is that line of thinking, the tendency to redefine AI to mean: \"AI is anything that has not been done yet.\" This is the common public misperception, that as soon as AI successfully solves a problem, that solution method is no longer within the domain of AI.\nMcCorduck calls it an \"odd paradox\" that \"practical AI successes, computational programs that actually achieved intelligent behavior, were soon assimilated into whatever application domain they were found to be useful in, and became silent partners alongside other problem-solving approaches, which left AI researchers to deal only with the 'failures', the tough nuts that couldn't yet be cracked.\"\n\nWhen IBM's chess-playing computer Deep Blue succeeded in defeating Garry Kasparov in 1997, people complained that it had only used \"brute force methods\" and it wasn't real intelligence. Fred Reed writes:  Tesler's Theorem  is:\nDouglas Hofstadter quotes this as do many other commentators.\nWhen problems have not yet been formalised, they can still be characterised by a model of computation that includes human computation. The computational burden of a problem is split between a computer and a human: one part is solved by computer and the other part solved by a human.  This formalisation is referred to as human-assisted Turing machine.[10]",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "15",
+        "row_index": 15,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:15",
+        "question": "Please explain what is \"AI effect\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=15",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=15&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00016-HUMAN",
+      "text": "Optical character recognition or optical character reader (OCR) is the electronic or mechanical conversion of images of typed, handwritten or printed text into machine-encoded text, whether from a scanned document, a photo of a document, a scene-photo (for example the text on signs and billboards in a landscape photo) or from subtitle text superimposed on an image (for example: from a television broadcast).\nWidely used as a form of data entry from printed paper data records – whether passport documents, invoices, bank statements, computerized receipts, business cards, mail, printouts of static-data, or any suitable documentation – it is a common method of digitizing printed texts so that they can be electronically edited, searched, stored more compactly, displayed on-line, and used in machine processes such as cognitive computing, machine translation, (extracted) text-to-speech, key data and text mining. OCR is a field of research in pattern recognition, artificial intelligence and computer vision.\nEarly versions needed to be trained with images of each character, and worked on one font at a time. Advanced systems capable of producing a high degree of recognition accuracy for most fonts are now common, and with support for a variety of digital image file format inputs. Some systems are capable of reproducing formatted output that closely approximates the original page including images, columns, and other non-textual components.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "16",
+        "row_index": 16,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:16",
+        "question": "Please explain what is \"Optical character recognition\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=16",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=16&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00017-HUMAN",
+      "text": "In the history of artificial intelligence, an AI winter is a period of reduced funding and interest in artificial intelligence research. The term was coined by analogy to the idea of a nuclear winter. The field has experienced several hype cycles, followed by disappointment and criticism, followed by funding cuts, followed by renewed interest years or even decades later.\nThe term first appeared in 1984 as the topic of a public debate at the annual meeting of AAAI (then called the \"American Association of Artificial Intelligence\"). It is a chain reaction that begins with pessimism in the AI community, followed by pessimism in the press, followed by a severe cutback in funding, followed by the end of serious research. At the meeting, Roger Schank and Marvin Minsky—two leading AI researchers who had survived the \"winter\" of the 1970s—warned the business community that enthusiasm for AI had spiraled out of control in the 1980s and that disappointment would certainly follow. Three years later, the billion-dollar AI industry began to collapse.\nHype is common in many emerging technologies, such as the railway mania or the dot-com bubble. The AI winter was a result of such hype, due to over-inflated promises by developers, unnaturally high expectations from end-users, and extensive promotion in the media. Despite the rise and fall of AI's reputation, it has continued to develop new and successful technologies. AI researcher Rodney Brooks would complain in 2002 that \"there's this stupid myth out there that AI has failed, but AI is around you every second of the day.\" In 2005, Ray Kurzweil agreed: \"Many observers still think that the AI winter was the end of the story and that nothing since has come of the AI field. Yet today many thousands of AI applications are deeply embedded in the infrastructure of every industry.\"\nEnthusiasm and optimism about AI has generally increased since its low point in the early 1990s. Beginning about 2012, interest in artificial intelligence (and especially the sub-field of machine learning) from the research and corporate communities led to a dramatic increase in funding and investment.\nQuantum winter is the prospect of a similar development in quantum computing, anticipated or contemplated by Mikhail Dyakonov, Chris Hoofnagle, Simson Garfinkel, Victor Galitsky, and Nikita Gourianov.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "17",
+        "row_index": 17,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:17",
+        "question": "Please explain what is \"AI winter\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=17",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=17&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00018-HUMAN",
+      "text": "In artificial intelligence, symbolic artificial intelligence is the term for the collection of all methods in artificial intelligence research that are based on high-level symbolic (human-readable) representations of problems, logic and search. Symbolic AI used tools such as logic programming, production rules, semantic nets and frames, and it developed applications such as knowledge-based systems (in particular, expert systems),  symbolic mathematics, automated theorem provers, ontologies, the semantic web, and automated planning and scheduling systems. The Symbolic AI paradigm led to seminal ideas in search, symbolic programming languages, agents, multi-agent systems, the semantic web, and the strengths and limitations of formal knowledge and reasoning systems.\nSymbolic AI was the dominant paradigm of AI research from the mid-1950s until the middle 1990s. \nResearchers in the 1960s and the 1970s were convinced that symbolic approaches would eventually succeed in creating a machine with artificial general intelligence and considered this the ultimate goal of their field. An early boom, with early successes such as the Logic Theorist and Samuel's Checker's Playing Program led to unrealistic expectations and promises and was followed by the First AI Winter as funding dried up. A second boom (1969–1986) occurred with the rise of expert systems, their promise of capturing corporate expertise, and an enthusiastic corporate embrace. That boom, and some early successes, e.g., with XCON at DEC, was followed again by later disappointment. Problems with difficulties in knowledge acquisition, maintaining large knowledge bases, and brittleness in handling out-of-domain problems arose. Another, second, AI Winter (1988–2011) followed. Subsequently, AI researchers focused on addressing underlying problems in handling uncertainty and in knowledge acquisition.[10] Uncertainty was addressed with formal methods such as hidden Markov models, Bayesian reasoning, and statistical relational learning.[11][12] Symbolic machine learning addressed the knowledge acquisition problem with contributions including Version Space, Valiant's PAC learning, Quinlan's ID3 decision-tree learning, case-based learning, and inductive logic programming to learn relations.[10]\nNeural networks, a sub-symbolic approach, had been pursued from early days and was to reemerge strongly in 2012.  Early examples are Rosenblatt's perceptron learning work, the backpropagation work of Rumelhart, Hinton and Williams,[13] and work in convolutional neural networks by LeCun et al. in 1989.[14] However, neural networks were not viewed as successful until about 2012: \"Until Big Data became commonplace, the general consensus in the Al community was that the so-called neural-network approach was hopeless. Systems just didn't work that well, compared to other methods. ... A revolution came in 2012, when a number of people, including a team of researchers working with Hinton, worked out a way to use the power of GPUs to enormously increase the power of neural networks.\"[15] Over the next several years, deep learning had spectacular success in handling vision, speech recognition, speech synthesis, image generation, and machine translation. However, since 2020, as inherent difficulties with bias, explanation, comprehensibility, and robustness became more apparent with deep learning approaches; an increasing number of AI researchers have called for combining the best of both the symbolic and neural network approaches[16][17] and addressing areas that both approaches have difficulty with, such as common-sense reasoning.[15]",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "18",
+        "row_index": 18,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:18",
+        "question": "Please explain what is \"Symbolic AI\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=18",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=18&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00019-HUMAN",
+      "text": "In computer science, in particular in knowledge representation and reasoning and metalogic, the area of automated reasoning is dedicated to understanding different aspects of reasoning. The study of automated reasoning helps produce computer programs that allow computers to reason completely, or nearly completely, automatically. Although automated reasoning is considered a sub-field of artificial intelligence, it also has connections with theoretical computer science and philosophy.\nThe most developed subareas of automated reasoning are automated theorem proving (and the less automated but more pragmatic subfield of interactive theorem proving) and automated proof checking (viewed as guaranteed correct reasoning under fixed assumptions).[citation needed] Extensive work has also been done in reasoning by analogy using induction and abduction.\nOther important topics include reasoning under uncertainty and non-monotonic reasoning. An important part of the uncertainty field is that of argumentation, where further constraints of minimality and consistency are applied on top of the more standard automated deduction. John Pollock's OSCAR system is an example of an automated argumentation system that is more specific than being just an automated theorem prover.\nTools and techniques of automated reasoning include the classical logics and calculi, fuzzy logic, Bayesian inference, reasoning with maximal entropy and many less formal ad hoc techniques.",
+      "provenance": {
+        "authorship": "dataset_labeled_human",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "19",
+        "row_index": 19,
+        "source_label": "human_answers",
+        "pair_id": "wiki_csai:19",
+        "question": "Please explain what is \"Automated reasoning\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=19",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=19&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as human and identifies the Wikipedia source, but supplies no individual author identity or independent authorship verification."
+      }
+    }
+  ],
+  "ai": [
+    {
+      "id": "HC3-WIKI-CSAI-00000-CHATGPT",
+      "text": "Animal cognition refers to the mental capacities of non-human animals. It includes the ability to process information, perceive and attend to stimuli, learn and remember, solve problems, and make decisions. These cognitive abilities are thought to be mediated by brain functions, and research on animal cognition seeks to understand the neural and psychological mechanisms underlying these abilities.\n\n\n\nStudies of animal cognition have been conducted in a variety of species, including mammals, birds, reptiles, and fish. These studies have revealed that many animals are capable of sophisticated cognitive abilities, such as problem-solving, learning, and decision-making. For example, some animals are able to use tools, communicate with others, and navigate complex environments.\n\n\n\nUnderstanding animal cognition can provide insight into the evolution of cognitive abilities in humans and other animals, and can also inform the development of animal-friendly practices in fields such as animal welfare, conservation, and animal-assisted therapy.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "0",
+        "row_index": 0,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:0",
+        "question": "Please explain what is \"Animal cognition\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=0",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=0&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00001-CHATGPT",
+      "text": "Human intelligence is the mental ability to think, learn, and understand concepts. It is what enables us to process, analyze, and use information, as well as to reason, plan, solve problems, and make decisions. Intelligence is a complex and multifaceted concept that is difficult to define and measure, but it is generally considered to include a range of cognitive abilities such as verbal and mathematical aptitude, spatial awareness, memory, and problem-solving skills. Intelligence is an important aspect of human behavior that is thought to be influenced by a combination of genetic and environmental factors.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "1",
+        "row_index": 1,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:1",
+        "question": "Please explain what is \"Human intelligence\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=1",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=1&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00002-CHATGPT",
+      "text": "The Oxford English Dictionary (OED) is a comprehensive dictionary of the English language, published by the Oxford University Press. It is considered to be the most authoritative and comprehensive English language dictionary in the world, and is a valuable resource for language scholars and professionals.\n\n\n\nThe OED is a historical dictionary, meaning that it traces the history and development of words and their meanings over time. It contains over 600,000 main entries, with definitions, etymologies, and quotations illustrating the use of words in context. It also includes information about pronunciation, grammar, and regional variations in language usage.\n\n\n\nThe OED is published in print and online, and is regularly updated to reflect changes in the English language. It is used as a reference work by writers, editors, linguists, and others who are interested in the English language and its usage.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "2",
+        "row_index": 2,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:2",
+        "question": "Please explain what is \"Oxford English Dictionary\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=2",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=2&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00003-CHATGPT",
+      "text": "Oxford University Press (OUP) is a department of the University of Oxford in England. It is the largest university press in the world and is a publisher of academic, scholarly, and educational books, journals, and other materials. OUP was founded in 1478 and is one of the oldest publishing houses in the world. It is a not-for-profit organization and its main goal is to further the University's objectives of excellence in research, scholarship, and education. OUP publishes a wide range of materials, including dictionaries, textbooks, scholarly monographs, and research journals in a variety of languages and disciplines. It has offices in more than 50 countries and its products are sold in over 180 countries.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "3",
+        "row_index": 3,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:3",
+        "question": "Please explain what is \"Oxford University Press\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=3",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=3&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00004-CHATGPT",
+      "text": "AI applications are computer systems that are designed to perform tasks that would normally require human intelligence, such as understanding natural language, recognizing patterns, learning, and making decisions. These tasks are often referred to as \"cognitive computing\" or \"artificial intelligence\" (AI). AI applications can be classified into two broad categories: narrow or general. Narrow AI applications are designed to perform a specific task, such as image recognition or language translation, whereas general AI applications are designed to perform a wide range of tasks and have the ability to learn and adapt as they encounter new situations.\n\n\n\nSome examples of AI applications include:\n\n\n\nNatural language processing (NLP): This involves the ability of a computer to understand and interpret human language, such as speech or text.\n\n\n\nMachine learning: This involves the ability of a computer to learn from data, without being explicitly programmed.\n\n\n\nRobotics: This involves the use of AI to control and coordinate the movement of robots.\n\n\n\nComputer vision: This involves the ability of a computer to recognize and interpret visual data, such as images and video.\n\n\n\nExpert systems: This involves the use of AI to replicate the decision-making ability of a human expert in a specific field.\n\n\n\nAI applications have the potential to revolutionize many industries and are being used in a variety of applications, including healthcare, finance, education, transportation, and more. However, the development and use of AI also raise ethical and societal concerns, such as the potential for job displacement and the need for responsible use of the technology.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "4",
+        "row_index": 4,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:4",
+        "question": "Please explain what is \"AI applications\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=4",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=4&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00005-CHATGPT",
+      "text": "Web search is a way to find information on the World Wide Web (also known as the internet). When you perform a web search, you enter a query, which is a word or phrase that describes what you are looking for, into a search engine. The search engine then searches through a database of websites and returns a list of results that match your query.\n\n\n\nThere are many different search engines available, such as Google, Bing, and Yahoo. Each search engine uses its own algorithms to rank the results and determine which websites are the most relevant to your query. You can usually access a search engine by going to its website or by using a search bar that is built into your web browser.\n\n\n\nWeb search is a useful tool for finding information on a wide variety of topics, including news, images, videos, products, and more. It is also a useful way to find websites that you might not have known about otherwise.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "5",
+        "row_index": 5,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:5",
+        "question": "Please explain what is \"Web search\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=5",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=5&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00006-CHATGPT",
+      "text": "Google Search is a web search engine developed by Google. It is the most widely used search engine on the World Wide Web, handling more than three billion searches each day. Google Search allows users to search for information on the Internet by entering keywords, or phrases, into a search field. The search results are then displayed as a list of web pages, with the most relevant pages appearing at the top of the list.\n\n\n\nGoogle Search uses complex algorithms to determine the relevance and quality of the web pages it returns in response to a search query. These algorithms consider factors such as the number and quality of links to a page, the relevance of the page's content to the search query, and the presence of certain keywords on the page.\n\n\n\nIn addition to returning web pages, Google Search can also return other types of results, such as images, news articles, and videos. Users can also use advanced search options, such as searching within a specific website or searching for a specific type of file, to refine their search results.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "6",
+        "row_index": 6,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:6",
+        "question": "Please explain what is \"Google Search\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=6",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=6&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00007-CHATGPT",
+      "text": "A recommender system, or a recommendation system, is a subclass of information filtering system that seeks to predict the \"rating\" or \"preference\" a user would give to an item. Recommender systems are utilized in a variety of areas, but are most commonly recognized as playlist generators for video and music services, product recommenders for online stores, or content recommenders for social media platforms.\n\n\n\nThere are several methods used to build recommender systems, including:\n\n\n\nCollaborative filtering: This method makes recommendations based on the past behavior of a group of users. It looks at the items that similar users have liked in the past, and recommends those items to the new user.\n\n\n\nContent-based filtering: This method recommends items based on their attributes. It looks at the characteristics of an item and recommends similar items to the user.\n\n\n\nHybrid systems: These systems use both collaborative filtering and content-based filtering to make recommendations.\n\n\n\nThere are many potential applications for recommender systems, including product recommendations for e-commerce websites, movie recommendations for streaming services, and content recommendations for social media platforms. Recommender systems have the ability to improve the user experience by personalizing recommendations and highlighting items that may be of particular interest to the user.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "7",
+        "row_index": 7,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:7",
+        "question": "Please explain what is \"Recommender system\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=7",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=7&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00008-CHATGPT",
+      "text": "Amazon is an American multinational technology company based in Seattle, Washington. It is one of the world's largest online retailers and provides a wide range of products and services, including electronic commerce, cloud computing, and artificial intelligence.\n\n\n\nAmazon was founded by Jeff Bezos in 1994 as an online bookstore, and it has since expanded to sell a wide variety of products, including clothing, electronics, household items, and more. The company also offers a number of services, including Amazon Prime, which provides members with free shipping, streaming video and music, and other benefits.\n\n\n\nIn addition to its online retail operations, Amazon also operates a number of other businesses, including Amazon Web Services, which provides cloud computing services to companies and organizations around the world, and Amazon Studios, which produces original television shows and movies. The company has also invested in a number of other ventures, including healthcare, transportation, and artificial intelligence.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "8",
+        "row_index": 8,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:8",
+        "question": "Please explain what is \"Amazon (company)\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=8",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=8&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00009-CHATGPT",
+      "text": "Natural-language understanding (NLU) is a subfield of natural-language processing (NLP) that focuses on the ability of a computer to analyze, understand, and interpret human language. It involves taking unstructured text or speech input and extracting meaning from it, in order to perform tasks such as answering questions, generating responses, or carrying out commands.\n\n\n\nNLU systems typically use a combination of techniques from linguistics, computer science, and artificial intelligence to analyze the structure and meaning of language. This can involve identifying and analyzing the grammatical structure of sentences, recognizing and interpreting the meanings of words and phrases, and extracting information from text or speech.\n\n\n\nNLU has a wide range of applications, including chatbots, voice assistants, language translation systems, and information retrieval systems. It is an active area of research in computer science and artificial intelligence, and has the potential to revolutionize how humans and computers interact.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "9",
+        "row_index": 9,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:9",
+        "question": "Please explain what is \"Natural-language understanding\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=9",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=9&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00010-CHATGPT",
+      "text": "Amazon Alexa is a virtual assistant developed by Amazon, which is designed to be used with smart home devices such as smart speakers and smart displays. It can be activated by saying the \"wake word\" \"Alexa,\" and can be used to play music, set alarms and timers, provide news and weather updates, answer questions, and perform a variety of other tasks. Alexa is activated by voice, and users can interact with it by speaking commands and asking questions. The virtual assistant can also be controlled using the Alexa app, which is available for smartphones and tablets. Amazon Alexa is a part of the Amazon Echo family of products, which includes smart speakers and other devices that are equipped with the Alexa virtual assistant.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "10",
+        "row_index": 10,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:10",
+        "question": "Please explain what is \"Amazon Alexa\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=10",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=10&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00011-CHATGPT",
+      "text": "A self-driving car, also known as an autonomous vehicle or a driverless car, is a vehicle that is capable of sensing its environment and navigating without human input. Self-driving cars use a variety of technologies, such as cameras, radar, and lidar, to gather data about their surroundings and make decisions about how to navigate. They also use artificial intelligence (AI) algorithms to process this data and determine the best course of action.\n\n\n\nSelf-driving cars have the potential to revolutionize transportation by making it safer, more efficient, and more accessible. They can reduce the number of accidents caused by human error, improve traffic flow, and provide mobility to people who are unable to drive due to age, disability, or other factors. However, there are also concerns about the safety and reliability of self-driving cars, and there is ongoing debate about the appropriate level of regulation and oversight for these vehicles.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "11",
+        "row_index": 11,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:11",
+        "question": "Please explain what is \"Self-driving car\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=11",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=11&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00012-CHATGPT",
+      "text": "Automated decision-making refers to the use of computer algorithms and other technologies to make decisions without human intervention. These decisions can be made based on data and rules that have been programmed into the system, and they can be made at a faster rate and with greater consistency than if they were made by humans.\n\n\n\nAutomated decision-making is used in a variety of settings, including finance, insurance, healthcare, and the criminal justice system. It is often used to improve efficiency, reduce the risk of errors, and make more objective decisions. However, it can also raise ethical concerns, particularly if the algorithms or data used to make the decisions are biased or if the consequences of the decisions are significant. In these cases, it may be important to have human oversight and review of the automated decision-making process to ensure that it is fair and just.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "12",
+        "row_index": 12,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:12",
+        "question": "Please explain what is \"Automated decision-making\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=12",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=12&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00013-CHATGPT",
+      "text": "A strategic game is a type of game in which the players' decisions and actions have a significant impact on the outcome of the game. These games often involve a high level of planning and strategy, as players must consider the actions of their opponents and try to anticipate their moves. Strategic games can be played with a physical board or digitally, and they can be based on a variety of themes and genres, including war, economics, politics, and sports. Some examples of strategic games include chess, Go, Risk, and poker.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "13",
+        "row_index": 13,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:13",
+        "question": "Please explain what is \"Strategic game\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=13",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=13&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00014-CHATGPT",
+      "text": "Go is a board game that originated in China more than 2,500 years ago. It is played on a grid of 19 by 19 lines, with each player starting with an initial allotment of stones of their color (black or white). The goal of the game is to surround a larger total area of the board with your stones than your opponent does with theirs. Players take turns placing their stones on the intersections of the lines on the board, and the game ends when both players pass, indicating that they do not wish to make any more moves.\n\n\n\nThe game is known for its simple rules, but deep strategy and complexity. It is particularly popular in East Asia, and is played professionally in countries such as China, Japan, and South Korea. Go has also gained a following in other parts of the world, and international tournaments are held regularly. The game is widely recognized for the unique challenges it presents to players and for the mental discipline and concentration it requires.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "14",
+        "row_index": 14,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:14",
+        "question": "Please explain what is \"Go (game)\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=14",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=14&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00015-CHATGPT",
+      "text": "The \"AI effect\" refers to the phenomenon where people underestimate the capabilities of artificial intelligence (AI) because they perceive it as being similar to their own thought processes and behaviors. This can lead to a tendency to attribute intelligent behavior to other factors, such as the programmer or the underlying algorithms, rather than the AI system itself.\n\n\n\nThe AI effect can lead people to overestimate their own abilities and underestimate the potential of AI systems. For example, if a person is able to perform a task with relative ease, they may assume that the task is not particularly difficult or intelligent and therefore attribute their success to their own abilities rather than recognizing the potential of the AI system that may be assisting them.\n\n\n\nOverall, the AI effect can be a barrier to understanding and appreciating the capabilities of AI systems, and can lead to a lack of appreciation for the value that AI can bring to various fields.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "15",
+        "row_index": 15,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:15",
+        "question": "Please explain what is \"AI effect\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=15",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=15&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00016-CHATGPT",
+      "text": "Optical character recognition (OCR) is a technology that allows computers to recognize and process text that appears in images, such as scanned documents and digital photographs. It works by analyzing the shapes and patterns of the characters in the image and comparing them to a database of known characters. OCR software can be used to extract text from images and convert it into a digital format that can be edited and searched. OCR is commonly used in applications such as document scanning, data entry, and automatic indexing of documents. It can also be used to digitize handwritten text and to recognize text in languages that use non-Latin scripts, such as Chinese, Japanese, and Arabic.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "16",
+        "row_index": 16,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:16",
+        "question": "Please explain what is \"Optical character recognition\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=16",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=16&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00017-CHATGPT",
+      "text": "An \"AI winter\" refers to a period of reduced funding and interest in artificial intelligence (AI) research and development. This can occur for a variety of reasons, such as the failure of AI technologies to meet expectations, negative public perceptions of AI, or shifts in funding priorities. During an AI winter, researchers and companies may experience difficulty obtaining funding for AI projects and there may be a general downturn in the field.\n\n\n\nThe term \"AI winter\" was coined in the 1980s, after a period of optimism and progress in the field of AI was followed by a period of setbacks and reduced funding. Since then, there have been several AI winters, in which funding and interest in the field declined, followed by periods of renewed interest and progress.\n\n\n\nIt is important to note that the term \"AI winter\" is often used metaphorically, and it is not a precise scientific term. The concept of an AI winter is used to describe periods of reduced funding and interest in the field of AI, but the severity and duration of these periods can vary.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "17",
+        "row_index": 17,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:17",
+        "question": "Please explain what is \"AI winter\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=17",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=17&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00018-CHATGPT",
+      "text": "Symbolic artificial intelligence (AI) is a subfield of AI that focuses on the use of symbolic representations and logic-based methods to solve problems. It is also sometimes referred to as \"classical AI\" or \"good old-fashioned AI (GOFAI).\"\n\n\n\nIn symbolic AI, problems are solved by manipulating symbols according to a set of rules. The symbols represent concepts or entities in the problem domain, and the rules represent the relationships between those concepts or entities. For example, a symbolic AI system might be designed to solve a puzzle by representing the different pieces of the puzzle as symbols and using rules to manipulate those symbols and find a solution.\n\n\n\nSymbolic AI systems are often based on first-order logic, which allows them to represent and reason about the properties of objects and the relationships between them. This makes them well-suited for tasks that require logical reasoning and problem-solving, such as natural language processing, planning, and theorem proving.\n\n\n\nHowever, symbolic AI systems have some limitations. They can be difficult to design and implement, and they may require a large amount of human-generated knowledge to be encoded into the system. In addition, they can be inflexible and may not be able to handle uncertainty or handle tasks that require a lot of data or sensory input.\n\n\n\nToday, symbolic AI is often used in combination with other AI techniques, such as machine learning and neural networks, in order to improve their performance and overcome some of their limitations.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "18",
+        "row_index": 18,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:18",
+        "question": "Please explain what is \"Symbolic AI\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=18",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=18&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    },
+    {
+      "id": "HC3-WIKI-CSAI-00019-CHATGPT",
+      "text": "Automated reasoning is the process of using a computer program to automatically deduce new conclusions from a set of given statements or axioms. It is a subfield of artificial intelligence and computer science that is concerned with the development of algorithms and systems that can reason logically and make decisions based on logical deductions from known facts or axioms.\n\n\n\nAutomated reasoning has a wide range of applications, including theorem proving, diagnosis, planning, and natural language processing. It is used in various fields such as mathematics, computer science, engineering, and artificial intelligence to perform tasks that would be infeasible or impractical for humans to do manually.\n\n\n\nThere are several different approaches to automated reasoning, including rule-based systems, resolution-based systems, model-based systems, and hybrid systems that combine multiple approaches. These systems can use various logical formalisms, such as propositional logic, first-order logic, and higher-order logics, to represent and reason about knowledge.\n\n\n\nIn summary, automated reasoning is the process of using a computer program to reason logically and make decisions based on known facts or axioms. It is a powerful tool for solving complex problems and performing tasks that would be infeasible for humans to do manually.",
+      "provenance": {
+        "authorship": "dataset_labeled_chatgpt",
+        "dataset": "Hello-SimpleAI/HC3",
+        "dataset_revision": "4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "publication": "Guo et al. (2023), How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection, arXiv:2301.07597.",
+        "subset": "wiki_csai",
+        "split": "train",
+        "row_id": "19",
+        "row_index": 19,
+        "source_label": "chatgpt_answers",
+        "pair_id": "wiki_csai:19",
+        "question": "Please explain what is \"Automated reasoning\"",
+        "source_reference": "https://huggingface.co/datasets/Hello-SimpleAI/HC3/viewer/wiki_csai/train?row=19",
+        "row_api_reference": "https://datasets-server.huggingface.co/rows?dataset=Hello-SimpleAI%2FHC3&config=wiki_csai&split=train&offset=19&length=1&revision=4d0ff18143b5a7e1b1e79beb540c04549d1e59d3",
+        "authorship_uncertainty": "The HC3 row labels this answer as ChatGPT-generated. The published row does not provide an individual generation timestamp or exact serving-model version."
+      }
+    }
+  ],
+  "verified_human": []
+}

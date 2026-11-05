@@ -1,118 +1,251 @@
-"""
-What your test runs. ← UNIT 8, MILESTONE 3
+"""Reproducible tests for the five original acceptance criteria."""
 
-Each of your five criteria needs something run against it. A criterion about
-false positives needs your own writing. One about label coverage needs inputs
-across the score range. One about the appeal path needs a real content_id.
+import json
+from pathlib import Path
 
-Working that out is Milestone 3's first step, and this file is where you write
-it down. `run_eval.py` runs everything here three times.
+import config
 
-Two are filled in as examples. Replace them with what your criteria actually
-need — these are a shape, not a set.
-
-A scenario carries **either** of these:
-
-    "texts"   a list of strings. Each is sent as {"text": ..., "creator_id": ...}
-              with a creator_id made up for you. Use this for most criteria.
-
-    "bodies"  a list of whole request bodies, sent exactly as written. Use this
-              when the malformed request IS the point — empty text, no `text`
-              field at all, something enormous. A bad-input criterion needs it,
-              because you cannot express "the field is missing" as a string.
-"""
+SAMPLE_FILE = config.ROOT / "evaluation_samples.json"
+HUMAN_EVALUATION_COUNT = 20
+HUMAN_SAMPLE_COUNT = 20
+AI_SAMPLE_COUNT = 20
 
 SCENARIOS = [
     {
-        "name": "my own writing",
         "criterion": 1,
-        # ⚠️ PUT YOUR OWN WRITING HERE. Not AI text, not a sample from the web —
-        # things you actually wrote. This is the criterion that matters most and
-        # it's meaningless with someone else's prose.
-        "texts": [
-            "REPLACE ME with a paragraph you wrote yourself.",
-            "REPLACE ME with another one. Ten pieces is the usual number.",
-        ],
+        "name": "verified human false positives",
+        "kind": "classifications",
+        "dataset": "verified_human",
+        "sample_count": HUMAN_EVALUATION_COUNT,
+        "target": "At most 1 of 20 verified human-written samples receives the high-confidence AI label in each trial.",
     },
     {
-        "name": "label coverage",
         "criterion": 2,
-        # Inputs spread across your score range, so you can check all three
-        # labels are actually reachable.
-        "texts": [
-            "REPLACE ME with something you're confident is AI-generated.",
-            "REPLACE ME with something you're confident is human-written.",
-            "REPLACE ME with something genuinely borderline.",
-        ],
+        "name": "verified AI-human score separation",
+        "kind": "score_separation",
+        "sample_count": AI_SAMPLE_COUNT,
+        "target": "Mean AI combined score minus mean human combined score is at least 0.20 in each trial, using 20 verified samples per group.",
     },
-    # A bad-input criterion looks like this. Uncomment and adjust if that's one
-    # of your five — these are raw request bodies, sent exactly as written.
-    #
-    # {
-    #     "name": "bad input",
-    #     "criterion": 3,
-    #     "bodies": [
-    #         {"text": "", "creator_id": "eval_bad_empty"},
-    #         {"creator_id": "eval_bad_missing"},          # no text field at all
-    #         {"text": "word " * 50000, "creator_id": "eval_bad_huge"},
-    #         {"text": None, "creator_id": "eval_bad_null"},
-    #     ],
-    # },
+    {
+        "criterion": 3,
+        "name": "label coverage and boundaries",
+        "kind": "label_coverage",
+        "target": "All three labels are reachable; every score from 0 through 1 maps to exactly one label, including threshold and adjacent cases.",
+    },
+    {
+        "criterion": 4,
+        "name": "valid appeals and append-only decisions",
+        "kind": "appeals",
+        "sample_count": 10,
+        "target": "10/10 valid appeals are recorded as under_review in each trial, and each original decision remains in the audit log.",
+    },
+    {
+        "criterion": 5,
+        "name": "invalid submission handling",
+        "kind": "invalid_submissions",
+        "sample_count": 6,
+        "target": "All six predefined invalid requests receive 4xx responses and create no valid classification decision in each trial.",
+    },
+]
 
-    # TODO: add what your remaining criteria need.
-    #
-    # A criterion about the appeal path can't be tested by sending text alone;
-    # it needs a submission first and then an appeal against the content_id
-    # that came back. You'll need to test that one by hand, or extend this file
-    # and run_eval.py to do it. Saying which you did is part of the write-up.
+INVALID_CASES = [
+    {
+        "case": "missing_text",
+        "body": {"creator_id": "placeholder"},
+    },
+    {
+        "case": "empty_text",
+        "body": {"text": "", "creator_id": "placeholder"},
+    },
+    {
+        "case": "whitespace_text",
+        "body": {"text": " \t\n ", "creator_id": "placeholder"},
+    },
+    {
+        "case": "nonstring_text",
+        "body": {"text": 12345, "creator_id": "placeholder"},
+    },
+    {
+        "case": "missing_creator_id",
+        "body": {"text": "A valid text field without a creator ID."},
+    },
+    {
+        "case": "text_over_5000_characters",
+        "body": {"text": "x" * 5001, "creator_id": "placeholder"},
+    },
 ]
 
 
-def validate() -> list[str]:
-    """
-    Complain about anything malformed, before a long run rather than during.
+def _validate_samples(
+    samples: object,
+    kind: str,
+    expected_count: int,
+    expected_authorship: str,
+    dataset_provenance: dict,
+) -> list[dict]:
+    if not isinstance(samples, list) or len(samples) != expected_count:
+        actual_count = len(samples) if isinstance(samples, list) else 0
+        raise ValueError(
+            f"{kind} dataset must contain exactly {expected_count} samples; "
+            f"found {actual_count}."
+        )
 
-    A "bodies" scenario is deliberately exempt from the empty check — an empty
-    string is the whole point of a bad-input case, and refusing to run one
-    would make that criterion untestable.
-    """
-    problems = []
-    for i, scenario in enumerate(SCENARIOS, 1):
-        if not scenario.get("name"):
-            problems.append(f"scenario {i} has no name")
-
-        texts = scenario.get("texts")
-        bodies = scenario.get("bodies")
-
-        if texts and bodies:
-            problems.append(
-                f"scenario {i} ('{scenario.get('name')}') has both texts and "
-                f"bodies — pick one"
+    required_fields = (
+        (
+            "dataset",
+            "dataset_revision",
+            "publication",
+            "subset",
+            "split",
+            "row_id",
+            "source_label",
+            "pair_id",
+            "question",
+            "source_reference",
+            "row_api_reference",
+            "authorship_uncertainty",
+        )
+        if expected_authorship.startswith("dataset_labeled_")
+        else ("verification_method", "evidence")
+    )
+    seen_ids = set()
+    checked = []
+    for index, sample in enumerate(samples, 1):
+        if not isinstance(sample, dict):
+            raise ValueError(f"{kind} sample {index} must be an object.")
+        sample_id = sample.get("id")
+        text = sample.get("text")
+        provenance = sample.get("provenance")
+        if not isinstance(sample_id, str) or not sample_id.strip():
+            raise ValueError(f"{kind} sample {index} needs a nonempty id.")
+        if sample_id in seen_ids:
+            raise ValueError(f"Duplicate {kind} sample id: {sample_id}.")
+        seen_ids.add(sample_id)
+        if not isinstance(text, str) or not text.strip():
+            raise ValueError(f"{kind} sample {sample_id} needs nonempty text.")
+        if len(text) > 5000:
+            raise ValueError(
+                f"{kind} sample {sample_id} exceeds the 5,000-character limit."
             )
-            continue
-
-        if bodies:
-            for j, body in enumerate(bodies, 1):
-                if not isinstance(body, dict):
-                    problems.append(
-                        f"scenario {i}, body {j} is not a dict — bodies are whole "
-                        f"request bodies, like {{'text': '', 'creator_id': 'x'}}"
+        if not isinstance(provenance, dict):
+            raise ValueError(f"{kind} sample {sample_id} needs provenance.")
+        if provenance.get("authorship") != expected_authorship:
+            raise ValueError(
+                f"{kind} sample {sample_id} must declare "
+                f"authorship={expected_authorship!r}."
+            )
+        for field in required_fields:
+            value = provenance.get(field)
+            if not isinstance(value, str) or not value.strip():
+                raise ValueError(
+                    f"{kind} sample {sample_id} needs provenance.{field}."
+                )
+        if expected_authorship.startswith("dataset_labeled_"):
+            dataset_fields = {
+                "dataset": "dataset",
+                "dataset_revision": "revision",
+                "subset": "subset",
+                "split": "split",
+            }
+            for sample_field, dataset_field in dataset_fields.items():
+                if provenance[sample_field] != dataset_provenance[dataset_field]:
+                    raise ValueError(
+                        f"{kind} sample {sample_id} does not match the "
+                        f"dataset_provenance.{dataset_field}."
                     )
-            continue
+        checked.append(sample)
+    return checked
 
-        if not texts:
-            problems.append(f"scenario {i} has no texts and no bodies")
-            continue
 
-        for j, text in enumerate(texts, 1):
-            if not str(text).strip():
-                problems.append(
-                    f"scenario {i}, text {j} is empty — if an empty submission is what "
-                    f"you're testing, use 'bodies' instead of 'texts'"
-                )
-            elif str(text).startswith("REPLACE ME"):
-                problems.append(
-                    f"scenario {i} ('{scenario.get('name')}'), text {j} is still "
-                    f"the placeholder"
-                )
+def load_samples() -> dict[str, list[dict] | dict]:
+    """Load dataset-labeled pairs separately from verified human controls."""
+    if not SAMPLE_FILE.is_file():
+        raise FileNotFoundError(
+            f"Missing {SAMPLE_FILE.name}: provide documented comparison samples "
+            "for criterion 2 and verified human writing for criterion 1."
+        )
+
+    try:
+        dataset = json.loads(SAMPLE_FILE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"Could not read {SAMPLE_FILE.name}: {exc}") from exc
+
+    if not isinstance(dataset, dict):
+        raise ValueError(f"{SAMPLE_FILE.name} must contain a JSON object.")
+
+    dataset_provenance = dataset.get("dataset_provenance")
+    if not isinstance(dataset_provenance, dict):
+        raise ValueError("evaluation_samples.json needs dataset_provenance.")
+    for field in ("dataset", "revision", "publication", "license", "selection"):
+        value = dataset_provenance.get(field)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"dataset_provenance.{field} is required.")
+
+    human = _validate_samples(
+        dataset.get("human"),
+        "HC3 dataset-labeled human",
+        HUMAN_SAMPLE_COUNT,
+        "dataset_labeled_human",
+        dataset_provenance,
+    )
+    ai = _validate_samples(
+        dataset.get("ai"),
+        "HC3 dataset-labeled ChatGPT",
+        AI_SAMPLE_COUNT,
+        "dataset_labeled_chatgpt",
+        dataset_provenance,
+    )
+    verified_human_raw = dataset.get("verified_human", [])
+    if not isinstance(verified_human_raw, list):
+        raise ValueError("verified_human must be a list.")
+    if verified_human_raw:
+        verified_human = _validate_samples(
+            verified_human_raw,
+            "verified_human",
+            HUMAN_EVALUATION_COUNT,
+            "verified_human",
+            dataset_provenance,
+        )
+    else:
+        verified_human = []
+
+    all_texts = [sample["text"] for sample in human + ai]
+    if len(set(all_texts)) != len(all_texts):
+        raise ValueError("HC3 comparison texts must be distinct.")
+    if len(human) != len(ai):
+        raise ValueError("HC3 human and ChatGPT groups must be matched.")
+    for human_sample, ai_sample in zip(human, ai):
+        human_provenance = human_sample["provenance"]
+        ai_provenance = ai_sample["provenance"]
+        if (
+            human_provenance["pair_id"] != ai_provenance["pair_id"]
+            or human_provenance["question"] != ai_provenance["question"]
+            or human_provenance["row_id"] != ai_provenance["row_id"]
+        ):
+            raise ValueError(
+                f"HC3 samples {human_sample['id']} and {ai_sample['id']} "
+                "are not a matched question pair."
+            )
+
+    return {
+        "human": human,
+        "ai": ai,
+        "verified_human": verified_human,
+        "dataset_provenance": dataset_provenance,
+    }
+
+
+def validate() -> list[str]:
+    """Validate fixed scenarios and report unavailable provenance data."""
+    problems = []
+    if len(INVALID_CASES) != 6:
+        problems.append("criterion 5 must define exactly six invalid cases")
+    if any(not isinstance(case.get("body"), dict) for case in INVALID_CASES):
+        problems.append("each invalid-input case must contain a JSON object body")
+
+    try:
+        load_samples()
+    except (FileNotFoundError, ValueError) as exc:
+        problems.append(str(exc))
+
     return problems
