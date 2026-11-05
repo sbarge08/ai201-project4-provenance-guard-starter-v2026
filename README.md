@@ -278,12 +278,20 @@ accuracy or ground-truth performance.
 I used ChatGPT to discuss the system design and measurable acceptance
 criteria, and to receive implementation guidance. The five acceptance
 criteria and their targets were committed before implementation and remain
-unchanged.
+unchanged. During Unit 8, I also used AI assistance to reason about attack
+objectives, evaluate whether recorded responses met those objectives, and
+draft documentation from the saved attack and evaluation records. I reviewed
+the results against the actual files rather than treating generated analysis
+as evidence. I did not relabel uncertain or AI-assisted writing as verified
+human text; the missing verified-human samples remain an explicit limitation.
 
 **GitHub Copilot — implementation and testing**
 
-I used GitHub Copilot for code implementation and testing. I reviewed the
-resulting changes and test outputs while building the service.
+I used GitHub Copilot for implementation, evaluation-harness work,
+documentation, and local test execution. In Milestone 5, the only production
+change was the requested `AI_THRESHOLD` adjustment from 0.75 to 0.73. I
+reviewed the diff, attack outcomes, saved evaluation reports, audit evidence,
+and test output. The original attack baseline and `criteria.md` were preserved.
 
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 
@@ -1060,12 +1068,59 @@ scores, is in
 
 ## What's Still Broken
 
-Nine evasion attacks still returned `unsure`; MF03 still returned a
-high-confidence `human` label for its control-character-containing input.
-Criteria 1 and 2 remain NOT EVALUATED until the required verified-human
-writing evidence is available. The HC3 diagnostic misses its numeric 0.20
-gap, but is not a verified-authorship acceptance result. No further detector,
-validation, or weighting changes were made in this milestone.
+The after run has ten remaining BROKE cases. The nine evasion failures and
+MF03 are listed individually below; all exact scores are from
+[`results/attack_comparison_after.json`](results/attack_comparison_after.json).
+The one-parameter change fixed EV10 only. For EV01–EV09 the returned combined
+score remained below the new inclusive 0.73 AI threshold, so the existing
+label mapper returned `unsure`. That avoids an AI accusation but also means
+the intended evasions avoid decisive AI detection. The targeted signal
+manipulations are the attack objectives; without paired control inputs, their
+individual causal effects are not proven.
+
+| Attack | Objective and actual after result | Remaining failure / next evidence |
+|---|---|---|
+| EV01 | Typos / word variety; HTTP 200, model 0.1635, style 0.3891, combined 0.2763, `unsure` | Evasion remains inconclusive. Compare the typo version with its unmodified counterpart and inspect the style features before attributing the score to spelling changes. |
+| EV02 | Broken-up sentences / sentence-length variation; HTTP 200, model 0.5943, style 0.3222, combined 0.4583, `unsure` | Evasion remains inconclusive. A paired version and recorded sentence-length feature are needed to measure the structural effect. |
+| EV03 | Pasted quotation / text shape; HTTP 200, model 0.6662, style 0.3738, combined 0.5200, `unsure` | Evasion remains inconclusive. Compare the same passage before and after the quotation; current evidence does not isolate its effect. |
+| EV04 | Unusual words / GPT-2 perplexity; HTTP 200, model 0.6114, style 0.3905, combined 0.5010, `unsure` | Evasion remains inconclusive. The run did not record perplexity or an ordinary-word control, so the claimed model-signal effect is uncertain. |
+| EV05 | Heavy human editing / both signals; HTTP 200, model 0.3212, style 0.3838, combined 0.3525, `unsure` | Both measured signals produce a low combined score. An unedited, provenance-matched control is needed to separate editing effects from the original text. |
+| EV06 | One very long and one very short sentence / stylometry; HTTP 200, model 0.5727, style 0.2851, combined 0.4289, `unsure` | Evasion remains inconclusive. Sentence-length feature values and a paired input were not captured, so the stated mechanism is unverified. |
+| EV07 | Punctuation padding / punctuation density; HTTP 200, model 0.5862, style 0.3446, combined 0.4654, `unsure` | Evasion remains inconclusive. Compare with the same text without padding and record the punctuation component before attributing the result. |
+| EV08 | Text below the model token window; HTTP 200, model 0.2452, style 0.3803, combined 0.3128, `unsure` | Evasion remains inconclusive. The submitted short text is accepted; the recorded output has no token count or perplexity to establish why the model score is low. |
+| EV09 | AI text with a human-sounding opening / both signals; HTTP 200, model 0.7042, style 0.3611, combined 0.5327, `unsure` | Evasion remains inconclusive. Separate scores for the opening and AI body would be needed to determine their contributions. |
+| MF03 | Control-character-containing input; HTTP 200, model 0.0000, style 0.4841, combined 0.2420, `human` | The route accepts this nonempty string and emits a confident human-like decision. The model score's internal cause is unknown; validation should be assessed with explicit non-printable-input cases before a separate fix. |
+
+### Criteria that remain unevaluated
+
+- **Criterion 1 — false-positive limit:** NOT EVALUATED before and after.
+  There are not 20 verified human-written samples with adequate authorship
+  evidence. The eight staff false-positive probes are not a substitute for
+  the fixed verified-human evaluation set.
+- **Criterion 2 — score separation:** NOT EVALUATED before and after against
+  the original criterion, because the HC3 human answers are dataset-labeled
+  rather than independently verified as human-authored. The HC3 comparison
+  is an exploratory diagnostic only: each before and after trial measured an
+  AI mean of 0.701915, human-labeled mean of 0.580000, and gap of 0.121915,
+  below the numerical target 0.20. No verified-human result can be inferred
+  from that gap.
+
+Criteria 3–5 were MET in all three before and all three after trials. The
+label-boundary checks used 0.75 before and 0.73 after; all labels remained
+reachable and the partition remained complete. Appeals remained 10/10 and
+invalid requests 6/6 in each trial, with no rate limiting.
+
+**What I would fix next and why I stopped:** First, I would obtain the
+20 genuinely verified human samples needed to measure Criterion 1 and the
+verified-human side of Criterion 2. That evidence is necessary to evaluate
+whether any more aggressive AI boundary unfairly labels human writing.
+Separately, MF03 is the clearest next validation issue to investigate: define
+and test how the route should treat text dominated by control characters.
+I stopped without changing it because this milestone allowed exactly one
+production change, and combining a validation fix with the threshold
+experiment would make the before/after result ambiguous. I would also collect
+paired signal-level evidence for EV01–EV09 before choosing a detector change;
+the attack names alone do not prove their proposed mechanisms.
 
 **The trade I'd make if this ran for real:** I would keep an appeal path and
 favor an inconclusive result over an unsupported authorship accusation.
@@ -1093,16 +1148,16 @@ that trade cannot be judged adequately until Criterion 1 has verified data.
 
      SUBMISSION CHECKLIST — unit 8
 
-       [ ] Rate limiting on /submit, with your numbers justified
-       [ ] The pasted run of status codes showing 429
-       [ ] Audit log with all nine fields, recording rejections too
-       [ ] The attack set run IN FULL, every input with an outcome
-       [ ] Ten audit log entries pasted as text
-       [ ] Five criteria across three trials
-       [ ] A diagnosis for every miss and every broken attack — stage AND mechanism
-       [ ] One improvement, with Attack Run — After
-       [ ] What's Still Broken, including the production trade
-       [ ] At least four new commits
+       [x] Rate limiting on /submit, with your numbers justified
+       [x] The pasted run of status codes showing 429
+       [x] Audit log with all nine fields, recording rejections too
+       [x] The attack set run IN FULL, every input with an outcome
+       [x] Ten audit log entries pasted as text
+       [x] Five criteria across three trials
+       [x] A diagnosis for every miss and every broken attack — stage AND mechanism
+       [x] One improvement, with Attack Run — After
+       [x] What's Still Broken, including the production trade
+       [x] At least four new commits
        [ ] The SAME repository URL as last unit
 
      Do not delete and recreate this repository.
