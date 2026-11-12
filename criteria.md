@@ -87,3 +87,54 @@ Keep these targets unchanged during evaluation. Report misses against the
 selected targets rather than lowering them. Revise a criterion only if it
 proves unmeasurable, and preserve the original wording when documenting any
 revision.
+
+---
+
+## Unit 9 Capstone — Acceptance Criteria
+
+**Authorship disclosure:** These are AI-assisted criteria accepted by the student
+for the technical evaluation. The targets reflect the student's earlier choices;
+the wording and testing procedures were drafted with ChatGPT. Acceptance of this
+draft does not establish the unaided authorship required by the course rubric.
+The criteria must be committed before the capstone acceptance runs. No passing
+technical result resolves that separate coursework requirement.
+
+### 1. Operational Logging Completeness
+
+**My target:** All 10 successful submissions must appear in the operational log in each of three trials.
+
+**Why I chose this:** Every successful request should be traceable. Even one missing record could make it harder to investigate a problem.
+
+**How I will test:** I will send 10 valid submissions per trial and match their returned content IDs to new operational log entries. I will record how many match. Anything below 10 out of 10 fails that trial.
+
+### 2. Classification Response Time
+
+**My target:** Every measured warm classification request must finish server processing in 0.5 seconds or less.
+
+**Why I chose this:** I want the service to respond quickly while allowing some variation between requests. Half a second is the limit I chose for processing after the model is loaded.
+
+**How I will test:** After a warm-up request, I will send 10 classification requests in each of three trials. I will record the server duration from each operational log entry and convert milliseconds to seconds. Every measured request must meet the limit; a low average will not make up for a slow request.
+
+### 3. Operational Log Privacy
+
+**My target:** No raw submitted writing should appear in operational logs.
+
+**Why I chose this:** Users might submit private writing. The service should record what happened without making unnecessary copies of their text.
+
+**How I will test:** Each of three trials will include five valid submissions and five invalid submissions containing recognizable, non-sensitive test phrases. Three invalid submissions will omit `creator_id`, and two will exceed 5,000 characters. I will inspect the new operational log entries for submitted text, phrases, excerpts, or request-body fields. Any exposure fails the trial.
+
+### 4. Invalid Request Handling
+
+**My target:** All 10 invalid submissions must return a controlled HTTP 4xx response and have a matching operational rejection record in each trial.
+
+**Why I chose this:** Invalid requests should be rejected consistently, and their failures should be traceable.
+
+**How I will test:** I will test missing, empty, whitespace-only, numeric, null, list, object, and Boolean text, plus a missing creator ID and text exceeding 5,000 characters. I will keep other required fields valid. Across three trials, I will record each response and match it to the newly appended rejection entry, sending requests sequentially without unrelated traffic. Both checks must pass for all 10 requests.
+
+### 5. Reproducible Startup
+
+**My target:** All three independent startup attempts must succeed using RUNNING.md.
+
+**Why I chose this:** Someone following the documented instructions should be able to start the project without needing extra, undocumented steps.
+
+**How I will test:** I will perform one startup attempt in each of three trials, starting with the service stopped. I will follow RUNNING.md, check that `/health` returns HTTP 200, and stop the service afterward. I will record each outcome and whether I reused installed dependencies and cached model files. All three attempts must succeed.
