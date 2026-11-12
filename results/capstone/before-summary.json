@@ -1,0 +1,150 @@
+{
+  "phase": "before",
+  "started_at": "2026-11-12T13:36:42.751198+00:00",
+  "source_commit": "7b6efde65ed4f80f35e9c245a88dab0805b1feb3",
+  "criteria_commit": "f973346bff005cadd75ba72f328f4d43d4e632a7",
+  "criteria_sha256": "1c9dabee628700159d8fb21d14bcbe63ba2c28aa6d60f1e41c7f12243fcc04e4",
+  "python": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "fixture_origin": "AI-generated synthetic operational test text; no human-authorship claims",
+  "runner_sha256": "9cf6576fb968c38619af2000b1634bb2b922dbcef681252f1517837c1ec4b114",
+  "trials": [
+    {
+      "logging": {
+        "matched": 10,
+        "total": 10,
+        "met": true
+      },
+      "timing": {
+        "durations_ms": [
+          232.066,
+          249.485,
+          345.952,
+          543.876,
+          749.726,
+          781.134,
+          1310.842,
+          1614.412,
+          1750.692,
+          1896.298
+        ],
+        "max_ms": 1896.298,
+        "mean_ms": 947.4483,
+        "within_limit": 3,
+        "total": 10,
+        "met": false
+      },
+      "privacy": {
+        "leaks": [],
+        "observed_all_10": true,
+        "met": true
+      },
+      "invalid": {
+        "matched": 10,
+        "total": 10,
+        "met": true
+      },
+      "startup": {
+        "met": true
+      },
+      "rejection_correlation_diagnostic": {
+        "rejected_requests": 15,
+        "matching_request_ids": 0
+      }
+    },
+    {
+      "logging": {
+        "matched": 10,
+        "total": 10,
+        "met": true
+      },
+      "timing": {
+        "durations_ms": [
+          168.736,
+          183.091,
+          286.378,
+          486.818,
+          531.162,
+          599.961,
+          1236.772,
+          1587.231,
+          1516.596,
+          1741.125
+        ],
+        "max_ms": 1741.125,
+        "mean_ms": 833.787,
+        "within_limit": 4,
+        "total": 10,
+        "met": false
+      },
+      "privacy": {
+        "leaks": [],
+        "observed_all_10": true,
+        "met": true
+      },
+      "invalid": {
+        "matched": 10,
+        "total": 10,
+        "met": true
+      },
+      "startup": {
+        "met": true
+      },
+      "rejection_correlation_diagnostic": {
+        "rejected_requests": 15,
+        "matching_request_ids": 0
+      }
+    },
+    {
+      "logging": {
+        "matched": 10,
+        "total": 10,
+        "met": true
+      },
+      "timing": {
+        "durations_ms": [
+          164.142,
+          188.533,
+          301.667,
+          572.44,
+          694.1,
+          746.846,
+          1307.553,
+          1502.427,
+          1686.489,
+          1701.852
+        ],
+        "max_ms": 1701.852,
+        "mean_ms": 886.6049,
+        "within_limit": 3,
+        "total": 10,
+        "met": false
+      },
+      "privacy": {
+        "leaks": [],
+        "observed_all_10": true,
+        "met": true
+      },
+      "invalid": {
+        "matched": 10,
+        "total": 10,
+        "met": true
+      },
+      "startup": {
+        "met": true
+      },
+      "rejection_correlation_diagnostic": {
+        "rejected_requests": 15,
+        "matching_request_ids": 0
+      }
+    }
+  ],
+  "completed_at": "2026-11-12T13:39:10.325937+00:00",
+  "verdicts": {
+    "logging": "MET",
+    "timing": "MISSED",
+    "privacy": "MET",
+    "invalid": "MET",
+    "startup": "MET"
+  }
+}

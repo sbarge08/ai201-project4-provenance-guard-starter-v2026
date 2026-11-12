@@ -1272,6 +1272,263 @@ measured mean, not a load test or a measurement of CPU-seconds, electricity,
 hosting charges, or dollar cost. They exclude model loading, idle time,
 concurrency and queueing effects, and the operational-log append.
 
+**Run Log and Verdicts**
+
+The following is the actual Unit 9 baseline, separate from the earlier
+Milestone 3 demonstration and all Unit 8 results. The accepted AI-assisted
+criteria were committed as `f973346` before these runs. That commit order
+does not establish the unaided authorship required by Milestone 4.
+
+Baseline source commit: `7b6efde65ed4f80f35e9c245a88dab0805b1feb3`.
+Criteria SHA-256: `1c9dabee628700159d8fb21d14bcbe63ba2c28aa6d60f1e41c7f12243fcc04e4`.
+
+Reproduction: use the existing Python environment and a clean clone of the
+baseline source, then run the committed evaluator:
+
+```powershell
+python run_capstone_eval.py --source <clean-checkout> --output <new-evidence-folder> --phase before --port 5001
+```
+
+The evaluator starts `python -u app.py` with the documented `PORT=5001`
+override because another service occupied port 5000. It does not stop that
+existing service. Each trial starts a new process; the process is stopped
+after that trial. The existing Python 3.13 environment and cached GPT-2
+model are reused. Offline model flags prevent downloads. The runner
+terminates only its own process; manual Ctrl+C and fresh dependency
+installation are not tested. One startup per trial gives three attempts total.
+
+Each trial uses the same ten synthetic texts of 100, 200, 300, 500, 750,
+1,000, 1,500, 2,000, 3,000 and 4,500 characters after a separate warm-up.
+The 4,500-character case is valid; the existing detector truncates inputs
+to 400 tokens. The texts are generated operational fixtures, not verified
+human writing and not an authorship-accuracy dataset. Each successful
+request has a distinct creator ID to avoid accidental rate limiting.
+Invalid cases must return their expected 400/413 status, so a 429 cannot
+substitute for the intended validation path. No code changes occur between trials.
+
+| Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Successful submissions logged | 10/10 each trial | 10/10 | 10/10 | 10/10 | MET |
+| 2. Warm server processing time | 10/10 at or below 0.5s | 3/10; max 1.896298s | 4/10; max 1.741125s | 3/10; max 1.701852s | MISSED |
+| 3. Operational log privacy | 0 raw-text leaks in 10 cases | 0 leaks; 10/10 observed | 0 leaks; 10/10 observed | 0 leaks; 10/10 observed | MET |
+| 4. Invalid requests rejected and logged | 10/10 each trial | 10/10 | 10/10 | 10/10 | MET |
+| 5. Documented startup | 3/3 attempts across three trials | 1/1 | 1/1 | 1/1 | MET |
+
+All three trials missed Criterion 2. In total, 20 of 30 warm requests
+exceeded 0.5 seconds. The other four criteria met their tested targets.
+These finite cases do not prove privacy or latency for every possible input.
+
+**Actual baseline output and producing functions**
+
+Full machine-readable responses, payloads, server output and log excerpts
+are preserved in [`results/capstone/`](results/capstone/).
+
+Criterion 1 — `app.py::submit` returns the content ID;
+`app.py::_finish_request_timing` and `operational.py::log_request_event`
+produce the matching event. Actual trial-1 example:
+
+```json
+{
+  "response": {
+    "status": 200,
+    "body": {
+      "combined_score": 0.2388,
+      "confidence": 0.5224,
+      "content_id": "2bb2f1da-80f7-4ed6-947d-01e0dce59428",
+      "guess": "human",
+      "label": "High-confidence human-like patterns: this system's signals are strongly associated with human writing. This is not proof of authorship.",
+      "model_score": 0.0432,
+      "stage": "signals_combined_and_labeled",
+      "style_score": 0.4344
+    },
+    "duration_header_ms": "232.066",
+    "request_id_header": null,
+    "client_seconds": 0.23836710001341999
+  },
+  "operational_event": {
+    "timestamp": "2026-11-12T13:37:56.956935+00:00",
+    "request_started_at": "2026-11-12T13:37:56.724858+00:00",
+    "request_completed_at": "2026-11-12T13:37:56.956935+00:00",
+    "duration_ms": 232.066,
+    "method": "POST",
+    "endpoint": "/submit",
+    "status_code": 200,
+    "outcome": "success",
+    "content_id": "2bb2f1da-80f7-4ed6-947d-01e0dce59428",
+    "error_code": null
+  }
+}
+```
+
+Criterion 2 — actual server durations from
+`app.py::_finish_request_timing`, collected by
+`run_capstone_eval.py::run_trial`. Values are milliseconds:
+
+```json
+{
+  "trial_1": [
+    232.066,
+    249.485,
+    345.952,
+    543.876,
+    749.726,
+    781.134,
+    1310.842,
+    1614.412,
+    1750.692,
+    1896.298
+  ],
+  "trial_2": [
+    168.736,
+    183.091,
+    286.378,
+    486.818,
+    531.162,
+    599.961,
+    1236.772,
+    1587.231,
+    1516.596,
+    1741.125
+  ],
+  "trial_3": [
+    164.142,
+    188.533,
+    301.667,
+    572.44,
+    694.1,
+    746.846,
+    1307.553,
+    1502.427,
+    1686.489,
+    1701.852
+  ]
+}
+```
+
+Criterion 3 — actual ten trial-1 privacy events, produced by the same
+operational logger. They cover five successes, three missing-creator
+rejections and two overlong-text rejections. `privacy_leaks` inspects
+field names and string values for the full text, markers and sampled
+excerpts; an unexpected schema field also fails the check.
+
+```jsonl
+{"timestamp": "2026-11-12T13:38:06.803074+00:00", "request_started_at": "2026-11-12T13:38:06.482205+00:00", "request_completed_at": "2026-11-12T13:38:06.803074+00:00", "duration_ms": 320.865, "method": "POST", "endpoint": "/submit", "status_code": 200, "outcome": "success", "content_id": "7b7d3112-c116-4845-b88f-849622e16664", "error_code": null}
+{"timestamp": "2026-11-12T13:38:07.319818+00:00", "request_started_at": "2026-11-12T13:38:06.858521+00:00", "request_completed_at": "2026-11-12T13:38:07.319818+00:00", "duration_ms": 461.217, "method": "POST", "endpoint": "/submit", "status_code": 200, "outcome": "success", "content_id": "50af576a-8ab3-468f-a9e9-cbaf4f457de8", "error_code": null}
+{"timestamp": "2026-11-12T13:38:07.843847+00:00", "request_started_at": "2026-11-12T13:38:07.360971+00:00", "request_completed_at": "2026-11-12T13:38:07.843847+00:00", "duration_ms": 482.866, "method": "POST", "endpoint": "/submit", "status_code": 200, "outcome": "success", "content_id": "652d0a48-bbde-4efc-b12d-bab2c635c7b8", "error_code": null}
+{"timestamp": "2026-11-12T13:38:08.309000+00:00", "request_started_at": "2026-11-12T13:38:07.868825+00:00", "request_completed_at": "2026-11-12T13:38:08.309000+00:00", "duration_ms": 440.176, "method": "POST", "endpoint": "/submit", "status_code": 200, "outcome": "success", "content_id": "37332d01-e8f1-46da-909f-2f213fc85b84", "error_code": null}
+{"timestamp": "2026-11-12T13:38:08.972685+00:00", "request_started_at": "2026-11-12T13:38:08.334053+00:00", "request_completed_at": "2026-11-12T13:38:08.972685+00:00", "duration_ms": 638.603, "method": "POST", "endpoint": "/submit", "status_code": 200, "outcome": "success", "content_id": "c75e1dd3-68a3-49ef-859a-53b18a639547", "error_code": null}
+{"timestamp": "2026-11-12T13:38:09.005190+00:00", "request_started_at": "2026-11-12T13:38:08.998991+00:00", "request_completed_at": "2026-11-12T13:38:09.005190+00:00", "duration_ms": 6.195, "method": "POST", "endpoint": "/submit", "status_code": 400, "outcome": "rejected", "content_id": null, "error_code": "invalid_request"}
+{"timestamp": "2026-11-12T13:38:09.034002+00:00", "request_started_at": "2026-11-12T13:38:09.031374+00:00", "request_completed_at": "2026-11-12T13:38:09.034002+00:00", "duration_ms": 2.611, "method": "POST", "endpoint": "/submit", "status_code": 400, "outcome": "rejected", "content_id": null, "error_code": "invalid_request"}
+{"timestamp": "2026-11-12T13:38:09.063749+00:00", "request_started_at": "2026-11-12T13:38:09.061093+00:00", "request_completed_at": "2026-11-12T13:38:09.063749+00:00", "duration_ms": 2.641, "method": "POST", "endpoint": "/submit", "status_code": 400, "outcome": "rejected", "content_id": null, "error_code": "invalid_request"}
+{"timestamp": "2026-11-12T13:38:09.108382+00:00", "request_started_at": "2026-11-12T13:38:09.102755+00:00", "request_completed_at": "2026-11-12T13:38:09.108382+00:00", "duration_ms": 5.617, "method": "POST", "endpoint": "/submit", "status_code": 413, "outcome": "rejected", "content_id": null, "error_code": "text_too_long"}
+{"timestamp": "2026-11-12T13:38:09.156929+00:00", "request_started_at": "2026-11-12T13:38:09.150914+00:00", "request_completed_at": "2026-11-12T13:38:09.156929+00:00", "duration_ms": 6.007, "method": "POST", "endpoint": "/submit", "status_code": 413, "outcome": "rejected", "content_id": null, "error_code": "text_too_long"}
+```
+
+Actual trial-1 privacy check output:
+
+```json
+{
+  "leaks": [],
+  "observed_all_10": true,
+  "met": true
+}
+```
+
+Criterion 4 — `app.py::submit` rejects the malformed request and the
+operational logger records the rejection. `run_trial` checks the exact
+expected validation status as well as the matching event. Actual example:
+
+```json
+{
+  "case": "overlong_text",
+  "response": {
+    "status": 413,
+    "body": {
+      "error": "text_too_long",
+      "message": "'text' must not exceed 5000 characters."
+    },
+    "duration_header_ms": "3.030",
+    "request_id_header": null,
+    "client_seconds": 0.011189299984835088
+  },
+  "operational_event": {
+    "timestamp": "2026-11-12T13:38:09.570372+00:00",
+    "request_started_at": "2026-11-12T13:38:09.567353+00:00",
+    "request_completed_at": "2026-11-12T13:38:09.570372+00:00",
+    "duration_ms": 3.03,
+    "method": "POST",
+    "endpoint": "/submit",
+    "status_code": 413,
+    "outcome": "rejected",
+    "content_id": null,
+    "error_code": "text_too_long"
+  }
+}
+```
+
+Criterion 5 — `app.py::main` launches the service; `app.py::health`
+produces the response. Actual health responses for the three startups:
+
+```json
+{
+  "trial_1": {
+    "status": 200,
+    "body": {
+      "detector_loaded": false,
+      "detector_model": "gpt2",
+      "log_entries": 540,
+      "ok": true,
+      "rate_limiting": true
+    },
+    "duration_header_ms": "33.546",
+    "request_id_header": null,
+    "client_seconds": 2.2042760000331327
+  },
+  "trial_2": {
+    "status": 200,
+    "body": {
+      "detector_loaded": false,
+      "detector_model": "gpt2",
+      "log_entries": 571,
+      "ok": true,
+      "rate_limiting": true
+    },
+    "duration_header_ms": "23.856",
+    "request_id_header": null,
+    "client_seconds": 2.05912599992007
+  },
+  "trial_3": {
+    "status": 200,
+    "body": {
+      "detector_loaded": false,
+      "detector_model": "gpt2",
+      "log_entries": 602,
+      "ok": true,
+      "rate_limiting": true
+    },
+    "duration_header_ms": "50.889",
+    "request_id_header": null,
+    "client_seconds": 2.0901904000202194
+  }
+}
+```
+
+**Baseline diagnosis**
+
+The missed stage is synchronous classification in `app.py::submit`,
+specifically `detector.py::perplexity`, which tokenizes the input and runs
+GPT-2 before returning. In all three trials the longer test inputs took
+more time than the shortest inputs, up to the configured token cap.
+The target was broader than the earlier short-text timing sample.
+The maximum baseline duration was 1.896298 seconds; the 0.5-second limit
+is retained rather than lowered.
+
+The server timer covers classification and audit writing together. It
+does not by itself isolate how much time each stage takes. A separate
+diagnostic will examine CPU threading in the model stage before one
+bounded operational change is selected. No model weights, scoring
+formula, thresholds, truncation limit, or labels will be changed.
+
 **How I Used AI**
 
 This section records assistance used so far; it is not a claim that the
