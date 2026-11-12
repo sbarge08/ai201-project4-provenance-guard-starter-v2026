@@ -1166,3 +1166,13 @@ that trade cannot be judged adequately until Criterion 1 has verified data.
 ---
 
 📖 **How to run this project: [RUNNING.md](RUNNING.md)**
+
+## Capstone
+
+**What This Extends**
+
+This capstone extends Provenance Guard, the existing Flask service that classifies submitted text using GPT-2 and stylometry. It adds operational visibility through per-request latency measurements, structured request outcomes, and error visibility while retaining the existing classification and audit functionality.
+
+**The Shape**
+
+Shape A — Deploy and Instrument, using Path B — Local With Logs, as permitted by the CodePath rubric. The work instruments the existing local service and its logs; it does not replace or retrain GPT-2, change detector signals, weights, or thresholds, add authorship labels or major endpoints, provide public hosting, or rewrite the application.
