@@ -185,16 +185,16 @@ def correlation(records):
     return {"rejected_requests": len(rejected), "matching_request_ids": len(paired)}
 
 
-def run_trial(root, output, phase, trial, expected_hashes):
+def run_trial(root, output, phase, trial, expected_hashes, port):
     if source_hashes(root) != expected_hashes:
         raise RuntimeError("Source changed between trials")
     with socket.socket() as port_check:
-        if port_check.connect_ex(("127.0.0.1", 5000)) == 0:
-            raise RuntimeError("Port 5000 is already occupied; no existing process was stopped")
+        if port_check.connect_ex(("127.0.0.1", port)) == 0:
+            raise RuntimeError(f"Port {port} is already occupied; no existing process was stopped")
     log = root / "logs" / "operations.jsonl"
     offset = len(events(log))
     env = os.environ.copy()
-    env.update(HOST="127.0.0.1", PORT="5000", AI201_DEBUG="0", AI201_DETECTOR_MODEL="gpt2",
+    env.update(HOST="127.0.0.1", PORT=str(port), AI201_DEBUG="0", AI201_DETECTOR_MODEL="gpt2",
                AI201_RATE_LIMITS="1", HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1",
                PYTHONIOENCODING="utf-8")
     data = {"trial": trial, "started_at": now(), "source_hashes": expected_hashes,
@@ -272,11 +272,16 @@ def run_trial(root, output, phase, trial, expected_hashes):
 
 
 def main():
+    global BASE
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, required=True, help="Clean committed clone; service writes logs here")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--phase", choices=("before", "after"), required=True)
+    parser.add_argument("--port", type=int, default=5000, help="Documented PORT override; avoid an existing server")
     args = parser.parse_args()
+    if not 1024 <= args.port <= 65535:
+        parser.error("port must be between 1024 and 65535")
+    BASE = f"http://127.0.0.1:{args.port}"
     root, output = args.source.resolve(), args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     if list(output.glob(f"{args.phase}-trial-*.json")):
@@ -294,7 +299,7 @@ def main():
                 "runner_sha256": sha(Path(__file__)), "trials": []}
     hashes = source_hashes(root)
     for trial in range(1, 4):
-        result = run_trial(root, output, args.phase, trial, hashes)
+        result = run_trial(root, output, args.phase, trial, hashes, args.port)
         manifest["trials"].append(result["summary"])
         save_json(output / f"{args.phase}-summary.json", manifest)
         print(json.dumps({"phase": args.phase, "trial": trial, "summary": result["summary"]}), flush=True)
