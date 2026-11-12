@@ -1176,3 +1176,25 @@ This capstone extends Provenance Guard, the existing Flask service that classifi
 **The Shape**
 
 Shape A — Deploy and Instrument, using Path B — Local With Logs, as permitted by the CodePath rubric. The work instruments the existing local service and its logs; it does not replace or retrain GPT-2, change detector signals, weights, or thresholds, add authorship labels or major endpoints, provide public hosting, or rewrite the application.
+
+**Operational Log**
+
+Completed HTTP requests append one JSON object per line to
+`logs/operations.jsonl`, separate from the classification and appeal audit in
+`logs/audit.jsonl`. Each operational record includes `timestamp`,
+`request_started_at`, `request_completed_at`, `duration_ms`, `method`,
+`endpoint`, `status_code`, `outcome`, `content_id`, and `error_code`.
+`outcome` is `success` for status codes below 400, `rejected` for 4xx, and
+`error` for 5xx. `content_id` is recorded only when the response contains a
+valid generated UUID; `error_code` is a bounded code from a JSON error
+response. Both fields are `null` when unavailable.
+
+The timestamps are UTC. Duration uses a monotonic clock from Flask's
+`before_request` hook through `after_request`, so synchronous classification
+time is included. It measures server-side Flask processing before the
+operational log write and does not include network transit or client-perceived
+latency. `X-Request-Duration-Ms` exposes that same measurement in the response.
+Operational events do not include request bodies, submitted writing, creator
+IDs, or exception messages. A failure to append an operational event is
+reported through the service logger; the existing audit log remains separate
+and unchanged.

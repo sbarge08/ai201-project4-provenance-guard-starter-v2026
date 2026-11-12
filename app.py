@@ -42,7 +42,7 @@ app = Flask(__name__)
 
 @app.before_request
 def _start_request_timing():
-    g.request_started_at = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+    g.request_started_at = datetime.now(timezone.utc).isoformat(timespec="microseconds")
     g.request_start_counter = time.perf_counter()
 
 
@@ -52,7 +52,7 @@ def _finish_request_timing(response):
     if start_counter is None:
         return response
 
-    completed_at = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+    completed_at = datetime.now(timezone.utc).isoformat(timespec="microseconds")
     duration_ms = max((time.perf_counter() - start_counter) * 1000, 0.0)
     g.request_timing = {
         "request_started_at": g.request_started_at,
@@ -62,7 +62,9 @@ def _finish_request_timing(response):
         "endpoint": request.url_rule.rule if request.url_rule else "unmatched",
         "status_code": response.status_code,
     }
-    response_data = response.get_json(silent=True)
+    status_code = response.status_code
+    inspect_response_json = status_code >= 400 or request.endpoint in {"submit", "appeal"}
+    response_data = response.get_json(silent=True) if inspect_response_json else None
     content_id = response_data.get("content_id") if isinstance(response_data, dict) else None
     try:
         if not isinstance(content_id, str) or str(uuid.UUID(content_id)) != content_id:
@@ -70,7 +72,11 @@ def _finish_request_timing(response):
     except ValueError:
         content_id = None
 
-    error_code = response_data.get("error") if isinstance(response_data, dict) else None
+    error_code = (
+        response_data.get("error")
+        if status_code >= 400 and isinstance(response_data, dict)
+        else None
+    )
     if (
         not isinstance(error_code, str)
         or not error_code.isascii()
@@ -79,8 +85,12 @@ def _finish_request_timing(response):
     ):
         error_code = None
 
-    status_code = response.status_code
-    outcome = "success" if status_code < 400 else "rejected" if status_code < 500 else "error"
+    if status_code < 400:
+        outcome = "success"
+    elif status_code < 500:
+        outcome = "rejected"
+    else:
+        outcome = "error"
     event = {
         "timestamp": completed_at,
         **g.request_timing,
