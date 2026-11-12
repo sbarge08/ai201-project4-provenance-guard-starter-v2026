@@ -24,9 +24,11 @@ Routes:
     GET  /health      is the service up, and is the model loaded
 """
 
+import time
 import uuid
+from datetime import datetime, timezone
 
-from flask import Flask, jsonify, request
+from flask import Flask, g, jsonify, request
 
 import audit
 import config
@@ -35,6 +37,32 @@ import scoring
 import stylometry
 
 app = Flask(__name__)
+
+
+@app.before_request
+def _start_request_timing():
+    g.request_started_at = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+    g.request_start_counter = time.perf_counter()
+
+
+@app.after_request
+def _finish_request_timing(response):
+    start_counter = getattr(g, "request_start_counter", None)
+    if start_counter is None:
+        return response
+
+    completed_at = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+    duration_ms = max((time.perf_counter() - start_counter) * 1000, 0.0)
+    g.request_timing = {
+        "request_started_at": g.request_started_at,
+        "request_completed_at": completed_at,
+        "duration_ms": round(duration_ms, 3),
+        "method": request.method,
+        "endpoint": request.url_rule.rule if request.url_rule else "unmatched",
+        "status_code": response.status_code,
+    }
+    response.headers["X-Request-Duration-Ms"] = f"{duration_ms:.3f}"
+    return response
 
 
 # ── Rate limiting — UNIT 8 ────────────────────────────────────────────────────
