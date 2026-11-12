@@ -32,6 +32,69 @@ That downloads about 550 MB and scores a sample.
 
 ---
 
+## Local setup on Windows (PowerShell)
+
+Use Python **3.13** (the project supports Python 3.11, 3.12, or 3.13; Python
+3.14 is outside the pinned package range). This run was tested with Python
+3.13.15. From the repository root, create and activate a virtual environment,
+install dependencies, and download/load GPT-2:
+
+```powershell
+py -3.13 --version
+py -3.13 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python test.py
+python detector.py
+```
+
+The configured model name is `gpt2` (`AI201_DETECTOR_MODEL` can override it).
+On this machine, the cached Hugging Face GPT-2 snapshot measured 550,959,861
+bytes (about 525.4 MiB) across its files; `model.safetensors` itself was
+548,105,171 bytes (about 522.7 MiB). The initial model download needs an
+internet connection and sufficient disk space. These figures are the measured
+local cache size, not a promise that every Transformers cache format is
+identical.
+
+No environment variables are required; defaults work for local use. To make
+the loopback settings explicit in this PowerShell window:
+
+```powershell
+$env:HOST = "127.0.0.1"
+$env:PORT = "5000"
+$env:AI201_DEBUG = "0"
+$env:AI201_DETECTOR_MODEL = "gpt2"
+$env:AI201_RATE_LIMITS = "1"
+python app.py
+```
+
+`HOST`, `PORT`, `AI201_DEBUG`, `AI201_DETECTOR_MODEL`, and
+`AI201_RATE_LIMITS` are optional. Defaults are respectively `127.0.0.1`,
+`5000`, `1` (debug is still restricted to loopback), `gpt2`, and `1`
+(rate limiting enabled). The command above sets debug to `0` to avoid the
+development reloader during a measured run. Keep `HOST` on loopback for this
+local workflow.
+Press **Ctrl+C** in the server terminal to stop it.
+
+Inspect the separate append-only request log from another PowerShell window:
+
+```powershell
+Get-Content .\logs\operations.jsonl -Tail 10
+Get-Content .\logs\operations.jsonl | ForEach-Object { $_ | ConvertFrom-Json | Format-List }
+```
+
+Each line is one JSON request record. The operational log does not contain
+submitted writing. `logs\audit.jsonl` remains the separate decision and
+appeal audit.
+
+The setup was checked from a temporary detached Git worktree using this
+machine's existing Python 3.13 virtual environment and cached model; `python
+test.py` passed all nine checks there. This verified a clean source checkout,
+not a fresh dependency installation or a second model download.
+
+---
+
 ## Your first five minutes
 
 Two terminals. In the first:

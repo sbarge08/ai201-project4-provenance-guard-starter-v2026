@@ -1177,24 +1177,86 @@ This capstone extends Provenance Guard, the existing Flask service that classifi
 
 Shape A — Deploy and Instrument, using Path B — Local With Logs, as permitted by the CodePath rubric. The work instruments the existing local service and its logs; it does not replace or retrain GPT-2, change detector signals, weights, or thresholds, add authorship labels or major endpoints, provide public hosting, or rewrite the application.
 
-**Operational Log**
+**Running It**
+
+On Windows, use Python 3.13 and the local PowerShell setup in
+[`RUNNING.md`](RUNNING.md). From the repository root, the measured server
+command after environment setup is:
+
+```powershell
+python app.py
+```
+
+The measured run used `HOST=127.0.0.1`, `PORT=5000`, `AI201_DEBUG=0`,
+`AI201_DETECTOR_MODEL=gpt2`, and `AI201_RATE_LIMITS=1`. Stop the local server
+with Ctrl+C in its terminal. No public host or credentials are required.
+
+**Instrumentation**
 
 Completed HTTP requests append one JSON object per line to
 `logs/operations.jsonl`, separate from the classification and appeal audit in
-`logs/audit.jsonl`. Each operational record includes `timestamp`,
-`request_started_at`, `request_completed_at`, `duration_ms`, `method`,
-`endpoint`, `status_code`, `outcome`, `content_id`, and `error_code`.
-`outcome` is `success` for status codes below 400, `rejected` for 4xx, and
-`error` for 5xx. `content_id` is recorded only when the response contains a
-valid generated UUID; `error_code` is a bounded code from a JSON error
-response. Both fields are `null` when unavailable.
+`logs/audit.jsonl`. Each record has `timestamp`, `request_started_at`,
+`request_completed_at`, `duration_ms`, `method`, `endpoint`, `status_code`,
+`outcome`, `content_id`, and `error_code`. Outcomes are `success` (status
+below 400), `rejected` (4xx), or `error` (5xx). Content IDs are included only
+when a valid UUID is available. Operational records do not include request
+bodies, writing, creator IDs, or exception messages. Timestamps are UTC;
+duration uses a monotonic clock and includes synchronous classification and
+audit writing, but is measured before appending the operational record. It
+does not include network transit. `X-Request-Duration-Ms` exposes the same
+server-side duration.
 
-The timestamps are UTC. Duration uses a monotonic clock from Flask's
-`before_request` hook through `after_request`, so synchronous classification
-time is included. It measures server-side Flask processing before the
-operational log write and does not include network transit or client-perceived
-latency. `X-Request-Duration-Ms` exposes that same measurement in the response.
-Operational events do not include request bodies, submitted writing, creator
-IDs, or exception messages. A failure to append an operational event is
-reported through the service logger; the existing audit log remains separate
-and unchanged.
+The following are actual JSONL events from the local Flask run. The first is a
+real rejected HTTP 400 request, the second is the separately timed first
+classification while GPT-2 loaded, and the remaining ten are the warm
+classification requests used for the timing table below:
+
+```json
+{"timestamp":"2026-11-12T00:55:46.104806+00:00","request_started_at":"2026-11-12T00:55:46.103563+00:00","request_completed_at":"2026-11-12T00:55:46.104806+00:00","duration_ms":1.235,"method":"POST","endpoint":"/submit","status_code":400,"outcome":"rejected","content_id":null,"error_code":"invalid_request"}
+{"timestamp":"2026-11-12T00:55:56.668712+00:00","request_started_at":"2026-11-12T00:55:46.132073+00:00","request_completed_at":"2026-11-12T00:55:56.668712+00:00","duration_ms":10536.62,"method":"POST","endpoint":"/submit","status_code":200,"outcome":"success","content_id":"9bbf2367-0d9f-422f-a9c6-189815b8a4cc","error_code":null}
+{"timestamp":"2026-11-12T00:55:56.737626+00:00","request_started_at":"2026-11-12T00:55:56.673567+00:00","request_completed_at":"2026-11-12T00:55:56.737626+00:00","duration_ms":64.059,"method":"POST","endpoint":"/submit","status_code":200,"outcome":"success","content_id":"2805a9d3-be93-4f75-8dbb-e158d525dc97","error_code":null}
+{"timestamp":"2026-11-12T00:55:57.256807+00:00","request_started_at":"2026-11-12T00:55:57.110403+00:00","request_completed_at":"2026-11-12T00:55:57.256807+00:00","duration_ms":146.382,"method":"POST","endpoint":"/submit","status_code":200,"outcome":"success","content_id":"520c3491-264a-4b42-96dd-4bb6e05dfb2e","error_code":null}
+{"timestamp":"2026-11-12T00:55:57.788286+00:00","request_started_at":"2026-11-12T00:55:57.626338+00:00","request_completed_at":"2026-11-12T00:55:57.788286+00:00","duration_ms":161.93,"method":"POST","endpoint":"/submit","status_code":200,"outcome":"success","content_id":"6d47b445-ee4c-4588-804d-0c40ddf99c39","error_code":null}
+{"timestamp":"2026-11-12T00:55:58.324962+00:00","request_started_at":"2026-11-12T00:55:58.163896+00:00","request_completed_at":"2026-11-12T00:55:58.324962+00:00","duration_ms":160.998,"method":"POST","endpoint":"/submit","status_code":200,"outcome":"success","content_id":"875797d3-8543-4259-8c27-dc80883c15f5","error_code":null}
+{"timestamp":"2026-11-12T00:55:58.837230+00:00","request_started_at":"2026-11-12T00:55:58.683192+00:00","request_completed_at":"2026-11-12T00:55:58.837230+00:00","duration_ms":153.996,"method":"POST","endpoint":"/submit","status_code":200,"outcome":"success","content_id":"e3091cfb-6e65-4013-a35f-ca55624231b9","error_code":null}
+{"timestamp":"2026-11-12T00:55:59.377363+00:00","request_started_at":"2026-11-12T00:55:59.207736+00:00","request_completed_at":"2026-11-12T00:55:59.377363+00:00","duration_ms":169.613,"method":"POST","endpoint":"/submit","status_code":200,"outcome":"success","content_id":"efb52f7d-cf68-4352-a3a6-fd7a324b6e8b","error_code":null}
+{"timestamp":"2026-11-12T00:55:59.895103+00:00","request_started_at":"2026-11-12T00:55:59.734432+00:00","request_completed_at":"2026-11-12T00:55:59.895103+00:00","duration_ms":160.653,"method":"POST","endpoint":"/submit","status_code":200,"outcome":"success","content_id":"c94247f2-b247-4e24-b34d-ce79ab0f357c","error_code":null}
+{"timestamp":"2026-11-12T00:56:00.422424+00:00","request_started_at":"2026-11-12T00:56:00.270004+00:00","request_completed_at":"2026-11-12T00:56:00.422424+00:00","duration_ms":152.406,"method":"POST","endpoint":"/submit","status_code":200,"outcome":"success","content_id":"6e7307d4-c401-4004-8dfd-bf29f56db986","error_code":null}
+{"timestamp":"2026-11-12T00:56:00.979345+00:00","request_started_at":"2026-11-12T00:56:00.802232+00:00","request_completed_at":"2026-11-12T00:56:00.979345+00:00","duration_ms":177.09,"method":"POST","endpoint":"/submit","status_code":200,"outcome":"success","content_id":"fa54340d-b2ac-4d1f-9c37-51a1acea8e14","error_code":null}
+{"timestamp":"2026-11-12T00:56:01.505426+00:00","request_started_at":"2026-11-12T00:56:01.345922+00:00","request_completed_at":"2026-11-12T00:56:01.505426+00:00","duration_ms":159.472,"method":"POST","endpoint":"/submit","status_code":200,"outcome":"success","content_id":"e1860599-6bb2-4c8e-8e61-3edb6bff1ca2","error_code":null}
+```
+
+**What It Costs**
+
+I measured ten warm `POST /submit` requests from a local client with
+`time.perf_counter()` around each HTTP request. Each request used a distinct
+test `creator_id` to avoid rate limiting. Client latency is end-to-end for the
+local HTTP request. The server measurement is the monotonic `duration_ms`
+recorded by Flask from `before_request` through `after_request`; compute-time
+per classification is calculated as that duration divided by 1,000. It
+includes model inference, stylometry, scoring, existing audit writing, and
+response construction. It is not a standalone timing of GPT-2 alone.
+
+| Warm request | Client end-to-end (seconds) | Server processing / classification (seconds) |
+|---:|---:|---:|
+| 1 | 0.067939 | 0.064059 |
+| 2 | 0.168835 | 0.146382 |
+| 3 | 0.181009 | 0.161930 |
+| 4 | 0.185896 | 0.160998 |
+| 5 | 0.161652 | 0.153996 |
+| 6 | 0.189810 | 0.169613 |
+| 7 | 0.167668 | 0.160653 |
+| 8 | 0.176599 | 0.152406 |
+| 9 | 0.206883 | 0.177090 |
+| 10 | 0.174882 | 0.159472 |
+| **Mean** | **0.168117** | **0.150660** |
+
+The first classification was measured separately because it loaded the model:
+10.564066 seconds end-to-end and 10.536620 seconds in Flask server processing.
+It is not included in the warm means. The GPT-2 cache was already present, so
+this first request measured local model loading, not a fresh download. These
+are measurements from one local Windows machine and one short sample, not a
+benchmark guarantee. They vary with hardware, model/cache state, input length,
+system load, and network stack. The measured Flask interval excludes network
+transit and operational-log append time, while the client interval includes
+local HTTP overhead.
