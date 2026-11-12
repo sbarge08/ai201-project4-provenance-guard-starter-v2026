@@ -1262,3 +1262,30 @@ benchmark guarantee. They vary with hardware, model/cache state, input length,
 system load, and network stack. The measured Flask interval excludes network
 transit and operational-log append time, while the client interval includes
 local HTTP overhead.
+
+For **100 people per day**, assuming one classification per person and warm
+requests comparable to the measured sample, the arithmetic is
+`100 x 1 x 0.150660 = 15.066` seconds of aggregate server processing per day.
+At five classifications per person, it is
+`100 x 5 x 0.150660 = 75.330` seconds per day. These are projections from the
+measured mean, not a load test or a measurement of CPU-seconds, electricity,
+hosting charges, or dollar cost. They exclude model loading, idle time,
+concurrency and queueing effects, and the operational-log append.
+
+**How I Used AI**
+
+This section records assistance used so far; it is not a claim that the
+student-authored criteria milestone is complete.
+
+1. The student asked ChatGPT to review five selected acceptance targets,
+   then requested examples and complete wording for the testing methods.
+   ChatGPT supplied reference drafts, and that wording was incorporated
+   into the working Unit 9 section of `criteria.md`. Later discussion
+   narrowed the privacy example to five valid and five invalid submissions
+   per trial. The draft is explicitly identified as AI-assisted; copying
+   or approving it does not establish unaided student authorship.
+2. The student asked Codex to inspect and edit the existing repository in
+   VS Code. Codex preserved the earlier criteria, saved the approved privacy
+   draft, compared the repository with the assignment checklist, and added
+   the hundred-person calculation above using the existing measured mean.
+   These documentation edits did not produce new acceptance-test results.
