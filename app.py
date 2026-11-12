@@ -42,6 +42,8 @@ app = Flask(__name__)
 
 @app.before_request
 def _start_request_timing():
+    # Generate our own ID: never copy arbitrary client text into operational logs.
+    g.request_id = str(uuid.uuid4())
     g.request_started_at = datetime.now(timezone.utc).isoformat(timespec="microseconds")
     g.request_start_counter = time.perf_counter()
 
@@ -93,6 +95,7 @@ def _finish_request_timing(response):
         outcome = "error"
     event = {
         "timestamp": completed_at,
+        "request_id": g.request_id,
         **g.request_timing,
         "outcome": outcome,
         "content_id": content_id,
@@ -108,6 +111,7 @@ def _finish_request_timing(response):
         )
 
     response.headers["X-Request-Duration-Ms"] = f"{duration_ms:.3f}"
+    response.headers["X-Request-Id"] = g.request_id
     return response
 
 

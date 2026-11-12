@@ -1,0 +1,25 @@
+
+AI201 environment check
+------------------------------------------------------------
+[PASS] Python version
+         3.13.15 on Windows
+[PASS] Virtual environment
+         C:\Users\sachi\ai201-project4-provenance-guard-starter-v2026\.venv
+[PASS] Pinned packages
+         all 7 import cleanly
+[PASS] Free disk space
+         192.6 GB
+[PASS] Memory
+         15.4 GB
+[PASS] PyTorch
+         2.15.0+cpu
+[PASS] Flask
+         flask and flask-limiter both import
+[PASS] Detector model
+         already downloaded
+[PASS] The service
+         /ping answers � the starter works before you edit it
+------------------------------------------------------------
+9 passed, 0 failed, 0 to look at, 0 skipped
+
+You're set. See you in class.

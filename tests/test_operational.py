@@ -2,6 +2,7 @@ import json
 import tempfile
 import time
 import unittest
+import uuid
 from datetime import datetime
 from pathlib import Path
 from unittest.mock import patch
@@ -151,6 +152,7 @@ class OperationalLoggingTests(unittest.TestCase):
         self.assert_valid_event(event)
         self.assertEqual(event["outcome"], "error")
         self.assertEqual(event["status_code"], 500)
+        self.assertEqual(event["request_id"], response.headers["X-Request-Id"])
         self.assertNotIn(
             "PRIVATE_EXCEPTION_DETAIL",
             config.OPERATIONAL_LOG.read_text(encoding="utf-8"),
@@ -166,6 +168,34 @@ class OperationalLoggingTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         operational_log = config.OPERATIONAL_LOG.read_text(encoding="utf-8")
         self.assertNotIn(private_writing, operational_log)
+
+    def test_request_ids_correlate_success_and_rejection_without_trusting_client(self):
+        supplied_id = "PRIVATE_CLIENT_HEADER_MUST_NOT_ENTER_LOGS"
+        responses = [
+            self.client.post(
+                "/submit",
+                json=payload,
+                headers={"X-Request-Id": supplied_id},
+            )
+            for payload in (
+                {"text": "A synthetic valid passage for correlation.", "creator_id": "id-success"},
+                {"text": "A synthetic passage with missing creator."},
+                {"text": "x" * 5001, "creator_id": "id-too-long"},
+            )
+        ]
+        self.assertEqual([r.status_code for r in responses], [200, 400, 413])
+        records = self.read_events()
+        self.assertEqual(len(records), 3)
+        ids = []
+        for response, record in zip(responses, records):
+            request_id = response.headers["X-Request-Id"]
+            self.assertEqual(str(uuid.UUID(request_id)), request_id)
+            self.assertEqual(record["request_id"], request_id)
+            self.assertEqual(record["status_code"], response.status_code)
+            self.assertNotEqual(request_id, supplied_id)
+            ids.append(request_id)
+        self.assertEqual(len(set(ids)), 3)
+        self.assertNotIn(supplied_id, config.OPERATIONAL_LOG.read_text(encoding="utf-8"))
 
     def test_existing_routes_and_classification_output_are_preserved(self):
         submission = self.client.post(

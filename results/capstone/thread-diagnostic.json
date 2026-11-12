@@ -1,0 +1,117 @@
+{
+  "purpose": "Model-stage CPU threading diagnostic; not acceptance results",
+  "runs": [
+    {
+      "mode": "default",
+      "intraop_threads": 10,
+      "interop_threads": 10,
+      "torch_version": "2.15.0+cpu",
+      "cpu_count": 12,
+      "model_stage": [
+        {
+          "fixture_index": 2,
+          "characters": 300,
+          "seconds": [
+            0.3558167000301182,
+            0.3999006999656558,
+            0.2942945999093354
+          ],
+          "model_scores": [
+            0.6281,
+            0.6281,
+            0.6281
+          ]
+        },
+        {
+          "fixture_index": 9,
+          "characters": 4500,
+          "seconds": [
+            1.5829075999790803,
+            2.1008636999176815,
+            1.722217999980785
+          ],
+          "model_scores": [
+            0.9956,
+            0.9956,
+            0.9956
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "one-thread",
+      "intraop_threads": 1,
+      "interop_threads": 10,
+      "torch_version": "2.15.0+cpu",
+      "cpu_count": 12,
+      "model_stage": [
+        {
+          "fixture_index": 2,
+          "characters": 300,
+          "seconds": [
+            0.3941179000539705,
+            0.38876710005570203,
+            0.4049178999848664
+          ],
+          "model_scores": [
+            0.6281,
+            0.6281,
+            0.6281
+          ]
+        },
+        {
+          "fixture_index": 9,
+          "characters": 4500,
+          "seconds": [
+            2.6109682000242174,
+            2.5551938998978585,
+            2.663638300029561
+          ],
+          "model_scores": [
+            0.9956,
+            0.9956,
+            0.9956
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "four-threads",
+      "intraop_threads": 4,
+      "interop_threads": 10,
+      "torch_version": "2.15.0+cpu",
+      "cpu_count": 12,
+      "model_stage": [
+        {
+          "fixture_index": 2,
+          "characters": 300,
+          "seconds": [
+            0.31781899998895824,
+            0.28046139993239194,
+            0.2748923000181094
+          ],
+          "model_scores": [
+            0.6281,
+            0.6281,
+            0.6281
+          ]
+        },
+        {
+          "fixture_index": 9,
+          "characters": 4500,
+          "seconds": [
+            1.6468851999379694,
+            1.9361867000116035,
+            2.0121417000191286
+          ],
+          "model_scores": [
+            0.9956,
+            0.9956,
+            0.9956
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": "Neither tested lower thread limit improved the mean long-input model-stage duration over default. No threading setting was changed in the application."
+}

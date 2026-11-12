@@ -1523,11 +1523,53 @@ The target was broader than the earlier short-text timing sample.
 The maximum baseline duration was 1.896298 seconds; the 0.5-second limit
 is retained rather than lowered.
 
-The server timer covers classification and audit writing together. It
-does not by itself isolate how much time each stage takes. A separate
-diagnostic will examine CPU threading in the model stage before one
-bounded operational change is selected. No model weights, scoring
-formula, thresholds, truncation limit, or labels will be changed.
+The server timer covers classification and audit writing together. A separate
+model-only diagnostic reproduced the slow long-input processing without Flask
+or log writes. Each cell below averages three direct calls after warm-up:
+
+| CPU intra-op threads | 300-character model-stage mean (s) | 4,500-character model-stage mean (s) |
+|---:|---:|---:|
+| 10 | 0.350004 | 1.801996 |
+| 1 | 0.395934 | 2.609933 |
+| 4 | 0.291058 | 1.865071 |
+
+Full diagnostic output is in
+[`thread-diagnostic.json`](results/capstone/thread-diagnostic.json). The tested
+thread limits did not improve the long-input mean; no thread setting was changed
+in the application. The model scores were identical in these diagnostic calls.
+These small, sequential experiments are evidence about this machine, not a
+universal thread-count recommendation. PyTorch documents the controls in its
+[threading environment-variable reference](https://docs.pytorch.org/docs/stable/threading_environment_variables.html).
+
+There is also a tracing limitation: all 45 rejected baseline requests had no
+shared request ID between the HTTP response and operational record. The
+acceptance tests can match their events only because requests are serialized
+and log boundaries are controlled. That does not provide robust correlation
+when unrelated traffic interleaves. The existing logging criteria were too
+limited to expose this as an acceptance miss; the separate correlation
+diagnostic records it explicitly.
+
+**The Improvement**
+
+One operational change adds a server-generated UUID for every request.
+`app.py::_start_request_timing` creates it; `_finish_request_timing` writes it
+as `request_id` and returns the same value in `X-Request-Id`. It covers success,
+validation rejection, rate limiting, and handled server-error responses.
+Incoming client IDs are ignored, so arbitrary client text cannot enter the
+operational log through this field. This addresses the measured tracing gap,
+not the unresolved model-compute latency miss.
+
+No model weights, detector code, scoring formula, thresholds, token limit,
+classification response body, or acceptance target is changed. Existing
+records without request IDs are preserved. The change adds a small UUID and
+log-field overhead; the full acceptance suite will be rerun to measure the
+result rather than assume it is free.
+
+Eight focused regression tests passed, including valid/invalid correlation,
+unique IDs, rejection of client-supplied IDs, privacy, rate limiting, server
+errors, and existing route behavior. The server-error test deliberately emits
+a traceback and still passes; that is injected test traffic, not a live crash.
+
 
 **How I Used AI**
 

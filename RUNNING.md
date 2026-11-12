@@ -389,3 +389,25 @@ is evidence, and the entries you paste into your README are what unit 8 grades.
 
 **Do not delete and recreate this repository.** You submit the same URL both
 units.
+
+
+## Correlating operational requests
+
+New requests have a server-generated UUID in the `X-Request-Id` response header
+and the matching `request_id` field in `logs/operations.jsonl`. This works for
+rejections as well as successes. Client-provided request IDs are not trusted or
+copied into logs. Historical records without this field remain valid historical
+evidence; they are not rewritten.
+
+For example, after starting the service:
+
+```powershell
+$healthResponse = Invoke-WebRequest -Uri 'http://127.0.0.1:5000/health'
+$healthRequestId = $healthResponse.Headers['X-Request-Id']
+Get-Content .\logs\operations.jsonl | ForEach-Object { $_ | ConvertFrom-Json } | Where-Object { $_.request_id -eq $healthRequestId }
+```
+
+If the documented optional `PORT` is set to another value, use that value in
+the request URL. Capstone evaluation used port 5001 to leave an already-running
+service on 5000 untouched. Evaluation reuses the installed environment and
+cached model, so it does not establish that a fresh installation will succeed.

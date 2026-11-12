@@ -1,0 +1,36 @@
+test_duration_includes_classification_execution (test_operational.OperationalLoggingTests.test_duration_includes_classification_execution) ... ok
+test_existing_routes_and_classification_output_are_preserved (test_operational.OperationalLoggingTests.test_existing_routes_and_classification_output_are_preserved) ... ok
+test_invalid_requests_are_logged_as_rejections (test_operational.OperationalLoggingTests.test_invalid_requests_are_logged_as_rejections) ... ok
+test_operational_log_does_not_contain_submitted_writing (test_operational.OperationalLoggingTests.test_operational_log_does_not_contain_submitted_writing) ... ok
+test_rate_limit_response_is_logged (test_operational.OperationalLoggingTests.test_rate_limit_response_is_logged) ... ok
+test_request_ids_correlate_success_and_rejection_without_trusting_client (test_operational.OperationalLoggingTests.test_request_ids_correlate_success_and_rejection_without_trusting_client) ... ok
+test_server_error_is_logged_without_exception_detail (test_operational.OperationalLoggingTests.test_server_error_is_logged_without_exception_detail) ... [2026-11-12 08:46:45,581] ERROR in app: Exception on /health [GET]
+Traceback (most recent call last):
+  File "C:\Users\sachi\ai201-project4-provenance-guard-starter-v2026\.venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\sachi\ai201-project4-provenance-guard-starter-v2026\.venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\sachi\ai201-project4-provenance-guard-starter-v2026\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\sachi\ai201-project4-provenance-guard-starter-v2026\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\sachi\ai201-project4-provenance-guard-starter-v2026\app.py", line 222, in health
+    "log_entries": len(audit.read_entries()),
+                       ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\sachi\AppData\Local\Python\pythoncore-3.13-64\Lib\unittest\mock.py", line 1169, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\sachi\AppData\Local\Python\pythoncore-3.13-64\Lib\unittest\mock.py", line 1173, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\sachi\AppData\Local\Python\pythoncore-3.13-64\Lib\unittest\mock.py", line 1234, in _execute_mock_call
+    raise effect
+RuntimeError: PRIVATE_EXCEPTION_DETAIL
+ok
+test_successful_submission_has_complete_operational_record (test_operational.OperationalLoggingTests.test_successful_submission_has_complete_operational_record) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.557s
+
+OK
