@@ -49,6 +49,22 @@ python test.py
 python detector.py
 ```
 
+`requirements.txt` constrains the direct dependencies to these ranges:
+
+| Package | Allowed version |
+|---|---|
+| Flask | `>=3.0,<4.0` |
+| Flask-Limiter | `>=3.5,<4.0` |
+| requests | `>=2.31,<3.0` |
+| transformers | `>=4.44,<5.0` |
+| torch | `>=2.2,<3.0` |
+| gunicorn | `>=21.2,<24.0` |
+| certifi | `>=2026.10.19` |
+
+Install with `python -m pip install -r requirements.txt`; this file uses
+version ranges rather than exact versions or a hash-locked transitive
+dependency lockfile, so a later install may resolve newer compatible packages.
+
 The configured model name is `gpt2` (`AI201_DETECTOR_MODEL` can override it).
 On this machine, the cached Hugging Face GPT-2 snapshot measured 550,959,861
 bytes (about 525.4 MiB) across its files; `model.safetensors` itself was
@@ -66,7 +82,7 @@ $env:PORT = "5000"
 $env:AI201_DEBUG = "0"
 $env:AI201_DETECTOR_MODEL = "gpt2"
 $env:AI201_RATE_LIMITS = "1"
-python app.py
+python -u app.py
 ```
 
 `HOST`, `PORT`, `AI201_DEBUG`, `AI201_DETECTOR_MODEL`, and
@@ -74,8 +90,8 @@ python app.py
 `5000`, `1` (debug is still restricted to loopback), `gpt2`, and `1`
 (rate limiting enabled). The command above sets debug to `0` to avoid the
 development reloader during a measured run. Keep `HOST` on loopback for this
-local workflow.
-Press **Ctrl+C** in the server terminal to stop it.
+local workflow. To stop the foreground server, press **Ctrl+C** in the same
+PowerShell terminal.
 
 Inspect the separate append-only request log from another PowerShell window:
 

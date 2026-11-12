@@ -1184,12 +1184,14 @@ On Windows, use Python 3.13 and the local PowerShell setup in
 command after environment setup is:
 
 ```powershell
-python app.py
+python -u app.py
 ```
 
 The measured run used `HOST=127.0.0.1`, `PORT=5000`, `AI201_DEBUG=0`,
 `AI201_DETECTOR_MODEL=gpt2`, and `AI201_RATE_LIMITS=1`. Stop the local server
-with Ctrl+C in its terminal. No public host or credentials are required.
+with Ctrl+C in its PowerShell terminal. Python is 3.13; direct dependency
+version ranges and setup commands are in [`RUNNING.md`](RUNNING.md). No public
+host or credentials are required.
 
 **Instrumentation**
 
