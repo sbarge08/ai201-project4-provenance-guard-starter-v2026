@@ -33,6 +33,7 @@ from flask import Flask, g, jsonify, request
 import audit
 import config
 import detector
+import operational
 import scoring
 import stylometry
 
@@ -61,6 +62,41 @@ def _finish_request_timing(response):
         "endpoint": request.url_rule.rule if request.url_rule else "unmatched",
         "status_code": response.status_code,
     }
+    response_data = response.get_json(silent=True)
+    content_id = response_data.get("content_id") if isinstance(response_data, dict) else None
+    try:
+        if not isinstance(content_id, str) or str(uuid.UUID(content_id)) != content_id:
+            content_id = None
+    except ValueError:
+        content_id = None
+
+    error_code = response_data.get("error") if isinstance(response_data, dict) else None
+    if (
+        not isinstance(error_code, str)
+        or not error_code.isascii()
+        or not error_code.replace("_", "").isalnum()
+        or len(error_code) > 64
+    ):
+        error_code = None
+
+    status_code = response.status_code
+    outcome = "success" if status_code < 400 else "rejected" if status_code < 500 else "error"
+    event = {
+        "timestamp": completed_at,
+        **g.request_timing,
+        "outcome": outcome,
+        "content_id": content_id,
+        "error_code": error_code,
+    }
+    try:
+        operational.log_request_event(event)
+    except OSError:
+        app.logger.exception(
+            "Could not write operational event endpoint=%s status_code=%s",
+            g.request_timing["endpoint"],
+            status_code,
+        )
+
     response.headers["X-Request-Duration-Ms"] = f"{duration_ms:.3f}"
     return response
 
