@@ -1,0 +1,49 @@
+Provenance Guard on http://127.0.0.1:5001
+  detector model:  gpt2
+  rate limiting:   ON
+  audit log:       C:\Users\sachi\Documents\Codex\2026-11-11\referenced-chatgpt-conversation-this-is-an\work\capstone-after-source\logs\audit.jsonl
+
+Check it's alive:
+  curl -X POST http://127.0.0.1:5001/ping \
+    -H "Content-Type: application/json" \
+    -d '{"message": "hello"}'
+
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5001
+Press CTRL+C to quit
+127.0.0.1 - - [12/Nov/2026 08:50:18] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:18] "POST /ping HTTP/1.1" 200 -
+`loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+127.0.0.1 - - [12/Nov/2026 08:50:34] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:35] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:35] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:35] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:36] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:36] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:37] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:38] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:39] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:41] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:42] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:43] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:43] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:44] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:44] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 200 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 413 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 413 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 400 -
+127.0.0.1 - - [12/Nov/2026 08:50:45] "POST /submit HTTP/1.1" 413 -

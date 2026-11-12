@@ -1199,7 +1199,9 @@ Completed HTTP requests append one JSON object per line to
 `logs/operations.jsonl`, separate from the classification and appeal audit in
 `logs/audit.jsonl`. Each record has `timestamp`, `request_started_at`,
 `request_completed_at`, `duration_ms`, `method`, `endpoint`, `status_code`,
-`outcome`, `content_id`, and `error_code`. Outcomes are `success` (status
+`outcome`, `content_id`, and `error_code`. After the improvement, new records
+also include the server-generated `request_id`, returned in `X-Request-Id`.
+The historical excerpts below predate that field. Outcomes are `success` (status
 below 400), `rejected` (4xx), or `error` (5xx). Content IDs are included only
 when a valid UUID is available. Operational records do not include request
 bodies, writing, creator IDs, or exception messages. Timestamps are UTC;
@@ -1271,6 +1273,20 @@ At five classifications per person, it is
 measured mean, not a load test or a measurement of CPU-seconds, electricity,
 hosting charges, or dollar cost. They exclude model loading, idle time,
 concurrency and queueing effects, and the operational-log append.
+
+**Cost measured on the capstone fixture mix**
+
+The historical Milestone 3 mean above used its own short sample. For the broader
+100-to-4,500-character fixture mix in this evaluation, the mean warm server
+processing time across 30 requests was **0.889280s before** and
+**0.788828s after**. The same timer and exclusions apply. At one comparable
+warm request per person, 100 people per day projects to
+`100 x 1 x 0.788828 = 78.882800` seconds of aggregate server processing.
+At five requests per person, the projection is
+`100 x 5 x 0.788828 = 394.414000` seconds per day. These arithmetic
+projections use the measured mean; they are not throughput, CPU-time, hosting
+price, energy-cost or concurrent-load measurements. Cold model loads are
+recorded separately and excluded from both warm means.
 
 **Run Log and Verdicts**
 
@@ -1561,8 +1577,10 @@ not the unresolved model-compute latency miss.
 
 No model weights, detector code, scoring formula, thresholds, token limit,
 classification response body, or acceptance target is changed. Existing
-records without request IDs are preserved. The change adds a small UUID and
-log-field overhead; the full acceptance suite will be rerun to measure the
+records without request IDs are preserved. UUID generation occurs before the existing server timer starts, and the
+operational-log append remains outside that timer. Preserved client timings
+include the full local HTTP interval. The change adds a small UUID and
+log-field overhead; the full acceptance suite was rerun below to measure the
 result rather than assume it is free.
 
 Eight focused regression tests passed, including valid/invalid correlation,
@@ -1571,20 +1589,268 @@ errors, and existing route behavior. The server-error test deliberately emits
 a traceback and still passes; that is injected test traffic, not a live crash.
 
 
+
+**Measured before/after results**
+
+Improvement source commit: `8da495c475c587de51b4375a007771dd20230564`.
+The same evaluator, criteria, synthetic input texts, three fresh server
+processes, cached model and reused environment were used. No acceptance
+target was revised. Full after-change evidence is under
+[`results/capstone/`](results/capstone/).
+
+| Criterion | Unchanged target | Before 1 | Before 2 | Before 3 | After 1 | After 2 | After 3 | Before / After verdict |
+|---|---|---|---|---|---|---|---|---|
+| 1. Successful submissions logged | 10/10 each trial | 10/10 | 10/10 | 10/10 | 10/10 | 10/10 | 10/10 | MET / MET |
+| 2. Warm processing time | All 10 at or below 0.5s | 3/10; max 1.896298s | 4/10; max 1.741125s | 3/10; max 1.701852s | 4/10; max 1.513196s | 4/10; max 1.425065s | 3/10; max 1.793009s | MISSED / MISSED |
+| 3. Operational privacy | 0 raw-text leaks | 0 detected leaks | 0 detected leaks | 0 detected leaks | 0 detected leaks | 0 detected leaks | 0 detected leaks | MET / MET |
+| 4. Invalid inputs | 10/10 rejected and logged | 10/10 | 10/10 | 10/10 | 10/10 | 10/10 | 10/10 | MET / MET |
+| 5. Startup | 3/3 across three trials | 1/1 | 1/1 | 1/1 | 1/1 | 1/1 | 1/1 | MET / MET |
+
+| Additional tracing diagnostic (not a new acceptance criterion) | Before | After |
+|---|---:|---:|
+| Rejected responses with matching request IDs in logs | 0/45 | 45/45 |
+| All after-run response/log pairs with matching IDs | — | 99/99 |
+
+The change improved traceability: all 45 rejected after-run requests could
+be matched by ID, and all 99 recorded after-run requests had distinct UUIDs.
+The 45 paired successful classification responses retained identical
+model/style/combined scores, guesses, labels and confidence values.
+This directly checks the tested fixtures; it is not a proof about every input.
+
+The mean across the same 30 warm requests was 0.889280s before and
+0.788828s after; maxima were 1.896298s and 1.793009s.
+The after phase still had 19/30 warm requests above 0.5 seconds.
+The correlation change does not optimize model computation. Separate
+phases run sequentially on a shared laptop, so changes in latency cannot
+be attributed solely to the tiny extra UUID/logging work. The improvement
+is demonstrated by direct correlation, not by a claim of faster inference.
+
+**Actual after-change output**
+
+Criteria 1 and 4 — real trial-1 success and rejection, from `submit`,
+`_start_request_timing`, `_finish_request_timing` and `log_request_event`:
+
+```json
+{
+  "successful_submission": {
+    "response": {
+      "status": 200,
+      "body": {
+        "combined_score": 0.2388,
+        "confidence": 0.5224,
+        "content_id": "e831da25-a3ca-4b9e-8a0e-e6fd1e534f23",
+        "guess": "human",
+        "label": "High-confidence human-like patterns: this system's signals are strongly associated with human writing. This is not proof of authorship.",
+        "model_score": 0.0432,
+        "stage": "signals_combined_and_labeled",
+        "style_score": 0.4344
+      },
+      "duration_header_ms": "132.164",
+      "request_id_header": "d5d824b1-048a-4457-ac27-430ca7f21f8c",
+      "client_seconds": 0.13741480000317097
+    },
+    "event": {
+      "timestamp": "2026-11-12T13:50:04.154043+00:00",
+      "request_id": "d5d824b1-048a-4457-ac27-430ca7f21f8c",
+      "request_started_at": "2026-11-12T13:50:04.021876+00:00",
+      "request_completed_at": "2026-11-12T13:50:04.154043+00:00",
+      "duration_ms": 132.164,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "e831da25-a3ca-4b9e-8a0e-e6fd1e534f23",
+      "error_code": null
+    }
+  },
+  "invalid_submission": {
+    "response": {
+      "status": 400,
+      "body": {
+        "error": "invalid_request",
+        "message": "'text' must be a non-empty string."
+      },
+      "duration_header_ms": "2.679",
+      "request_id_header": "34a72288-2e5c-4258-8d89-413d94b05684",
+      "client_seconds": 0.013171599945053458
+    },
+    "event": {
+      "timestamp": "2026-11-12T13:50:14.617368+00:00",
+      "request_id": "34a72288-2e5c-4258-8d89-413d94b05684",
+      "request_started_at": "2026-11-12T13:50:14.614681+00:00",
+      "request_completed_at": "2026-11-12T13:50:14.617368+00:00",
+      "duration_ms": 2.679,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    }
+  }
+}
+```
+
+Criterion 2 — actual `_finish_request_timing` durations, milliseconds:
+
+```json
+{
+  "trial_1": [
+    132.164,
+    181.173,
+    287.246,
+    443.693,
+    732.719,
+    557.288,
+    1248.932,
+    1372.877,
+    1513.196,
+    1362.561
+  ],
+  "trial_2": [
+    142.086,
+    179.127,
+    270.224,
+    448.475,
+    511.082,
+    515.16,
+    1054.897,
+    1416.989,
+    1408.893,
+    1425.065
+  ],
+  "trial_3": [
+    217.555,
+    242.974,
+    312.816,
+    527.086,
+    601.405,
+    716.363,
+    1191.8,
+    1305.324,
+    1552.658,
+    1793.009
+  ]
+}
+```
+
+Criterion 3 — actual trial-1 privacy events and evaluator output:
+
+```jsonl
+{"timestamp": "2026-11-12T13:50:12.482138+00:00", "request_id": "5644230e-df14-44de-88f2-9e7e19d2a44c", "request_started_at": "2026-11-12T13:50:12.246936+00:00", "request_completed_at": "2026-11-12T13:50:12.482138+00:00", "duration_ms": 235.197, "method": "POST", "endpoint": "/submit", "status_code": 200, "outcome": "success", "content_id": "8d665b11-804c-4b72-b3ec-5ca42cf2ce3f", "error_code": null}
+{"timestamp": "2026-11-12T13:50:12.871737+00:00", "request_id": "a7b95004-2e35-4310-beaa-e53655591fac", "request_started_at": "2026-11-12T13:50:12.545444+00:00", "request_completed_at": "2026-11-12T13:50:12.871737+00:00", "duration_ms": 326.293, "method": "POST", "endpoint": "/submit", "status_code": 200, "outcome": "success", "content_id": "3265f0f0-547a-4854-af32-23d006d25fb3", "error_code": null}
+{"timestamp": "2026-11-12T13:50:13.325094+00:00", "request_id": "42e85bfb-65bd-42b7-b47d-87291b519d0e", "request_started_at": "2026-11-12T13:50:12.895726+00:00", "request_completed_at": "2026-11-12T13:50:13.325094+00:00", "duration_ms": 429.37, "method": "POST", "endpoint": "/submit", "status_code": 200, "outcome": "success", "content_id": "27a5b2db-574e-4f3a-a4cf-9faf7ceb7a26", "error_code": null}
+{"timestamp": "2026-11-12T13:50:13.854122+00:00", "request_id": "15f018e5-5624-4d7d-b14d-4046a03cda0e", "request_started_at": "2026-11-12T13:50:13.367393+00:00", "request_completed_at": "2026-11-12T13:50:13.854122+00:00", "duration_ms": 486.72, "method": "POST", "endpoint": "/submit", "status_code": 200, "outcome": "success", "content_id": "7f24f1f7-15f8-48f4-8ac5-49c275998546", "error_code": null}
+{"timestamp": "2026-11-12T13:50:14.342179+00:00", "request_id": "175df903-81fb-483e-bbf7-411a8bf2e0cf", "request_started_at": "2026-11-12T13:50:13.893877+00:00", "request_completed_at": "2026-11-12T13:50:14.342179+00:00", "duration_ms": 448.288, "method": "POST", "endpoint": "/submit", "status_code": 200, "outcome": "success", "content_id": "7989c36e-751e-4c2b-a766-87e485dd262e", "error_code": null}
+{"timestamp": "2026-11-12T13:50:14.390395+00:00", "request_id": "855d8cb9-7f8b-4170-bce4-8570c9de508b", "request_started_at": "2026-11-12T13:50:14.385151+00:00", "request_completed_at": "2026-11-12T13:50:14.390395+00:00", "duration_ms": 5.243, "method": "POST", "endpoint": "/submit", "status_code": 400, "outcome": "rejected", "content_id": null, "error_code": "invalid_request"}
+{"timestamp": "2026-11-12T13:50:14.431947+00:00", "request_id": "0278c849-005b-4d5a-b71b-1a5bd2ed1bcd", "request_started_at": "2026-11-12T13:50:14.429272+00:00", "request_completed_at": "2026-11-12T13:50:14.431947+00:00", "duration_ms": 2.672, "method": "POST", "endpoint": "/submit", "status_code": 400, "outcome": "rejected", "content_id": null, "error_code": "invalid_request"}
+{"timestamp": "2026-11-12T13:50:14.475790+00:00", "request_id": "ab5efeef-dad0-4b5e-99ed-b534aae32a7b", "request_started_at": "2026-11-12T13:50:14.470992+00:00", "request_completed_at": "2026-11-12T13:50:14.475790+00:00", "duration_ms": 4.782, "method": "POST", "endpoint": "/submit", "status_code": 400, "outcome": "rejected", "content_id": null, "error_code": "invalid_request"}
+{"timestamp": "2026-11-12T13:50:14.540721+00:00", "request_id": "b7ec2f61-a642-4feb-b827-b311fe920483", "request_started_at": "2026-11-12T13:50:14.535557+00:00", "request_completed_at": "2026-11-12T13:50:14.540721+00:00", "duration_ms": 5.141, "method": "POST", "endpoint": "/submit", "status_code": 413, "outcome": "rejected", "content_id": null, "error_code": "text_too_long"}
+{"timestamp": "2026-11-12T13:50:14.587490+00:00", "request_id": "00dd396d-4c4b-4698-b355-73fe42581c67", "request_started_at": "2026-11-12T13:50:14.583121+00:00", "request_completed_at": "2026-11-12T13:50:14.587490+00:00", "duration_ms": 4.348, "method": "POST", "endpoint": "/submit", "status_code": 413, "outcome": "rejected", "content_id": null, "error_code": "text_too_long"}
+```
+
+```json
+{
+  "leaks": [],
+  "observed_all_10": true,
+  "met": true
+}
+```
+
+Criterion 5 — actual `health` responses from the three after-change startups:
+
+```json
+{
+  "trial_1": {
+    "status": 200,
+    "body": {
+      "detector_loaded": false,
+      "detector_model": "gpt2",
+      "log_entries": 540,
+      "ok": true,
+      "rate_limiting": true
+    },
+    "duration_header_ms": "31.088",
+    "request_id_header": "a55707cf-0718-42e3-b2cf-14c777669a4c",
+    "client_seconds": 1.7088085000868887
+  },
+  "trial_2": {
+    "status": 200,
+    "body": {
+      "detector_loaded": false,
+      "detector_model": "gpt2",
+      "log_entries": 571,
+      "ok": true,
+      "rate_limiting": true
+    },
+    "duration_header_ms": "31.956",
+    "request_id_header": "e04a378d-0f69-452d-8026-4af133b70149",
+    "client_seconds": 1.5630262999329716
+  },
+  "trial_3": {
+    "status": 200,
+    "body": {
+      "detector_loaded": false,
+      "detector_model": "gpt2",
+      "log_entries": 602,
+      "ok": true,
+      "rate_limiting": true
+    },
+    "duration_header_ms": "29.574",
+    "request_id_header": "da96071c-4893-4aba-a82d-9741994eb3a9",
+    "client_seconds": 1.5455490000313148
+  }
+}
+```
+
+**What's Still Broken**
+
+Criterion 2 remains MISSED: 19 of 30 warm requests exceeded the
+unchanged 0.5-second target. The remaining bottleneck is synchronous
+GPT-2 processing for the longer texts, as demonstrated by the separate
+model-stage measurements. The two reduced-thread experiments did not
+justify changing the runtime. The request-ID improvement deliberately
+addresses observability and does not claim to fix that latency miss.
+
+The proposed next step is a dedicated model-stage profile on the same
+long-input fixtures under controlled machine load. That is the first
+step because the measured model call already accounts for most of the
+slow request; guessing at more thread settings or trimming text would
+not establish a sound fix. Work stopped after the one measured
+operational improvement to preserve the agreed scope and unchanged
+scoring behavior. The target was not loosened to turn a miss into a pass.
+
+Other limits remain: startup reused installed packages and cached model
+files; package ranges are not a fully locked installation; clean manual
+shutdown and a fresh install were not evaluated. Logging-disk failures,
+concurrent load, and broader privacy failure modes are outside these
+trials. No raw-text leaks were detected in `operations.jsonl` for the
+tested inputs; this is not a claim that every application output is private.
+
+The accepted criteria and this write-up include AI-generated wording.
+The technical evaluation is complete, but these artifacts do not satisfy
+or certify the rubric's separate requirement for unaided student-written
+criteria. Instructor review is needed before representing that requirement
+as fulfilled. Nothing has been pushed or submitted by this workflow.
+
 **How I Used AI**
 
-This section records assistance used so far; it is not a claim that the
-student-authored criteria milestone is complete.
+1. The student chose the five targets and asked ChatGPT for review, examples,
+   and complete wording. ChatGPT drafted the criteria and testing procedures;
+   the student accepted an explicitly AI-assisted version for evaluation.
+   The privacy plan was narrowed to five valid and five invalid submissions,
+   and startup was clarified as one attempt in each of three trials. This
+   history is disclosed rather than claimed as unaided student authorship.
+2. The student asked Codex to continue the repository work. Codex wrote the
+   evaluator and synthetic fixtures, ran and preserved the actual before/after
+   trials, diagnosed latency, tested two CPU-thread alternatives, and rejected
+   those alternatives when they did not improve the long-input mean. The
+   single implemented change adds server-generated request IDs. Codex also
+   generated these evidence tables, cost arithmetic and proposed next steps
+   from the saved outputs; the student must review and be able to explain them.
 
-1. The student asked ChatGPT to review five selected acceptance targets,
-   then requested examples and complete wording for the testing methods.
-   ChatGPT supplied reference drafts, and that wording was incorporated
-   into the working Unit 9 section of `criteria.md`. Later discussion
-   narrowed the privacy example to five valid and five invalid submissions
-   per trial. The draft is explicitly identified as AI-assisted; copying
-   or approving it does not establish unaided student authorship.
-2. The student asked Codex to inspect and edit the existing repository in
-   VS Code. Codex preserved the earlier criteria, saved the approved privacy
-   draft, compared the repository with the assignment checklist, and added
-   the hundred-person calculation above using the existing measured mean.
-   These documentation edits did not produce new acceptance-test results.
+Verification: eight focused operational tests and nine environment checks
+passed. The environment check's one ping event was redirected to an isolated
+temporary log. All original Unit 7/8 source scoring and logs were preserved.
+The criteria and evaluator hashes match between phases; complete validation
+is in [`comparison-validation.json`](results/capstone/comparison-validation.json).

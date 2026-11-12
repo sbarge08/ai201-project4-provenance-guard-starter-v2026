@@ -1,0 +1,1756 @@
+{
+  "trial": 2,
+  "started_at": "2026-11-12T13:50:17.104002+00:00",
+  "source_hashes": {
+    "app.py": "1653d7f7795b44d25f029704b57a6a47fee0e8afe1ee4a330a72ce83e6efcc26",
+    "audit.py": "7f14f7c33f5b3552e3f6b07bc4e7a29c562a7fa27fb067e3f9619697183049d8",
+    "config.py": "ba0f1c9a4a559934548f0deb5c2a53c6e773f842712bf96608f287bf18dedb1f",
+    "detector.py": "fe6b8eb5d2f7824bdc20ea3af1bb298d08f8a85e640b903c3df23b3128cfcb69",
+    "operational.py": "1056d7369ffb211407992db8bf46ed3bb8b89921ecd0f3cd1e4bc1090facf73e",
+    "prepare_hc3_samples.py": "f73e9d8d1570e9742d68950badb4ecb184f4c5c733ccad35b02c7f463c3d0959",
+    "run_attacks.py": "409e98c2a6e9ef848d7f1f67db3e86c0842d854d23c750f51e272fc9a2209db3",
+    "run_capstone_eval.py": "9cf6576fb968c38619af2000b1634bb2b922dbcef681252f1517837c1ec4b114",
+    "run_eval.py": "7cb68b05515bc7fb2301d595f927d6c91396ef1be0ab092d2bb2d5e86b9ee86f",
+    "scenarios.py": "0242b52a2ba94862823f07f5cd6712228719fce6ab91659f30c0c407a732662d",
+    "scoring.py": "472098e6e7d69127ce07c70a14209362154590407362f1cf14b95ccc7390743f",
+    "stylometry.py": "af7168c6a40034ed1c21025344ef7c3edeb91ddefc453e4fbaef7d029d41a81b",
+    "test.py": "89790ee60cc0e89e83efcb054654e02381395ee421bcbc702b4e823ce337c60d"
+  },
+  "startup": {
+    "command": [
+      "C:\\Users\\sachi\\ai201-project4-provenance-guard-starter-v2026\\.venv\\Scripts\\python.exe",
+      "-u",
+      "app.py"
+    ],
+    "cwd": "C:\\Users\\sachi\\Documents\\Codex\\2026-11-11\\referenced-chatgpt-conversation-this-is-an\\work\\capstone-after-source",
+    "reused_environment_and_cached_model": true,
+    "environment": {
+      "HOST": "127.0.0.1",
+      "PORT": "5001",
+      "AI201_DEBUG": "0",
+      "AI201_DETECTOR_MODEL": "gpt2",
+      "AI201_RATE_LIMITS": "1",
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1"
+    },
+    "pid": 44740,
+    "health": {
+      "status": 200,
+      "body": {
+        "detector_loaded": false,
+        "detector_model": "gpt2",
+        "log_entries": 571,
+        "ok": true,
+        "rate_limiting": true
+      },
+      "duration_header_ms": "31.956",
+      "request_id_header": "e04a378d-0f69-452d-8026-4af133b70149",
+      "client_seconds": 1.5630262999329716
+    },
+    "success": true,
+    "stop_method": "terminate owned server process; manual Ctrl+C not tested",
+    "stopped": true
+  },
+  "ping": {
+    "status": 200,
+    "body": {
+      "ok": true,
+      "service": "provenance-guard",
+      "you_sent": "capstone-control"
+    },
+    "duration_header_ms": "0.436",
+    "request_id_header": "d1680cf1-a2bd-4bf8-86cd-085760744591",
+    "client_seconds": 0.006109199952334166
+  },
+  "warmup": {
+    "case": "warmup",
+    "payload": {
+      "text": "This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of ass",
+      "creator_id": "capstone-after-2-warmup"
+    },
+    "sent_at": "2026-11-12T13:50:18.728960+00:00",
+    "log_start_line": 54,
+    "response": {
+      "status": 200,
+      "body": {
+        "combined_score": 0.5376,
+        "confidence": 0.9008,
+        "content_id": "e7d23b29-099b-4f6a-852f-607331e1e1a3",
+        "guess": "unsure",
+        "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+        "model_score": 0.6281,
+        "stage": "signals_combined_and_labeled",
+        "style_score": 0.4471
+      },
+      "duration_header_ms": "16162.317",
+      "request_id_header": "995e4f0b-cf58-4397-9402-422648e0e83b",
+      "client_seconds": 16.171499399933964
+    },
+    "events": [
+      {
+        "timestamp": "2026-11-12T13:50:34.895491+00:00",
+        "request_id": "995e4f0b-cf58-4397-9402-422648e0e83b",
+        "request_started_at": "2026-11-12T13:50:18.733186+00:00",
+        "request_completed_at": "2026-11-12T13:50:34.895491+00:00",
+        "duration_ms": 16162.317,
+        "method": "POST",
+        "endpoint": "/submit",
+        "status_code": 200,
+        "outcome": "success",
+        "content_id": "e7d23b29-099b-4f6a-852f-607331e1e1a3",
+        "error_code": null
+      }
+    ],
+    "one_submit_event": true
+  },
+  "classifications": [
+    {
+      "case": "warm-1",
+      "payload": {
+        "text": "This is synthetic writing for a local service test. A small garden needs water, sunlight, and carefu",
+        "creator_id": "capstone-after-2-warm-0"
+      },
+      "sent_at": "2026-11-12T13:50:34.932394+00:00",
+      "log_start_line": 55,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.2388,
+          "confidence": 0.5224,
+          "content_id": "4f1c02aa-37ee-4762-92c8-985c11205f06",
+          "guess": "human",
+          "label": "High-confidence human-like patterns: this system's signals are strongly associated with human writing. This is not proof of authorship.",
+          "model_score": 0.0432,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.4344
+        },
+        "duration_header_ms": "142.086",
+        "request_id_header": "03d8a762-00fa-4bc0-8de3-a2e7f3c420c5",
+        "client_seconds": 0.14761859993450344
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:35.077298+00:00",
+          "request_id": "03d8a762-00fa-4bc0-8de3-a2e7f3c420c5",
+          "request_started_at": "2026-11-12T13:50:34.935211+00:00",
+          "request_completed_at": "2026-11-12T13:50:35.077298+00:00",
+          "duration_ms": 142.086,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "4f1c02aa-37ee-4762-92c8-985c11205f06",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true
+    },
+    {
+      "case": "warm-2",
+      "payload": {
+        "text": "This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example de",
+        "creator_id": "capstone-after-2-warm-1"
+      },
+      "sent_at": "2026-11-12T13:50:35.112664+00:00",
+      "log_start_line": 56,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.3338,
+          "confidence": 0.6746,
+          "content_id": "0e9d8905-cc5f-4e97-a969-56296c38b86f",
+          "guess": "unsure",
+          "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+          "model_score": 0.3062,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.3614
+        },
+        "duration_header_ms": "179.127",
+        "request_id_header": "3a0c50b4-c815-4ba2-9049-05c3159a9bf9",
+        "client_seconds": 0.1968220000853762
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:35.306537+00:00",
+          "request_id": "3a0c50b4-c815-4ba2-9049-05c3159a9bf9",
+          "request_started_at": "2026-11-12T13:50:35.127399+00:00",
+          "request_completed_at": "2026-11-12T13:50:35.306537+00:00",
+          "duration_ms": 179.127,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "0e9d8905-cc5f-4e97-a969-56296c38b86f",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true
+    },
+    {
+      "case": "warm-3",
+      "payload": {
+        "text": "This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of ass",
+        "creator_id": "capstone-after-2-warm-2"
+      },
+      "sent_at": "2026-11-12T13:50:35.342002+00:00",
+      "log_start_line": 57,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.5376,
+          "confidence": 0.9008,
+          "content_id": "d494e5c1-0b35-4a65-9426-af9f31d36594",
+          "guess": "unsure",
+          "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+          "model_score": 0.6281,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.4471
+        },
+        "duration_header_ms": "270.224",
+        "request_id_header": "c5c922a4-97e9-4701-b437-2bfb92b8f082",
+        "client_seconds": 0.2788801999995485
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:35.616523+00:00",
+          "request_id": "c5c922a4-97e9-4701-b437-2bfb92b8f082",
+          "request_started_at": "2026-11-12T13:50:35.346293+00:00",
+          "request_completed_at": "2026-11-12T13:50:35.616523+00:00",
+          "duration_ms": 270.224,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "d494e5c1-0b35-4a65-9426-af9f31d36594",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true
+    },
+    {
+      "case": "warm-4",
+      "payload": {
+        "text": "This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a loc",
+        "creator_id": "capstone-after-2-warm-3"
+      },
+      "sent_at": "2026-11-12T13:50:35.637598+00:00",
+      "log_start_line": 58,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.7881,
+          "confidence": 0.6076,
+          "content_id": "b64cff1f-8138-4370-b37a-1656c63f1baa",
+          "guess": "ai",
+          "label": "High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship.",
+          "model_score": 0.9602,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.616
+        },
+        "duration_header_ms": "448.475",
+        "request_id_header": "b5b6dfa1-ce3e-4646-9b1a-0f609394dbe3",
+        "client_seconds": 0.4754506000317633
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:36.109758+00:00",
+          "request_id": "b5b6dfa1-ce3e-4646-9b1a-0f609394dbe3",
+          "request_started_at": "2026-11-12T13:50:35.661264+00:00",
+          "request_completed_at": "2026-11-12T13:50:36.109758+00:00",
+          "duration_ms": 448.475,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "b64cff1f-8138-4370-b37a-1656c63f1baa",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true
+    },
+    {
+      "case": "warm-5",
+      "payload": {
+        "text": "This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. ",
+        "creator_id": "capstone-after-2-warm-4"
+      },
+      "sent_at": "2026-11-12T13:50:36.144525+00:00",
+      "log_start_line": 59,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.7894,
+          "confidence": 0.61,
+          "content_id": "9da17199-c11f-4bc0-8293-fa439c400fd7",
+          "guess": "ai",
+          "label": "High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship.",
+          "model_score": 0.985,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.5938
+        },
+        "duration_header_ms": "511.082",
+        "request_id_header": "90f4d5a0-e04b-48f2-bc1d-6fc87d667299",
+        "client_seconds": 0.5319953000871465
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:36.672334+00:00",
+          "request_id": "90f4d5a0-e04b-48f2-bc1d-6fc87d667299",
+          "request_started_at": "2026-11-12T13:50:36.161248+00:00",
+          "request_completed_at": "2026-11-12T13:50:36.672334+00:00",
+          "duration_ms": 511.082,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "9da17199-c11f-4bc0-8293-fa439c400fd7",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true
+    },
+    {
+      "case": "warm-6",
+      "payload": {
+        "text": "This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classr",
+        "creator_id": "capstone-after-2-warm-5"
+      },
+      "sent_at": "2026-11-12T13:50:36.694905+00:00",
+      "log_start_line": 60,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.7771,
+          "confidence": 0.5872,
+          "content_id": "062f2666-0288-4df5-97ea-aee19fdf17c3",
+          "guess": "ai",
+          "label": "High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship.",
+          "model_score": 0.9869,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.5672
+        },
+        "duration_header_ms": "515.160",
+        "request_id_header": "3cbda081-41a6-411f-8f2a-b017e1cc6a56",
+        "client_seconds": 0.5223649999825284
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:37.213415+00:00",
+          "request_id": "3cbda081-41a6-411f-8f2a-b017e1cc6a56",
+          "request_started_at": "2026-11-12T13:50:36.698268+00:00",
+          "request_completed_at": "2026-11-12T13:50:37.213415+00:00",
+          "duration_ms": 515.16,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "062f2666-0288-4df5-97ea-aee19fdf17c3",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true
+    },
+    {
+      "case": "warm-7",
+      "payload": {
+        "text": "This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful obs",
+        "creator_id": "capstone-after-2-warm-6"
+      },
+      "sent_at": "2026-11-12T13:50:37.236453+00:00",
+      "log_start_line": 61,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.842,
+          "confidence": 0.7074,
+          "content_id": "16085200-bff1-4eb5-9660-8b639628d5c5",
+          "guess": "ai",
+          "label": "High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship.",
+          "model_score": 0.9938,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.6902
+        },
+        "duration_header_ms": "1054.897",
+        "request_id_header": "a62ed128-6a01-4322-9283-42453ef337f1",
+        "client_seconds": 1.0801013000309467
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:38.312363+00:00",
+          "request_id": "a62ed128-6a01-4322-9283-42453ef337f1",
+          "request_started_at": "2026-11-12T13:50:37.257474+00:00",
+          "request_completed_at": "2026-11-12T13:50:38.312363+00:00",
+          "duration_ms": 1054.897,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "16085200-bff1-4eb5-9660-8b639628d5c5",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true
+    },
+    {
+      "case": "warm-8",
+      "payload": {
+        "text": "This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two books, writes a short note, and returns them before closing. No real personal information is included. This fictional example describes a library visit. A reader compares two boo",
+        "creator_id": "capstone-after-2-warm-7"
+      },
+      "sent_at": "2026-11-12T13:50:38.350466+00:00",
+      "log_start_line": 62,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.8158,
+          "confidence": 0.6589,
+          "content_id": "cd487ead-ceb0-432a-85a4-c99e2b1dad81",
+          "guess": "ai",
+          "label": "High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship.",
+          "model_score": 0.995,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.6367
+        },
+        "duration_header_ms": "1416.989",
+        "request_id_header": "3a032745-acf4-4a3c-a957-80d93bd36e53",
+        "client_seconds": 1.4243057999992743
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:39.770631+00:00",
+          "request_id": "3a032745-acf4-4a3c-a957-80d93bd36e53",
+          "request_started_at": "2026-11-12T13:50:38.353638+00:00",
+          "request_completed_at": "2026-11-12T13:50:39.770631+00:00",
+          "duration_ms": 1416.989,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "cd487ead-ceb0-432a-85a4-c99e2b1dad81",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true
+    },
+    {
+      "case": "warm-9",
+      "payload": {
+        "text": "This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of assuming they agree. This generated test passage discusses a classroom experiment. The group measures the same object twice and records each result instead of ",
+        "creator_id": "capstone-after-2-warm-8"
+      },
+      "sent_at": "2026-11-12T13:50:39.809914+00:00",
+      "log_start_line": 63,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.8017,
+          "confidence": 0.6328,
+          "content_id": "84d5be60-3821-416f-872b-9cb01585a3a6",
+          "guess": "ai",
+          "label": "High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship.",
+          "model_score": 0.9956,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.6079
+        },
+        "duration_header_ms": "1408.893",
+        "request_id_header": "6295af65-d3f7-4766-a009-a5c21d32db9f",
+        "client_seconds": 1.43649670004379
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:41.243602+00:00",
+          "request_id": "6295af65-d3f7-4766-a009-a5c21d32db9f",
+          "request_started_at": "2026-11-12T13:50:39.834692+00:00",
+          "request_completed_at": "2026-11-12T13:50:41.243602+00:00",
+          "duration_ms": 1408.893,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "84d5be60-3821-416f-872b-9cb01585a3a6",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true
+    },
+    {
+      "case": "warm-10",
+      "payload": {
+        "text": "This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This is synthetic writing for a local service test. A small garden needs water, sunlight, and careful observation. The gardener records changes each week. This ",
+        "creator_id": "capstone-after-2-warm-9"
+      },
+      "sent_at": "2026-11-12T13:50:41.278875+00:00",
+      "log_start_line": 64,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.8515,
+          "confidence": 0.725,
+          "content_id": "ec242e9d-4edb-4a1a-a1bb-70a4d1d3cfe3",
+          "guess": "ai",
+          "label": "High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship.",
+          "model_score": 0.9956,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.7073
+        },
+        "duration_header_ms": "1425.065",
+        "request_id_header": "476bae54-66fa-44fc-b97b-1eacc743318d",
+        "client_seconds": 1.433890699991025
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:42.708470+00:00",
+          "request_id": "476bae54-66fa-44fc-b97b-1eacc743318d",
+          "request_started_at": "2026-11-12T13:50:41.283387+00:00",
+          "request_completed_at": "2026-11-12T13:50:42.708470+00:00",
+          "duration_ms": 1425.065,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "ec242e9d-4edb-4a1a-a1bb-70a4d1d3cfe3",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true
+    }
+  ],
+  "privacy": [
+    {
+      "case": "privacy-0",
+      "payload": {
+        "text": "PRIVATE_SYNTHETIC_MARKER_00_CAPSTONE. This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. ",
+        "creator_id": "capstone-after-2-privacy-0"
+      },
+      "sent_at": "2026-11-12T13:50:42.747992+00:00",
+      "log_start_line": 65,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.4389,
+          "confidence": 0.8935,
+          "content_id": "44308d1b-6b1d-4659-92af-26144fea5e36",
+          "guess": "unsure",
+          "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+          "model_score": 0.3608,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.517
+        },
+        "duration_header_ms": "339.947",
+        "request_id_header": "50332efb-e6d7-4857-9b49-c3b0487384fe",
+        "client_seconds": 0.34570519998669624
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:43.090958+00:00",
+          "request_id": "50332efb-e6d7-4857-9b49-c3b0487384fe",
+          "request_started_at": "2026-11-12T13:50:42.751008+00:00",
+          "request_completed_at": "2026-11-12T13:50:43.090958+00:00",
+          "duration_ms": 339.947,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "44308d1b-6b1d-4659-92af-26144fea5e36",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true,
+      "marker": "PRIVATE_SYNTHETIC_MARKER_00_CAPSTONE",
+      "expected_status": 200
+    },
+    {
+      "case": "privacy-1",
+      "payload": {
+        "text": "PRIVATE_SYNTHETIC_MARKER_01_CAPSTONE. This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. ",
+        "creator_id": "capstone-after-2-privacy-1"
+      },
+      "sent_at": "2026-11-12T13:50:43.128621+00:00",
+      "log_start_line": 66,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.6446,
+          "confidence": 0.6779,
+          "content_id": "6b121484-20cf-4b4d-9cf7-c4d72947d8a1",
+          "guess": "unsure",
+          "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+          "model_score": 0.724,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.5653
+        },
+        "duration_header_ms": "415.554",
+        "request_id_header": "ef5c4b8f-dc3d-41b1-8131-c6d74b5ee5c4",
+        "client_seconds": 0.43979750003200024
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:43.562249+00:00",
+          "request_id": "ef5c4b8f-dc3d-41b1-8131-c6d74b5ee5c4",
+          "request_started_at": "2026-11-12T13:50:43.146689+00:00",
+          "request_completed_at": "2026-11-12T13:50:43.562249+00:00",
+          "duration_ms": 415.554,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "6b121484-20cf-4b4d-9cf7-c4d72947d8a1",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true,
+      "marker": "PRIVATE_SYNTHETIC_MARKER_01_CAPSTONE",
+      "expected_status": 200
+    },
+    {
+      "case": "privacy-2",
+      "payload": {
+        "text": "PRIVATE_SYNTHETIC_MARKER_02_CAPSTONE. This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. ",
+        "creator_id": "capstone-after-2-privacy-2"
+      },
+      "sent_at": "2026-11-12T13:50:43.610485+00:00",
+      "log_start_line": 67,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.7284,
+          "confidence": 0.5033,
+          "content_id": "7b1f9362-4a7b-4d0b-8afa-419acf2e1388",
+          "guess": "unsure",
+          "label": "The signals are inconclusive. This system cannot determine who wrote the text.",
+          "model_score": 0.8632,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.5935
+        },
+        "duration_header_ms": "397.992",
+        "request_id_header": "c2f20ca6-1b32-4ec3-a732-886a83252d32",
+        "client_seconds": 0.4063705001026392
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:44.013646+00:00",
+          "request_id": "c2f20ca6-1b32-4ec3-a732-886a83252d32",
+          "request_started_at": "2026-11-12T13:50:43.615656+00:00",
+          "request_completed_at": "2026-11-12T13:50:44.013646+00:00",
+          "duration_ms": 397.992,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "7b1f9362-4a7b-4d0b-8afa-419acf2e1388",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true,
+      "marker": "PRIVATE_SYNTHETIC_MARKER_02_CAPSTONE",
+      "expected_status": 200
+    },
+    {
+      "case": "privacy-3",
+      "payload": {
+        "text": "PRIVATE_SYNTHETIC_MARKER_03_CAPSTONE. This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. ",
+        "creator_id": "capstone-after-2-privacy-3"
+      },
+      "sent_at": "2026-11-12T13:50:44.051258+00:00",
+      "log_start_line": 68,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.7676,
+          "confidence": 0.5696,
+          "content_id": "5b3b9e6e-3822-4872-8e4d-516059b0a496",
+          "guess": "ai",
+          "label": "High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship.",
+          "model_score": 0.9231,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.6122
+        },
+        "duration_header_ms": "477.648",
+        "request_id_header": "bd84e3db-0096-4073-b051-64804eb211a9",
+        "client_seconds": 0.4841305000009015
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:44.532305+00:00",
+          "request_id": "bd84e3db-0096-4073-b051-64804eb211a9",
+          "request_started_at": "2026-11-12T13:50:44.054655+00:00",
+          "request_completed_at": "2026-11-12T13:50:44.532305+00:00",
+          "duration_ms": 477.648,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "5b3b9e6e-3822-4872-8e4d-516059b0a496",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true,
+      "marker": "PRIVATE_SYNTHETIC_MARKER_03_CAPSTONE",
+      "expected_status": 200
+    },
+    {
+      "case": "privacy-4",
+      "payload": {
+        "text": "PRIVATE_SYNTHETIC_MARKER_04_CAPSTONE. This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. ",
+        "creator_id": "capstone-after-2-privacy-4"
+      },
+      "sent_at": "2026-11-12T13:50:44.560455+00:00",
+      "log_start_line": 69,
+      "response": {
+        "status": 200,
+        "body": {
+          "combined_score": 0.7878,
+          "confidence": 0.607,
+          "content_id": "1471cb1d-446e-4342-bdff-55c0b9d828c4",
+          "guess": "ai",
+          "label": "High-confidence AI-like patterns: this system's signals are strongly associated with AI-generated writing. This is not proof of authorship.",
+          "model_score": 0.9501,
+          "stage": "signals_combined_and_labeled",
+          "style_score": 0.6256
+        },
+        "duration_header_ms": "583.574",
+        "request_id_header": "976f357c-848a-4990-ab7f-cc0cdda5d956",
+        "client_seconds": 0.5898224000120535
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.147874+00:00",
+          "request_id": "976f357c-848a-4990-ab7f-cc0cdda5d956",
+          "request_started_at": "2026-11-12T13:50:44.564278+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.147874+00:00",
+          "duration_ms": 583.574,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 200,
+          "outcome": "success",
+          "content_id": "1471cb1d-446e-4342-bdff-55c0b9d828c4",
+          "error_code": null
+        }
+      ],
+      "one_submit_event": true,
+      "marker": "PRIVATE_SYNTHETIC_MARKER_04_CAPSTONE",
+      "expected_status": 200
+    },
+    {
+      "case": "privacy-5",
+      "payload": {
+        "text": "PRIVATE_SYNTHETIC_MARKER_05_CAPSTONE. This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. "
+      },
+      "sent_at": "2026-11-12T13:50:45.186651+00:00",
+      "log_start_line": 70,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'creator_id' must be a non-empty string."
+        },
+        "duration_header_ms": "5.541",
+        "request_id_header": "632f1f8d-06f7-4469-a7e3-9f3508d087d9",
+        "client_seconds": 0.01396989997010678
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.196015+00:00",
+          "request_id": "632f1f8d-06f7-4469-a7e3-9f3508d087d9",
+          "request_started_at": "2026-11-12T13:50:45.190463+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.196015+00:00",
+          "duration_ms": 5.541,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "marker": "PRIVATE_SYNTHETIC_MARKER_05_CAPSTONE",
+      "expected_status": 400
+    },
+    {
+      "case": "privacy-6",
+      "payload": {
+        "text": "PRIVATE_SYNTHETIC_MARKER_06_CAPSTONE. This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. "
+      },
+      "sent_at": "2026-11-12T13:50:45.233375+00:00",
+      "log_start_line": 71,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'creator_id' must be a non-empty string."
+        },
+        "duration_header_ms": "2.827",
+        "request_id_header": "da5dc3f0-00ea-4d53-8ced-b8053fe729f1",
+        "client_seconds": 0.00823330006096512
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.239168+00:00",
+          "request_id": "da5dc3f0-00ea-4d53-8ced-b8053fe729f1",
+          "request_started_at": "2026-11-12T13:50:45.236329+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.239168+00:00",
+          "duration_ms": 2.827,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "marker": "PRIVATE_SYNTHETIC_MARKER_06_CAPSTONE",
+      "expected_status": 400
+    },
+    {
+      "case": "privacy-7",
+      "payload": {
+        "text": "PRIVATE_SYNTHETIC_MARKER_07_CAPSTONE. This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. . This invented passage checks whether private writing is copied into operational monitoring. "
+      },
+      "sent_at": "2026-11-12T13:50:45.268805+00:00",
+      "log_start_line": 72,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'creator_id' must be a non-empty string."
+        },
+        "duration_header_ms": "2.756",
+        "request_id_header": "384c03df-26ba-4a09-9bc9-90a3c583319a",
+        "client_seconds": 0.007910100044682622
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.274399+00:00",
+          "request_id": "384c03df-26ba-4a09-9bc9-90a3c583319a",
+          "request_started_at": "2026-11-12T13:50:45.271634+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.274399+00:00",
+          "duration_ms": 2.756,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "marker": "PRIVATE_SYNTHETIC_MARKER_07_CAPSTONE",
+      "expected_status": 400
+    },
+    {
+      "case": "privacy-8",
+      "payload": {
+        "text": "PRIVATE_SYNTHETIC_MARKER_08_CAPSTONE. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Syn",
+        "creator_id": "capstone-after-2-privacy-8"
+      },
+      "sent_at": "2026-11-12T13:50:45.298917+00:00",
+      "log_start_line": 73,
+      "response": {
+        "status": 413,
+        "body": {
+          "error": "text_too_long",
+          "message": "'text' must not exceed 5000 characters."
+        },
+        "duration_header_ms": "4.395",
+        "request_id_header": "a519d975-3595-42c2-b3ef-da4c2ed027cb",
+        "client_seconds": 0.010900399996899068
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.306487+00:00",
+          "request_id": "a519d975-3595-42c2-b3ef-da4c2ed027cb",
+          "request_started_at": "2026-11-12T13:50:45.302086+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.306487+00:00",
+          "duration_ms": 4.395,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 413,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "text_too_long"
+        }
+      ],
+      "one_submit_event": true,
+      "marker": "PRIVATE_SYNTHETIC_MARKER_08_CAPSTONE",
+      "expected_status": 413
+    },
+    {
+      "case": "privacy-9",
+      "payload": {
+        "text": "PRIVATE_SYNTHETIC_MARKER_09_CAPSTONE. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Synthetic long privacy example. Syn",
+        "creator_id": "capstone-after-2-privacy-9"
+      },
+      "sent_at": "2026-11-12T13:50:45.334691+00:00",
+      "log_start_line": 74,
+      "response": {
+        "status": 413,
+        "body": {
+          "error": "text_too_long",
+          "message": "'text' must not exceed 5000 characters."
+        },
+        "duration_header_ms": "4.302",
+        "request_id_header": "163c3655-d320-4c13-84c0-64be388fb534",
+        "client_seconds": 0.011773300007916987
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.342554+00:00",
+          "request_id": "163c3655-d320-4c13-84c0-64be388fb534",
+          "request_started_at": "2026-11-12T13:50:45.338241+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.342554+00:00",
+          "duration_ms": 4.302,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 413,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "text_too_long"
+        }
+      ],
+      "one_submit_event": true,
+      "marker": "PRIVATE_SYNTHETIC_MARKER_09_CAPSTONE",
+      "expected_status": 413
+    }
+  ],
+  "invalid": [
+    {
+      "case": "missing_text",
+      "payload": {
+        "creator_id": "capstone-after-2-invalid-0"
+      },
+      "sent_at": "2026-11-12T13:50:45.364339+00:00",
+      "log_start_line": 75,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'text' must be a non-empty string."
+        },
+        "duration_header_ms": "5.570",
+        "request_id_header": "31d3e48a-138f-4cb7-be96-253fb9c7c2b3",
+        "client_seconds": 0.026184899965301156
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.385359+00:00",
+          "request_id": "31d3e48a-138f-4cb7-be96-253fb9c7c2b3",
+          "request_started_at": "2026-11-12T13:50:45.379776+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.385359+00:00",
+          "duration_ms": 5.57,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "expected_status": 400
+    },
+    {
+      "case": "empty_text",
+      "payload": {
+        "creator_id": "capstone-after-2-invalid-1",
+        "text": ""
+      },
+      "sent_at": "2026-11-12T13:50:45.415733+00:00",
+      "log_start_line": 76,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'text' must be a non-empty string."
+        },
+        "duration_header_ms": "4.565",
+        "request_id_header": "d7104b99-c262-4ce8-af56-647ce875765c",
+        "client_seconds": 0.01433180004823953
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.425453+00:00",
+          "request_id": "d7104b99-c262-4ce8-af56-647ce875765c",
+          "request_started_at": "2026-11-12T13:50:45.420879+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.425453+00:00",
+          "duration_ms": 4.565,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "expected_status": 400
+    },
+    {
+      "case": "whitespace_text",
+      "payload": {
+        "creator_id": "capstone-after-2-invalid-2",
+        "text": " \t\n"
+      },
+      "sent_at": "2026-11-12T13:50:45.457200+00:00",
+      "log_start_line": 77,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'text' must be a non-empty string."
+        },
+        "duration_header_ms": "4.519",
+        "request_id_header": "ff25e0f9-7d97-49cc-98cb-8c7487c409de",
+        "client_seconds": 0.013947000028565526
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.465910+00:00",
+          "request_id": "ff25e0f9-7d97-49cc-98cb-8c7487c409de",
+          "request_started_at": "2026-11-12T13:50:45.461391+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.465910+00:00",
+          "duration_ms": 4.519,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "expected_status": 400
+    },
+    {
+      "case": "numeric_text",
+      "payload": {
+        "creator_id": "capstone-after-2-invalid-3",
+        "text": 42
+      },
+      "sent_at": "2026-11-12T13:50:45.504532+00:00",
+      "log_start_line": 78,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'text' must be a non-empty string."
+        },
+        "duration_header_ms": "4.117",
+        "request_id_header": "24d78bba-8e84-4444-9fa8-5704a73a57ab",
+        "client_seconds": 0.01361000002361834
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.512562+00:00",
+          "request_id": "24d78bba-8e84-4444-9fa8-5704a73a57ab",
+          "request_started_at": "2026-11-12T13:50:45.508439+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.512562+00:00",
+          "duration_ms": 4.117,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "expected_status": 400
+    },
+    {
+      "case": "null_text",
+      "payload": {
+        "creator_id": "capstone-after-2-invalid-4",
+        "text": null
+      },
+      "sent_at": "2026-11-12T13:50:45.547129+00:00",
+      "log_start_line": 79,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'text' must be a non-empty string."
+        },
+        "duration_header_ms": "6.165",
+        "request_id_header": "73bf0188-bd8f-4d1d-b0c9-d8a47853580c",
+        "client_seconds": 0.01618469995446503
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.558686+00:00",
+          "request_id": "73bf0188-bd8f-4d1d-b0c9-d8a47853580c",
+          "request_started_at": "2026-11-12T13:50:45.552507+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.558686+00:00",
+          "duration_ms": 6.165,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "expected_status": 400
+    },
+    {
+      "case": "list_text",
+      "payload": {
+        "creator_id": "capstone-after-2-invalid-5",
+        "text": [
+          "test"
+        ]
+      },
+      "sent_at": "2026-11-12T13:50:45.591562+00:00",
+      "log_start_line": 80,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'text' must be a non-empty string."
+        },
+        "duration_header_ms": "4.636",
+        "request_id_header": "518be2a0-5de5-457d-9071-031ec51d9803",
+        "client_seconds": 0.024727099924348295
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.611140+00:00",
+          "request_id": "518be2a0-5de5-457d-9071-031ec51d9803",
+          "request_started_at": "2026-11-12T13:50:45.606495+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.611140+00:00",
+          "duration_ms": 4.636,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "expected_status": 400
+    },
+    {
+      "case": "object_text",
+      "payload": {
+        "creator_id": "capstone-after-2-invalid-6",
+        "text": {
+          "test": "value"
+        }
+      },
+      "sent_at": "2026-11-12T13:50:45.642831+00:00",
+      "log_start_line": 81,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'text' must be a non-empty string."
+        },
+        "duration_header_ms": "5.151",
+        "request_id_header": "33d06801-488f-4016-96c4-e4cdae2b46c2",
+        "client_seconds": 0.03159039991442114
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.669479+00:00",
+          "request_id": "33d06801-488f-4016-96c4-e4cdae2b46c2",
+          "request_started_at": "2026-11-12T13:50:45.664315+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.669479+00:00",
+          "duration_ms": 5.151,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "expected_status": 400
+    },
+    {
+      "case": "boolean_text",
+      "payload": {
+        "creator_id": "capstone-after-2-invalid-7",
+        "text": true
+      },
+      "sent_at": "2026-11-12T13:50:45.697992+00:00",
+      "log_start_line": 82,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'text' must be a non-empty string."
+        },
+        "duration_header_ms": "2.688",
+        "request_id_header": "63dad728-3afa-4572-bf58-22b2b9a8b718",
+        "client_seconds": 0.009850900038145483
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.704329+00:00",
+          "request_id": "63dad728-3afa-4572-bf58-22b2b9a8b718",
+          "request_started_at": "2026-11-12T13:50:45.701640+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.704329+00:00",
+          "duration_ms": 2.688,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "expected_status": 400
+    },
+    {
+      "case": "missing_creator",
+      "payload": {
+        "text": "This synthetic request contains enough words for a valid classification."
+      },
+      "sent_at": "2026-11-12T13:50:45.727428+00:00",
+      "log_start_line": 83,
+      "response": {
+        "status": 400,
+        "body": {
+          "error": "invalid_request",
+          "message": "'creator_id' must be a non-empty string."
+        },
+        "duration_header_ms": "4.332",
+        "request_id_header": "51864622-9a74-49f5-9c81-65f8e3faa124",
+        "client_seconds": 0.010417600045911968
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.734897+00:00",
+          "request_id": "51864622-9a74-49f5-9c81-65f8e3faa124",
+          "request_started_at": "2026-11-12T13:50:45.730563+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.734897+00:00",
+          "duration_ms": 4.332,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 400,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "invalid_request"
+        }
+      ],
+      "one_submit_event": true,
+      "expected_status": 400
+    },
+    {
+      "case": "overlong_text",
+      "payload": {
+        "creator_id": "capstone-after-2-invalid",
+        "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      },
+      "sent_at": "2026-11-12T13:50:45.758466+00:00",
+      "log_start_line": 84,
+      "response": {
+        "status": 413,
+        "body": {
+          "error": "text_too_long",
+          "message": "'text' must not exceed 5000 characters."
+        },
+        "duration_header_ms": "3.458",
+        "request_id_header": "ff4b9b91-f9c5-43a1-839e-f978f4d46e7a",
+        "client_seconds": 0.025335599901154637
+      },
+      "events": [
+        {
+          "timestamp": "2026-11-12T13:50:45.781374+00:00",
+          "request_id": "ff4b9b91-f9c5-43a1-839e-f978f4d46e7a",
+          "request_started_at": "2026-11-12T13:50:45.777904+00:00",
+          "request_completed_at": "2026-11-12T13:50:45.781374+00:00",
+          "duration_ms": 3.458,
+          "method": "POST",
+          "endpoint": "/submit",
+          "status_code": 413,
+          "outcome": "rejected",
+          "content_id": null,
+          "error_code": "text_too_long"
+        }
+      ],
+      "one_submit_event": true,
+      "expected_status": 413
+    }
+  ],
+  "summary": {
+    "logging": {
+      "matched": 10,
+      "total": 10,
+      "met": true
+    },
+    "timing": {
+      "durations_ms": [
+        142.086,
+        179.127,
+        270.224,
+        448.475,
+        511.082,
+        515.16,
+        1054.897,
+        1416.989,
+        1408.893,
+        1425.065
+      ],
+      "max_ms": 1425.065,
+      "mean_ms": 737.1998,
+      "within_limit": 4,
+      "total": 10,
+      "met": false
+    },
+    "privacy": {
+      "leaks": [],
+      "observed_all_10": true,
+      "met": true
+    },
+    "invalid": {
+      "matched": 10,
+      "total": 10,
+      "met": true
+    },
+    "startup": {
+      "met": true
+    },
+    "rejection_correlation_diagnostic": {
+      "rejected_requests": 15,
+      "matching_request_ids": 15
+    }
+  },
+  "completed_at": "2026-11-12T13:50:45.805725+00:00",
+  "operational_events": [
+    {
+      "timestamp": "2026-11-12T13:50:18.703940+00:00",
+      "request_id": "e04a378d-0f69-452d-8026-4af133b70149",
+      "request_started_at": "2026-11-12T13:50:18.671973+00:00",
+      "request_completed_at": "2026-11-12T13:50:18.703940+00:00",
+      "duration_ms": 31.956,
+      "method": "GET",
+      "endpoint": "/health",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:18.710894+00:00",
+      "request_id": "d1680cf1-a2bd-4bf8-86cd-085760744591",
+      "request_started_at": "2026-11-12T13:50:18.710444+00:00",
+      "request_completed_at": "2026-11-12T13:50:18.710894+00:00",
+      "duration_ms": 0.436,
+      "method": "POST",
+      "endpoint": "/ping",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:34.895491+00:00",
+      "request_id": "995e4f0b-cf58-4397-9402-422648e0e83b",
+      "request_started_at": "2026-11-12T13:50:18.733186+00:00",
+      "request_completed_at": "2026-11-12T13:50:34.895491+00:00",
+      "duration_ms": 16162.317,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "e7d23b29-099b-4f6a-852f-607331e1e1a3",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:35.077298+00:00",
+      "request_id": "03d8a762-00fa-4bc0-8de3-a2e7f3c420c5",
+      "request_started_at": "2026-11-12T13:50:34.935211+00:00",
+      "request_completed_at": "2026-11-12T13:50:35.077298+00:00",
+      "duration_ms": 142.086,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "4f1c02aa-37ee-4762-92c8-985c11205f06",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:35.306537+00:00",
+      "request_id": "3a0c50b4-c815-4ba2-9049-05c3159a9bf9",
+      "request_started_at": "2026-11-12T13:50:35.127399+00:00",
+      "request_completed_at": "2026-11-12T13:50:35.306537+00:00",
+      "duration_ms": 179.127,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "0e9d8905-cc5f-4e97-a969-56296c38b86f",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:35.616523+00:00",
+      "request_id": "c5c922a4-97e9-4701-b437-2bfb92b8f082",
+      "request_started_at": "2026-11-12T13:50:35.346293+00:00",
+      "request_completed_at": "2026-11-12T13:50:35.616523+00:00",
+      "duration_ms": 270.224,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "d494e5c1-0b35-4a65-9426-af9f31d36594",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:36.109758+00:00",
+      "request_id": "b5b6dfa1-ce3e-4646-9b1a-0f609394dbe3",
+      "request_started_at": "2026-11-12T13:50:35.661264+00:00",
+      "request_completed_at": "2026-11-12T13:50:36.109758+00:00",
+      "duration_ms": 448.475,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "b64cff1f-8138-4370-b37a-1656c63f1baa",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:36.672334+00:00",
+      "request_id": "90f4d5a0-e04b-48f2-bc1d-6fc87d667299",
+      "request_started_at": "2026-11-12T13:50:36.161248+00:00",
+      "request_completed_at": "2026-11-12T13:50:36.672334+00:00",
+      "duration_ms": 511.082,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "9da17199-c11f-4bc0-8293-fa439c400fd7",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:37.213415+00:00",
+      "request_id": "3cbda081-41a6-411f-8f2a-b017e1cc6a56",
+      "request_started_at": "2026-11-12T13:50:36.698268+00:00",
+      "request_completed_at": "2026-11-12T13:50:37.213415+00:00",
+      "duration_ms": 515.16,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "062f2666-0288-4df5-97ea-aee19fdf17c3",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:38.312363+00:00",
+      "request_id": "a62ed128-6a01-4322-9283-42453ef337f1",
+      "request_started_at": "2026-11-12T13:50:37.257474+00:00",
+      "request_completed_at": "2026-11-12T13:50:38.312363+00:00",
+      "duration_ms": 1054.897,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "16085200-bff1-4eb5-9660-8b639628d5c5",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:39.770631+00:00",
+      "request_id": "3a032745-acf4-4a3c-a957-80d93bd36e53",
+      "request_started_at": "2026-11-12T13:50:38.353638+00:00",
+      "request_completed_at": "2026-11-12T13:50:39.770631+00:00",
+      "duration_ms": 1416.989,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "cd487ead-ceb0-432a-85a4-c99e2b1dad81",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:41.243602+00:00",
+      "request_id": "6295af65-d3f7-4766-a009-a5c21d32db9f",
+      "request_started_at": "2026-11-12T13:50:39.834692+00:00",
+      "request_completed_at": "2026-11-12T13:50:41.243602+00:00",
+      "duration_ms": 1408.893,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "84d5be60-3821-416f-872b-9cb01585a3a6",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:42.708470+00:00",
+      "request_id": "476bae54-66fa-44fc-b97b-1eacc743318d",
+      "request_started_at": "2026-11-12T13:50:41.283387+00:00",
+      "request_completed_at": "2026-11-12T13:50:42.708470+00:00",
+      "duration_ms": 1425.065,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "ec242e9d-4edb-4a1a-a1bb-70a4d1d3cfe3",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:43.090958+00:00",
+      "request_id": "50332efb-e6d7-4857-9b49-c3b0487384fe",
+      "request_started_at": "2026-11-12T13:50:42.751008+00:00",
+      "request_completed_at": "2026-11-12T13:50:43.090958+00:00",
+      "duration_ms": 339.947,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "44308d1b-6b1d-4659-92af-26144fea5e36",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:43.562249+00:00",
+      "request_id": "ef5c4b8f-dc3d-41b1-8131-c6d74b5ee5c4",
+      "request_started_at": "2026-11-12T13:50:43.146689+00:00",
+      "request_completed_at": "2026-11-12T13:50:43.562249+00:00",
+      "duration_ms": 415.554,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "6b121484-20cf-4b4d-9cf7-c4d72947d8a1",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:44.013646+00:00",
+      "request_id": "c2f20ca6-1b32-4ec3-a732-886a83252d32",
+      "request_started_at": "2026-11-12T13:50:43.615656+00:00",
+      "request_completed_at": "2026-11-12T13:50:44.013646+00:00",
+      "duration_ms": 397.992,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "7b1f9362-4a7b-4d0b-8afa-419acf2e1388",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:44.532305+00:00",
+      "request_id": "bd84e3db-0096-4073-b051-64804eb211a9",
+      "request_started_at": "2026-11-12T13:50:44.054655+00:00",
+      "request_completed_at": "2026-11-12T13:50:44.532305+00:00",
+      "duration_ms": 477.648,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "5b3b9e6e-3822-4872-8e4d-516059b0a496",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.147874+00:00",
+      "request_id": "976f357c-848a-4990-ab7f-cc0cdda5d956",
+      "request_started_at": "2026-11-12T13:50:44.564278+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.147874+00:00",
+      "duration_ms": 583.574,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 200,
+      "outcome": "success",
+      "content_id": "1471cb1d-446e-4342-bdff-55c0b9d828c4",
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.196015+00:00",
+      "request_id": "632f1f8d-06f7-4469-a7e3-9f3508d087d9",
+      "request_started_at": "2026-11-12T13:50:45.190463+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.196015+00:00",
+      "duration_ms": 5.541,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.239168+00:00",
+      "request_id": "da5dc3f0-00ea-4d53-8ced-b8053fe729f1",
+      "request_started_at": "2026-11-12T13:50:45.236329+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.239168+00:00",
+      "duration_ms": 2.827,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.274399+00:00",
+      "request_id": "384c03df-26ba-4a09-9bc9-90a3c583319a",
+      "request_started_at": "2026-11-12T13:50:45.271634+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.274399+00:00",
+      "duration_ms": 2.756,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.306487+00:00",
+      "request_id": "a519d975-3595-42c2-b3ef-da4c2ed027cb",
+      "request_started_at": "2026-11-12T13:50:45.302086+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.306487+00:00",
+      "duration_ms": 4.395,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 413,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "text_too_long"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.342554+00:00",
+      "request_id": "163c3655-d320-4c13-84c0-64be388fb534",
+      "request_started_at": "2026-11-12T13:50:45.338241+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.342554+00:00",
+      "duration_ms": 4.302,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 413,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "text_too_long"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.385359+00:00",
+      "request_id": "31d3e48a-138f-4cb7-be96-253fb9c7c2b3",
+      "request_started_at": "2026-11-12T13:50:45.379776+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.385359+00:00",
+      "duration_ms": 5.57,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.425453+00:00",
+      "request_id": "d7104b99-c262-4ce8-af56-647ce875765c",
+      "request_started_at": "2026-11-12T13:50:45.420879+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.425453+00:00",
+      "duration_ms": 4.565,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.465910+00:00",
+      "request_id": "ff25e0f9-7d97-49cc-98cb-8c7487c409de",
+      "request_started_at": "2026-11-12T13:50:45.461391+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.465910+00:00",
+      "duration_ms": 4.519,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.512562+00:00",
+      "request_id": "24d78bba-8e84-4444-9fa8-5704a73a57ab",
+      "request_started_at": "2026-11-12T13:50:45.508439+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.512562+00:00",
+      "duration_ms": 4.117,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.558686+00:00",
+      "request_id": "73bf0188-bd8f-4d1d-b0c9-d8a47853580c",
+      "request_started_at": "2026-11-12T13:50:45.552507+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.558686+00:00",
+      "duration_ms": 6.165,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.611140+00:00",
+      "request_id": "518be2a0-5de5-457d-9071-031ec51d9803",
+      "request_started_at": "2026-11-12T13:50:45.606495+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.611140+00:00",
+      "duration_ms": 4.636,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.669479+00:00",
+      "request_id": "33d06801-488f-4016-96c4-e4cdae2b46c2",
+      "request_started_at": "2026-11-12T13:50:45.664315+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.669479+00:00",
+      "duration_ms": 5.151,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.704329+00:00",
+      "request_id": "63dad728-3afa-4572-bf58-22b2b9a8b718",
+      "request_started_at": "2026-11-12T13:50:45.701640+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.704329+00:00",
+      "duration_ms": 2.688,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.734897+00:00",
+      "request_id": "51864622-9a74-49f5-9c81-65f8e3faa124",
+      "request_started_at": "2026-11-12T13:50:45.730563+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.734897+00:00",
+      "duration_ms": 4.332,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 400,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "invalid_request"
+    },
+    {
+      "timestamp": "2026-11-12T13:50:45.781374+00:00",
+      "request_id": "ff4b9b91-f9c5-43a1-839e-f978f4d46e7a",
+      "request_started_at": "2026-11-12T13:50:45.777904+00:00",
+      "request_completed_at": "2026-11-12T13:50:45.781374+00:00",
+      "duration_ms": 3.458,
+      "method": "POST",
+      "endpoint": "/submit",
+      "status_code": 413,
+      "outcome": "rejected",
+      "content_id": null,
+      "error_code": "text_too_long"
+    }
+  ]
+}

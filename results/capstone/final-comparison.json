@@ -1,0 +1,35 @@
+{
+  "before_verdicts": {
+    "logging": "MET",
+    "timing": "MISSED",
+    "privacy": "MET",
+    "invalid": "MET",
+    "startup": "MET"
+  },
+  "after_verdicts": {
+    "logging": "MET",
+    "timing": "MISSED",
+    "privacy": "MET",
+    "invalid": "MET",
+    "startup": "MET"
+  },
+  "before_mean_seconds": 0.8892800666666667,
+  "after_mean_seconds": 0.7888279,
+  "before_max_seconds": 1.896298,
+  "after_max_seconds": 1.793009,
+  "after_timing_misses": 19,
+  "rejection_correlation_before": 0,
+  "rejection_correlation_after": 45,
+  "validation": {
+    "same_criteria_sha256": "1c9dabee628700159d8fb21d14bcbe63ba2c28aa6d60f1e41c7f12243fcc04e4",
+    "same_evaluator_sha256": "9cf6576fb968c38619af2000b1634bb2b922dbcef681252f1517837c1ec4b114",
+    "changed_root_python_sources": [
+      "app.py"
+    ],
+    "unique_after_request_ids": 99,
+    "matching_after_response_log_pairs": 99,
+    "unchanged_classification_responses": 45,
+    "changed_score_or_label_cases": [],
+    "note": "Comparisons exclude generated IDs and timings. Same synthetic text, criteria and evaluator before/after."
+  }
+}
